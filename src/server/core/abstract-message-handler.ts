@@ -6,9 +6,13 @@ import { MessageHandler } from "./message-handler";
 export abstract class AbstractMessageHandler implements MessageHandler {
 
     constructor() {
-        console.log("constructor: " + this.constructor.name);
     }
 
     abstract handle(message: Message): void;
+
+    public getMsgType() {
+        //TODO: fix later
+        return this.constructor.name.replace("Handler", "");
+    }
 
 }

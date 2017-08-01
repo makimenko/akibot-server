@@ -5,5 +5,6 @@ import { Message } from "./message.dom";
 export interface MessageHandler {
 
     handle(message: Message): void;
+    getMsgType(): string;
 
 }

@@ -9,8 +9,6 @@ export interface HelloMessage extends Message {
 
 export class HelloMessageHandler extends AbstractMessageHandler {
 
-    public name: string = "HelloMessageHandler";
-
     handle(message: HelloMessage): void {
         console.log("Hey, Hello " + message.myName + "!");
     }

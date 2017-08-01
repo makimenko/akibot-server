@@ -3,13 +3,18 @@ import * as http from 'http';
 import * as WebSocket from 'ws';
 import { AkiBotServerEvents } from "./akibot-server-events";
 
+export interface AkiBotServerConfiguration {
+    port : number,
+    serverEvents: AkiBotServerEvents
+}
+
 export class AkiBotServer {
 
     private expressApplication: express.Application;
     private httpServer: http.Server;
     private wss: WebSocket.Server;
 
-    constructor(private port: number, private serverEvents: AkiBotServerEvents) {
+    constructor(private config: AkiBotServerConfiguration) {
         this.expressApplication = express();
     }
 
@@ -25,15 +30,15 @@ export class AkiBotServer {
 
     private initWebSocketEvents() {
         console.log("Initialize WebSocket events...");
-        this.wss.on("connection", (client: WebSocket, request: http.IncomingMessage) => this.serverEvents.onConnection(client, request));
-        this.wss.on("listening", () => this.serverEvents.onListening());
-        this.wss.on("error", (err: Error) => this.serverEvents.onError(err));
-        this.wss.on("headers", (headers: string[], request: http.IncomingMessage) => this.serverEvents.onHeaders(headers, request));
+        this.wss.on("connection", (client: WebSocket, request: http.IncomingMessage) => this.config.serverEvents.onConnection(client, request));
+        this.wss.on("listening", () => this.config.serverEvents.onListening());
+        this.wss.on("error", (err: Error) => this.config.serverEvents.onError(err));
+        this.wss.on("headers", (headers: string[], request: http.IncomingMessage) => this.config.serverEvents.onHeaders(headers, request));
     }
 
     private startListen() {
         console.log("Start listening...")
-        this.httpServer.listen(this.port, () => {
+        this.httpServer.listen(this.config.port, () => {
             console.log(`Server is listening on port ${this.httpServer.address().port}`);
         });
     }
