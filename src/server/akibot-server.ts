@@ -2,8 +2,6 @@ import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
 import { AkiBotServerEvents } from "./akibot-server-events";
-import { AkiBotServerEventsImpl } from "./akibot-server-events.impl";
-
 
 export class AkiBotServer {
 
@@ -40,8 +38,8 @@ export class AkiBotServer {
         });
     }
 
-    public start(): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
+    public start(): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             this.startHttpServer();
             this.startWebSocketServer();
             this.initWebSocketEvents();

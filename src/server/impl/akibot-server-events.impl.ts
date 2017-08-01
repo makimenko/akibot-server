@@ -1,7 +1,8 @@
 import * as http from 'http';
-import { AkiBotServerEvents } from "./akibot-server-events";
+import { AkiBotServerEvents } from "../akibot-server-events";
 import * as WebSocket from 'ws';
-import { AkiBotSocketEvents } from "./akibot-socket-events";
+import { AkiBotSocketEvents } from "../akibot-socket-events";
+import { AkiBotSocketEventsImpl } from "./akibot-socket-events.impl";
 
 export class AkiBotServerEventsImpl implements AkiBotServerEvents {
 
@@ -11,8 +12,8 @@ export class AkiBotServerEventsImpl implements AkiBotServerEvents {
 
     public onConnection(client: WebSocket, request: http.IncomingMessage): void {
         console.log("AkiBotServerEventsImpl.onConnection");
-        // TODO: refactor
-        var events: AkiBotSocketEvents = new AkiBotSocketEvents();
+        // TODO: inject
+        var events: AkiBotSocketEvents = new AkiBotSocketEventsImpl(client);
         client.on("message", (data: WebSocket.Data) => events.onMessage(data));
     }
 
