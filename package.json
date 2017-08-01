@@ -2,7 +2,7 @@
   "name": "akibot-server",
   "version": "0.0.1-SNAPSHOT",
   "description": "AkiBot Server",
-  "repository": "",
+  "repository": "https://github.com/makimenko/akibot-server.git",
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/index.ts",

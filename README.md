@@ -7,6 +7,7 @@ Sub-project of https://github.com/makimenko/akibot.git
 3. Clone repository
 ```
 git clone https://github.com/makimenko/akibot-server.git
+```
 
 4. Install Global dependencies
 ```
