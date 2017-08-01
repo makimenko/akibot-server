@@ -1,5 +1,6 @@
 import * as WebSocket from 'ws';
 import { AkiBotSocketEvents } from "../akibot-socket-events";
+import { Message, HelloMessage } from "./message.dom";
 
 export class AkiBotSocketEventsImpl implements AkiBotSocketEvents {
 

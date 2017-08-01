@@ -5,3 +5,4 @@ const port: number = Number(process.env.PORT || 3000);
 const akiBotServer = new AkiBotServer(port, new AkiBotServerEventsImpl());
 
 akiBotServer.start();
+
