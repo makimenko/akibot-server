@@ -4,12 +4,14 @@ import { MessageHandler } from "./message-handler";
 import { AkiBotSocketEvents } from "./akibot-socket-events";
 
 
-export abstract class AbstractMessageHandler implements MessageHandler {
-
+export abstract class AbstractMessageHandler<T extends Message> implements MessageHandler {
+    
     constructor(protected clientEvents: AkiBotSocketEvents) {
     }
 
-    abstract handle(message: Message): void;
+    abstract handle(message: T): void;
+
+    abstract convert(jsonString: string): T;
 
     public getMsgType() {
         //TODO: fix later
