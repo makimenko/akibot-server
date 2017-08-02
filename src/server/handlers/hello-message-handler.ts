@@ -18,6 +18,7 @@ export class HelloMessageHandler extends AbstractMessageHandler<HelloMessage> {
     }
 
     handle(message: HelloMessage): void {
+        console.log("HelloMessageHandler.handle");
         var demoReply: HelloMessageReply = new HelloMessageReply();
         demoReply.message = "Server working with " + message.myName;
         this.serverEvents.broadcast(demoReply);

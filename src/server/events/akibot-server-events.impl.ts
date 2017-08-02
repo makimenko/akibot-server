@@ -9,6 +9,8 @@ import { AkiBotServer } from "../core/akibot-server";
 export class AkiBotServerEventsImpl implements AkiBotServerEvents {
     private server: AkiBotServer;
 
+    private clients: WebSocket[] = [];
+
     constructor() {
         console.log("AkiBotServerEventsImpl.constructor");
     }
@@ -23,6 +25,7 @@ export class AkiBotServerEventsImpl implements AkiBotServerEvents {
         // TODO: inject
         var events: AkiBotSocketEvents = new AkiBotSocketEventsImpl(this);
         client.on("message", (data: WebSocket.Data) => events.onMessage(data));
+        this.clients.push(client);
     }
 
     public onError(err: Error) {
@@ -40,9 +43,10 @@ export class AkiBotServerEventsImpl implements AkiBotServerEvents {
     public broadcast(message: Message) {
         console.log("AkiBotServerEventsImpl.broadcast")
         //TODO: send to all
-        this.server.getWss().clients.forEach((client) => {
-            console.log("Sending to: " + client)
-            client.send(JSON.stringify(message));
+        this.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(message));
+            } 
         })
     }
 

@@ -61,7 +61,7 @@ export class AkiBotServer {
         });
     }
 
-    public getWss() {
+    public getWss() : WebSocket.Server {
         return this.wss;
     }
 }
