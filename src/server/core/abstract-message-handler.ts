@@ -2,11 +2,12 @@ import { Message } from "./message.dom";
 import * as WebSocket from 'ws';
 import { MessageHandler } from "./message-handler";
 import { AkiBotSocketEvents } from "./akibot-socket-events";
+import { AkiBotServerEvents } from "./akibot-server-events";
 
 
 export abstract class AbstractMessageHandler<T extends Message> implements MessageHandler {
     
-    constructor(protected clientEvents: AkiBotSocketEvents) {
+    constructor(protected serverEvents: AkiBotServerEvents) {
     }
 
     abstract handle(message: T): void;

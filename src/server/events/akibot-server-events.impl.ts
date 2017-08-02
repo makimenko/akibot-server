@@ -3,17 +3,25 @@ import { AkiBotServerEvents } from "../core/akibot-server-events";
 import * as WebSocket from 'ws';
 import { AkiBotSocketEvents } from "../core/akibot-socket-events";
 import { AkiBotSocketEventsImpl } from "./akibot-socket-events.impl";
+import { Message } from "../core/message.dom";
+import { AkiBotServer } from "../core/akibot-server";
 
 export class AkiBotServerEventsImpl implements AkiBotServerEvents {
+    private server: AkiBotServer;
 
     constructor() {
         console.log("AkiBotServerEventsImpl.constructor");
     }
 
+    public init(server: AkiBotServer) {
+        //replace to dependency injection
+        this.server = server;
+    }
+
     public onConnection(client: WebSocket, request: http.IncomingMessage): void {
         console.log("AkiBotServerEventsImpl.onConnection");
         // TODO: inject
-        var events: AkiBotSocketEvents = new AkiBotSocketEventsImpl(client);
+        var events: AkiBotSocketEvents = new AkiBotSocketEventsImpl(this);
         client.on("message", (data: WebSocket.Data) => events.onMessage(data));
     }
 
@@ -28,5 +36,15 @@ export class AkiBotServerEventsImpl implements AkiBotServerEvents {
     public onListening() {
         console.log("AkiBotServerEventsImpl.onListening");
     }
+
+    public broadcast(message: Message) {
+        console.log("AkiBotServerEventsImpl.broadcast")
+        //TODO: send to all
+        this.server.getWss().clients.forEach((client) => {
+            console.log("Sending to: " + client)
+            client.send(JSON.stringify(message));
+        })
+    }
+
 
 }

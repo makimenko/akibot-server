@@ -1,6 +1,10 @@
 import { AkiBotServer, AkiBotServerConfiguration } from "./server/core/akibot-server";
 import { AkiBotServerEventsImpl } from "./server/events/akibot-server-events.impl";
 import * as WebSocket from 'ws';
+import { HelloMessageHandler, HelloMessage } from "./server/handlers/hello-message-handler";
+
+//var x:HelloMessageHandler = new HelloMessageHandler<>();
+
 
 const config: AkiBotServerConfiguration = {
     port: Number(process.env.PORT || 3000),
@@ -20,7 +24,7 @@ function runSandbox() {
 }
 
 function onOpenConnection(socket: WebSocket) {
-    socket.send(JSON.stringify({ "msgType": "HelloMessage", "msgBody": { "myName": "Michael" } }));
+    socket.send(JSON.stringify({ "msgType": "HelloMessage", "myName": "Michael" }));
 }
 
 function onMessage(data: WebSocket.Data) {

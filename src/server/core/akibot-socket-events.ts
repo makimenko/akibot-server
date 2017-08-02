@@ -5,6 +5,4 @@ export interface AkiBotSocketEvents {
 
     onMessage(data: WebSocket.Data): void;
 
-    broadcast(message: Message): void;
-
 }

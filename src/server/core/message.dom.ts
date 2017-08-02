@@ -1,9 +1,5 @@
-export interface MessageRawData {
-    msgType: string;
-    msgBody: Message
-}
-
-export interface Message {
+export class Message {
+    msgType: string = this.constructor.name;
 
 }
 

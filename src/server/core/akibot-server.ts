@@ -4,7 +4,7 @@ import * as WebSocket from 'ws';
 import { AkiBotServerEvents } from "./akibot-server-events";
 
 export interface AkiBotServerConfiguration {
-    port : number,
+    port: number,
     serverEvents: AkiBotServerEvents
 }
 
@@ -16,6 +16,7 @@ export class AkiBotServer {
 
     constructor(private config: AkiBotServerConfiguration) {
         this.expressApplication = express();
+        this.config.serverEvents.init(this); // TODO: dependency injection
     }
 
     private startHttpServer() {
@@ -60,4 +61,7 @@ export class AkiBotServer {
         });
     }
 
+    public getWss() {
+        return this.wss;
+    }
 }
