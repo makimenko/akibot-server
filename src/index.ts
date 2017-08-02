@@ -6,7 +6,9 @@ const config : AkiBotServerConfiguration = {
     port: Number(process.env.PORT || 3000),
     serverEvents: new AkiBotServerEventsImpl()
 }
-const akiBotServer = new AkiBotServer(config);
+export const akiBotServer = new AkiBotServer(config);
 
 akiBotServer.start();
 
+ 
+ 

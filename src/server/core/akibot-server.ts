@@ -49,12 +49,14 @@ export class AkiBotServer {
             this.startWebSocketServer();
             this.initWebSocketEvents();
             this.startListen();
+            return resolve();
         });
     }
 
     public stop(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             console.log("stop");
+            return resolve(true);
         });
     }
 

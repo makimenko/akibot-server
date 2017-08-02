@@ -1,19 +1,29 @@
-console.log("Starting...");
+import { AkiBotServer, AkiBotServerConfiguration } from "./server/core/akibot-server";
+import { AkiBotServerEventsImpl } from "./server/events/akibot-server-events.impl";
+import * as WebSocket from 'ws';
 
-import { MessageRawData, Message } from "./server/core/message.dom";
-import { MessageHandler } from "./server/core/message-handler";
-import { HelloMessageHandler } from "./server/handlers/hello-message-handler";
-import { MessageHandlerRegistry } from "./server/handlers/message-handler-registry";
+const config: AkiBotServerConfiguration = {
+    port: Number(process.env.PORT || 3000),
+    serverEvents: new AkiBotServerEventsImpl()
+}
+export const akiBotServer = new AkiBotServer(config);
 
-var registry: MessageHandlerRegistry = new MessageHandlerRegistry();
-registry.register(new HelloMessageHandler());
+akiBotServer.start().then(() => runSandbox());
 
-var msg: MessageRawData = JSON.parse('{"msgType":"HelloMessage", "msgBody":{"myName":"Michael"} }');
-console.log(msg);
+function runSandbox() {
+    console.log("Sandboxing...");
+    akiBotServer.start().then(() => {
+        var socket = new WebSocket('ws://localhost:3000');
+        socket.on("open", () => onOpenConnection(socket));
+        socket.on("message", (data: WebSocket.Data) => onMessage(data));
+    });
+}
 
-if (msg.msgType != undefined) {
-    console.log("It is Message");
-    registry.find(msg.msgType).handle(msg.msgBody);
-} else {
-    console.log("It is not message");
+function onOpenConnection(socket: WebSocket) {
+    socket.send(JSON.stringify({ "msgType": "HelloMessage", "msgBody": { "myName": "Michael" } }));
+}
+
+function onMessage(data: WebSocket.Data) {
+    console.log("Client Received message:");
+    console.log(data);
 }
