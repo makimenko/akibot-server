@@ -7,11 +7,14 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "serve": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts",
-    "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts"
+    "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts",
+    "sandbox2": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox2.ts"
   },
   "dependencies": {
     "express": "4.15.3",
     "http": "0.0.0",
+    "inversify": "4.3.0",
+    "reflect-metadata": "0.1.10",
     "ws": "3.1.0"
   },
   "devDependencies": {

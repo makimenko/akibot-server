@@ -5,14 +5,16 @@ import { MessageHandler } from "../core/message-handler";
 import { HelloMessageHandler, HelloMessageReply } from "../handlers/hello-message-handler";
 import { MessageHandlerRegistry } from "../handlers/message-handler-registry";
 import { AkiBotServerEvents } from "../core/akibot-server-events";
+import { inject } from "inversify";
+import SERVICE_IDENTIFIER from "../constants/identifiers";
 
 export class AkiBotSocketEventsImpl implements AkiBotSocketEvents {
 
-    private registry: MessageHandlerRegistry;
+    @inject(SERVICE_IDENTIFIER.MessageHandlerRegistry)
+    registry: MessageHandlerRegistry;
 
     constructor(private serverEvents: AkiBotServerEvents) {
         console.log("AkiBotSocketEventsImpl.constructor");
-        this.registry = new MessageHandlerRegistry();
         // TODO: auto class scan and dependency injection
         this.registry.register(new HelloMessageHandler(serverEvents));
     }

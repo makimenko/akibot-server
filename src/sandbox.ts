@@ -1,7 +1,12 @@
+import "reflect-metadata";
+
 import { AkiBotServer, AkiBotServerConfiguration } from "./server/core/akibot-server";
 import { AkiBotServerEventsImpl } from "./server/events/akibot-server-events.impl";
 import * as WebSocket from 'ws';
 import { HelloMessageHandler, HelloMessage } from "./server/handlers/hello-message-handler";
+
+import SERVICE_IDENTIFIER from "./server/constants/identifiers";
+import container from "./server/config/ioc-config";
 
 //var x:HelloMessageHandler = new HelloMessageHandler<>();
 
