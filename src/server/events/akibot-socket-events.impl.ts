@@ -7,8 +7,9 @@ import { MessageHandler } from "../core/message-handler";
 import { HelloMessageHandler, HelloMessageReply } from "../handlers/hello-message-handler";
 import { MessageHandlerRegistry } from "../handlers/message-handler-registry";
 import { AkiBotServerEvents } from "../core/akibot-server-events";
-import { inject, injectable } from "inversify";
+import { inject, injectable, multiInject } from "inversify";
 import SERVICE_IDENTIFIER from "../constants/identifiers";
+import container from "../config/ioc-config";
 
 @injectable()
 export class AkiBotSocketEventsImpl implements AkiBotSocketEvents {
@@ -16,7 +17,7 @@ export class AkiBotSocketEventsImpl implements AkiBotSocketEvents {
     @inject(SERVICE_IDENTIFIER.MessageHandlerRegistry)
     private registry: MessageHandlerRegistry;
 
-    constructor(private serverEvents: AkiBotServerEvents) {
+    constructor( ) {
         console.log("AkiBotSocketEventsImpl.constructor");
     }
 
@@ -26,7 +27,11 @@ export class AkiBotSocketEventsImpl implements AkiBotSocketEvents {
         var msg: Message = JSON.parse(data.toString());
         console.log(msg);
         if (msg.msgType != undefined) {
-            var handler = this.registry.find(msg.msgType);
+
+            console.log("List of handlers: ");
+            var handler : MessageHandler = this.registry.find(msg.msgType);
+            console.log(handler);
+
             var finalMessage: Message = handler.convert(data.toString());
             handler.handle(finalMessage);
         } else {

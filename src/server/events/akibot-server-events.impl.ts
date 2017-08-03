@@ -7,11 +7,14 @@ import { AkiBotSocketEvents } from "../core/akibot-socket-events";
 import { AkiBotSocketEventsImpl } from "./akibot-socket-events.impl";
 import { Message } from "../core/message.dom";
 import { AkiBotServer } from "../core/akibot-server";
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
+import SERVICE_IDENTIFIER from "../constants/identifiers";
 
 @injectable()
 export class AkiBotServerEventsImpl implements AkiBotServerEvents {
-    private server: AkiBotServer;
+
+    @inject(SERVICE_IDENTIFIER.AkiBotSocketEvents)
+    private clientEvents: AkiBotSocketEvents;
 
     private clients: WebSocket[] = [];
 
@@ -19,16 +22,10 @@ export class AkiBotServerEventsImpl implements AkiBotServerEvents {
         console.log("AkiBotServerEventsImpl.constructor");
     }
 
-    public init(server: AkiBotServer) {
-        //replace to dependency injection
-        this.server = server;
-    }
-
     public onConnection(client: WebSocket, request: http.IncomingMessage): void {
         console.log("AkiBotServerEventsImpl.onConnection");
         // TODO: inject
-        var events: AkiBotSocketEvents = new AkiBotSocketEventsImpl(this);
-        client.on("message", (data: WebSocket.Data) => events.onMessage(data));
+        client.on("message", (data: WebSocket.Data) => this.clientEvents.onMessage(data));
         this.clients.push(client);
     }
 
@@ -50,7 +47,7 @@ export class AkiBotServerEventsImpl implements AkiBotServerEvents {
         this.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(message));
-            } 
+            }
         })
     }
 

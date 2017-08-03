@@ -4,8 +4,9 @@ import * as http from 'http';
 import * as WebSocket from 'ws';
 import { AkiBotServerEvents } from "./akibot-server-events";
 import { AkiBotServer } from "./akibot-server";
-import { inject, injectable, named } from "inversify";
+import { inject, injectable, named} from "inversify";
 import SERVICE_IDENTIFIER from "../constants/identifiers";
+import { MessageHandlerRegistry } from "../handlers/message-handler-registry";
 
 
 @injectable()

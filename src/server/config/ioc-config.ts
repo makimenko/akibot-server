@@ -16,13 +16,13 @@ import { AkiBotSocketEventsImpl } from "../events/akibot-socket-events.impl";
 
 console.log("Containers bind - START");
 
-let container = new Container();
-container.bind<MessageHandlerRegistry>(SERVICE_IDENTIFIER.MessageHandlerRegistry).to(MessageHandlerRegistryImpl);
-container.bind<AkiBotServerEvents>(SERVICE_IDENTIFIER.AkiBotServerEvents).to(AkiBotServerEventsImpl);
-container.bind<AkiBotSocketEvents>(SERVICE_IDENTIFIER.AkiBotSocketEvents).to(AkiBotSocketEventsImpl);
-container.bind<AkiBotServer>(SERVICE_IDENTIFIER.AkiBotServer).to(AkiBotServerImpl);
+var container = new Container();
+container.bind<AkiBotServer>(SERVICE_IDENTIFIER.AkiBotServer).to(AkiBotServerImpl).inSingletonScope();
+container.bind<MessageHandlerRegistry>(SERVICE_IDENTIFIER.MessageHandlerRegistry).to(MessageHandlerRegistryImpl).inSingletonScope();
+container.bind<AkiBotServerEvents>(SERVICE_IDENTIFIER.AkiBotServerEvents).to(AkiBotServerEventsImpl).inSingletonScope();
+container.bind<AkiBotSocketEvents>(SERVICE_IDENTIFIER.AkiBotSocketEvents).to(AkiBotSocketEventsImpl).inSingletonScope();
 
-
+container.bind<MessageHandler>(SERVICE_IDENTIFIER.MessageHandler).to(HelloMessageHandler).inSingletonScope();
 
 
 console.log("Containers bind - END")

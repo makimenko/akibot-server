@@ -3,17 +3,11 @@ import * as WebSocket from 'ws';
 import { MessageHandler } from "./message-handler";
 import { AkiBotSocketEvents } from "./akibot-socket-events";
 import { AkiBotServerEvents } from "./akibot-server-events";
-import { inject, injectable, named } from "inversify";
-import SERVICE_IDENTIFIER from "../constants/identifiers";
-
+import { injectable } from "inversify";
 
 @injectable()
 export abstract class AbstractMessageHandler<T extends Message> implements MessageHandler {
     
-    @inject(SERVICE_IDENTIFIER.AkiBotServerEvents)
-    protected serverEvents: AkiBotServerEvents;
-
-    constructor() { }
 
     abstract handle(message: T): void;
 
