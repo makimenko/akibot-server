@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import * as http from 'http';
 import { AkiBotServerEvents } from "../core/akibot-server-events";
 import * as WebSocket from 'ws';
@@ -5,7 +7,9 @@ import { AkiBotSocketEvents } from "../core/akibot-socket-events";
 import { AkiBotSocketEventsImpl } from "./akibot-socket-events.impl";
 import { Message } from "../core/message.dom";
 import { AkiBotServer } from "../core/akibot-server";
+import { injectable } from "inversify";
 
+@injectable()
 export class AkiBotServerEventsImpl implements AkiBotServerEvents {
     private server: AkiBotServer;
 

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { AkiBotServer, AkiBotServerConfiguration } from "./server/core/akibot-server";
+import { AkiBotServer } from "./server/core/akibot-server";
 import { AkiBotServerEventsImpl } from "./server/events/akibot-server-events.impl";
 import * as WebSocket from 'ws';
 import { HelloMessageHandler, HelloMessage } from "./server/handlers/hello-message-handler";
@@ -8,24 +8,22 @@ import { HelloMessageHandler, HelloMessage } from "./server/handlers/hello-messa
 import SERVICE_IDENTIFIER from "./server/constants/identifiers";
 import container from "./server/config/ioc-config";
 
-//var x:HelloMessageHandler = new HelloMessageHandler<>();
 
 
-const config: AkiBotServerConfiguration = {
-    port: Number(process.env.PORT || 3000),
-    serverEvents: new AkiBotServerEventsImpl()
-}
-export const akiBotServer = new AkiBotServer(config);
+let akiBotServer = container.get<AkiBotServer>(SERVICE_IDENTIFIER.AkiBotServer);
+
 
 akiBotServer.start().then(() => runSandbox());
 
 function runSandbox() {
-    console.log("Sandboxing...");
-    akiBotServer.start().then(() => {
-        var socket = new WebSocket('ws://localhost:3000');
-        socket.on("open", () => onOpenConnection(socket));
-        socket.on("message", (data: WebSocket.Data) => onMessage(data));
-    });
+    console.log("====================== ");
+    console.log("runSandbox()");
+
+    var socket = new WebSocket('ws://localhost:3000');
+    socket.on("open", () => onOpenConnection(socket));
+    socket.on("message", (data: WebSocket.Data) => onMessage(data));
+
+
 }
 
 function onOpenConnection(socket: WebSocket) {

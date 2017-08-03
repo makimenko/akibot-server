@@ -1,5 +1,4 @@
 
-import * as WebSocket from 'ws';
 import { Message } from "./message.dom";
 
 export interface MessageHandler {
