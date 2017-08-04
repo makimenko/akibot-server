@@ -15,5 +15,5 @@ console.log("Initializing completed.")
 commandComponent.commandEvents.once(ORIENTATION_EVENT.OrientationResponse, (finalAngle: number) => {
     console.log("OrientationResponse received! Final angle is: " + finalAngle);
 });
-commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 1000);
+commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100);
 
