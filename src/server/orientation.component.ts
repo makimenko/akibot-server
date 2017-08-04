@@ -1,5 +1,6 @@
 import { CommandComponent } from "./command.component";
 import { GYROSCOPE_EVENT } from "./gyroscope.component";
+import { WHEEL_EVENT } from "./wheel.component";
 
 export const ORIENTATION_EVENT = {
     OrientationRequest: Symbol("OrientationRequest"),
@@ -16,6 +17,8 @@ export class OrientationComponent {
     private state: ORIENTATION_STATE;
     private expectedAngle: number;
     private actualAngle?: number;
+
+    private gyroscopeAutoInterval: number = 1000;
     private tolerance: number = 30;
     private timeout: number = 10000;
     private timeoutID: any;
@@ -23,12 +26,15 @@ export class OrientationComponent {
     constructor(public commandComponent: CommandComponent) {
         console.log("OrientationComponent.constructor");
         this.state = ORIENTATION_STATE.Idle;
-        this.commandComponent.commandEvents.addListener(ORIENTATION_EVENT.OrientationRequest, (angle: number) => {
-            this.onOrientationRequest(angle);
-        });
+
         // bind a class context to the event listener:
         this.onGyroscopeValue = this.onGyroscopeValue.bind(this);
         this.onTimeout = this.onTimeout.bind(this);
+
+        this.commandComponent.commandEvents.addListener(ORIENTATION_EVENT.OrientationRequest, (angle: number) => {
+            this.onOrientationRequest(angle);
+        });
+
     }
 
     private onOrientationRequest(angle: number) {
@@ -38,7 +44,7 @@ export class OrientationComponent {
             this.expectedAngle = angle;
             this.actualAngle = undefined;
             this.subscribeGyroscope();
-            this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 1000);
+            this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);
             this.timeoutID = setTimeout(this.onTimeout, this.timeout);
         } else {
             console.log("Ignore Request");
@@ -49,17 +55,22 @@ export class OrientationComponent {
         console.log("OrientationComponent.onGyroscopeValue: " + angle);
         this.actualAngle = angle;
 
-        if (angle >= this.expectedAngle - this.tolerance && angle <= this.expectedAngle + this.tolerance) {
+        if (this.isExpected(angle)) {
             console.log("Seems Orientation is finished");
             this.endWork(true);
         } else {
-            console.log("else...")
+            // Calculate direction:
+            if (angle < this.expectedAngle) {
+                this.commandComponent.commandEvents.emit(WHEEL_EVENT.Left);
+            } else {
+                this.commandComponent.commandEvents.emit(WHEEL_EVENT.Right);
+            }
         }
 
-        // TODO: direction
+    }
 
-        // TODO: timeout
-
+    private isExpected(angle: number) {
+        return angle >= this.expectedAngle - this.tolerance && angle <= this.expectedAngle + this.tolerance;
     }
 
     private onTimeout() {
@@ -71,13 +82,13 @@ export class OrientationComponent {
     private endWork(success: boolean) {
         console.log("OrientationComponent.endWork: " + (success ? "SUCCESS" : "FAILURE"));
         // Stop all
-        this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
-        this.unsubscribeGyroscope();
         clearTimeout(this.timeoutID);
-        //TODO: stop
-
+        this.unsubscribeGyroscope();
+        this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
+        this.commandComponent.commandEvents.emit(WHEEL_EVENT.Stop);
+        
         // Send response:
-        this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, this.actualAngle);
+        this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, success, this.actualAngle);
 
         // Clear variables:
         this.actualAngle = undefined;

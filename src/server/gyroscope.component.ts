@@ -22,11 +22,11 @@ export class GyroscopeComponent {
 
     private onGyroscopeMode(autoInterval: number) {
         console.log("GyroscopeComponent.onGyroscopeMode: " + autoInterval);
-        if (autoInterval == 0 && this.intervalID != undefined) {
-            clearInterval(this.intervalID);
-        } else {
+        if (autoInterval > 0) {
             this.getGyroscopeValue();
             this.intervalID = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
+        } else {
+            clearInterval(this.intervalID);
         }
     }
 
