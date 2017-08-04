@@ -11,12 +11,11 @@ var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandCompo
 var leftWheelComponent: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Left)
 var rightWheelComponent: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Right);
 
-console.log("Initializing completed.")
-
+console.log("Initializing completed.");
 
 //====================================================================================================
-commandComponent.commandEvents.once(ORIENTATION_EVENT.OrientationResponse, (finalAngle: number) => {
-    console.log("OrientationResponse received! Final angle is: " + finalAngle);
+commandComponent.commandEvents.once(ORIENTATION_EVENT.OrientationResponse, (success:boolean, finalAngle: number) => {
+    console.log("Orientation "+(success?"SUCEEDED":"FAILED")+"! Final angle is: " + finalAngle);
 });
 commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100);
 
