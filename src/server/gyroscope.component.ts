@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { CommandComponent } from "./command.component";
 
 export const GYROSCOPE_EVENT = {
-    GyroscopeMode: Symbol("GyroscopeMode"),
+    GyroscopeAutoInterval: Symbol("GyroscopeAutoInterval"),
     GyroscopeValue: Symbol("GyroscopeValue")
 };
 
@@ -15,7 +15,7 @@ export class GyroscopeComponent {
     constructor(private commandComponent: CommandComponent) {
         console.log("GyroscopeComponent.constructor");
         this.gyroscopeEvents = new EventEmitter();
-        this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeMode, (autoInterval: number) => {
+        this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeAutoInterval, (autoInterval: number) => {
             this.onGyroscopeMode(autoInterval);
         });
     }
@@ -25,6 +25,7 @@ export class GyroscopeComponent {
         if (autoInterval == 0 && this.intervalID != undefined) {
             clearInterval(this.intervalID);
         } else {
+            this.getGyroscopeValue();
             this.intervalID = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
         }
     }
