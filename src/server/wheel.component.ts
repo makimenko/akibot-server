@@ -1,4 +1,5 @@
 import { CommandComponent } from "./command.component";
+import { factory } from "./log-config";
 
 export const WHEEL_EVENT = {
     Stop: Symbol("Stop"),
@@ -15,11 +16,12 @@ export enum WHEEL_LOCATION {
 
 export class WheelComponent {
 
+    private logger = factory.getLogger(this.constructor.name);
     private wheelName: string;
 
     constructor(private commandComponent: CommandComponent, private wheelLocation: WHEEL_LOCATION) {
         this.wheelName = (wheelLocation == WHEEL_LOCATION.Left ? "Left" : "Right");
-        console.log("WheelComponent[" + this.wheelName + "].constructor");
+        this.logger.info("WheelComponent[" + this.wheelName + "].constructor");
 
         // bind a class context to the event listener:
         this.onStop = this.onStop.bind(this);
@@ -37,15 +39,15 @@ export class WheelComponent {
     }
 
     private onStop() {
-        console.log("WheelComponent[" + this.wheelName + "].onStop");
+        this.logger.info("WheelComponent[" + this.wheelName + "].onStop");
     }
 
     private onLeft() {
-        console.log("WheelComponent[" + this.wheelName + "].onLeft");
+        this.logger.debug("WheelComponent[" + this.wheelName + "].onLeft");
     }
 
     private onRight() {
-        console.log("WheelComponent[" + this.wheelName + "].onRight");
+        this.logger.debug("WheelComponent[" + this.wheelName + "].onRight");
     }
 
     private onForward() {
@@ -53,7 +55,7 @@ export class WheelComponent {
     }
 
     private onBackward() {
-        console.log("WheelComponent[" + this.wheelName + "].onBackward");
+        this.logger.debug("WheelComponent[" + this.wheelName + "].onBackward");
     }
 
 }

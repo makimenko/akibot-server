@@ -1,6 +1,7 @@
 import { CommandComponent } from "./command.component";
 import { GYROSCOPE_EVENT } from "./gyroscope.component";
 import { WHEEL_EVENT } from "./wheel.component";
+import { factory } from "./log-config";
 
 export const ORIENTATION_EVENT = {
     OrientationRequest: Symbol("OrientationRequest"),
@@ -14,6 +15,8 @@ export enum ORIENTATION_STATE {
 
 export class OrientationComponent {
 
+    private logger = factory.getLogger(this.constructor.name);
+
     private state: ORIENTATION_STATE;
     private expectedAngle: number;
     private actualAngle?: number;
@@ -24,7 +27,7 @@ export class OrientationComponent {
     private timeoutID: any;
 
     constructor(public commandComponent: CommandComponent) {
-        console.log("OrientationComponent.constructor");
+        this.logger.info("OrientationComponent.constructor");
         this.state = ORIENTATION_STATE.Idle;
 
         // bind a class context to the event listener:
@@ -38,7 +41,7 @@ export class OrientationComponent {
     }
 
     private onOrientationRequest(angle: number) {
-        console.log("OrientationComponent.onOrientationRequest: " + angle);
+        this.logger.debug("OrientationComponent.onOrientationRequest: " + angle);
         if (this.state == ORIENTATION_STATE.Idle) {
             this.state = ORIENTATION_STATE.Busy;
             this.expectedAngle = angle;
@@ -47,16 +50,16 @@ export class OrientationComponent {
             this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);
             this.timeoutID = setTimeout(this.onTimeout, this.timeout);
         } else {
-            console.log("Ignore Request");
+            this.logger.debug("Ignore Request");
         }
     }
 
     private onGyroscopeValue(angle: number) {
-        console.log("OrientationComponent.onGyroscopeValue: " + angle);
+        this.logger.trace("OrientationComponent.onGyroscopeValue: " + angle);
         this.actualAngle = angle;
 
         if (this.isExpected(angle)) {
-            console.log("Seems Orientation is finished");
+            this.logger.debug("Seems Orientation is finished");
             this.endWork(true);
         } else {
             // Calculate direction:
@@ -74,13 +77,13 @@ export class OrientationComponent {
     }
 
     private onTimeout() {
-        console.log("OrientationComponent.onTimeout");
+        this.logger.warn("OrientationComponent.onTimeout");
         this.endWork(false);
 
     }
 
     private endWork(success: boolean) {
-        console.log("OrientationComponent.endWork: " + (success ? "SUCCESS" : "FAILURE"));
+        this.logger.debug("OrientationComponent.endWork: " + (success ? "SUCCESS" : "FAILURE"));
         // Stop all
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
@@ -96,12 +99,12 @@ export class OrientationComponent {
     }
 
     private subscribeGyroscope() {
-        console.log("OrientationComponent.subscribeGyroscope");
+        this.logger.trace("OrientationComponent.subscribeGyroscope");
         this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
     }
 
     private unsubscribeGyroscope() {
-        console.log("OrientationComponent.unsubscribeGyroscope");
+        this.logger.trace("OrientationComponent.unsubscribeGyroscope");
         this.commandComponent.commandEvents.removeListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
     }
 
