@@ -17,12 +17,12 @@ export enum WHEEL_LOCATION {
 
 export class WheelComponent {
 
-    private logger :Logger;
+    private logger: Logger;
     private wheelName: string;
 
     constructor(private commandComponent: CommandComponent, private wheelLocation: WHEEL_LOCATION) {
         this.wheelName = (wheelLocation == WHEEL_LOCATION.Left ? "Left" : "Right");
-        this.logger = factory.getLogger(this.constructor.name+":"+this.wheelName);
+        this.logger = factory.getLogger(this.constructor.name + ":" + this.wheelName);
         this.logger.info("constructor");
 
         // bind a class context to the event listener:
@@ -41,23 +41,23 @@ export class WheelComponent {
     }
 
     private onStop() {
-        this.logger.debug("onStop");
+        this.logger.trace("onStop");
     }
 
     private onLeft() {
-        this.logger.debug("onLeft");
+        this.logger.trace("onLeft");
     }
 
     private onRight() {
-        this.logger.debug("onRight");
+        this.logger.trace("onRight");
     }
 
     private onForward() {
-        this.logger.debug("onForward");
+        this.logger.trace("onForward");
     }
 
     private onBackward() {
-        this.logger.debug("onBackward");
+        this.logger.trace("onBackward");
     }
 
 }
