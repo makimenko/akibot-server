@@ -13,16 +13,16 @@ export class WebSocketServerComponent {
     private clients: WebSocket[] = [];
 
     constructor() {
-        console.log("WSServerComponent.constructor");
+        console.log("constructor");
         this.expressApplication = express();
     }
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
-        console.log("WSServerComponent.onMessage");
+        console.log("onMessage");
     }
 
     public start(): Promise<void> {
-        console.log("WSServerComponent.start");
+        console.log("start");
         return new Promise<void>((resolve, reject) => {
             this.httpServer = http.createServer(this.expressApplication);
             this.wss = new WebSocket.Server({ server: this.httpServer });

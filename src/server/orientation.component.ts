@@ -27,7 +27,7 @@ export class OrientationComponent {
     private timeoutID: any;
 
     constructor(public commandComponent: CommandComponent) {
-        this.logger.info("OrientationComponent.constructor");
+        this.logger.info("constructor");
         this.state = ORIENTATION_STATE.Idle;
 
         // bind a class context to the event listener:
@@ -37,11 +37,10 @@ export class OrientationComponent {
         this.commandComponent.commandEvents.addListener(ORIENTATION_EVENT.OrientationRequest, (angle: number) => {
             this.onOrientationRequest(angle);
         });
-
     }
 
     private onOrientationRequest(angle: number) {
-        this.logger.debug("OrientationComponent.onOrientationRequest: " + angle);
+        this.logger.debug("onOrientationRequest: " + angle);
         if (this.state == ORIENTATION_STATE.Idle) {
             this.state = ORIENTATION_STATE.Busy;
             this.expectedAngle = angle;
@@ -55,7 +54,7 @@ export class OrientationComponent {
     }
 
     private onGyroscopeValue(angle: number) {
-        this.logger.trace("OrientationComponent.onGyroscopeValue: " + angle);
+        this.logger.trace("onGyroscopeValue: " + angle);
         this.actualAngle = angle;
 
         if (this.isExpected(angle)) {
@@ -69,7 +68,6 @@ export class OrientationComponent {
                 this.commandComponent.commandEvents.emit(WHEEL_EVENT.Right);
             }
         }
-
     }
 
     private isExpected(angle: number) {
@@ -77,13 +75,13 @@ export class OrientationComponent {
     }
 
     private onTimeout() {
-        this.logger.warn("OrientationComponent.onTimeout");
+        this.logger.warn("onTimeout");
         this.endWork(false);
 
     }
 
     private endWork(success: boolean) {
-        this.logger.debug("OrientationComponent.endWork: " + (success ? "SUCCESS" : "FAILURE"));
+        this.logger.debug("endWork: " + (success ? "SUCCESS" : "FAILURE"));
         // Stop all
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
@@ -99,12 +97,12 @@ export class OrientationComponent {
     }
 
     private subscribeGyroscope() {
-        this.logger.trace("OrientationComponent.subscribeGyroscope");
+        this.logger.trace("subscribeGyroscope");
         this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
     }
 
     private unsubscribeGyroscope() {
-        this.logger.trace("OrientationComponent.unsubscribeGyroscope");
+        this.logger.trace("unsubscribeGyroscope");
         this.commandComponent.commandEvents.removeListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
     }
 

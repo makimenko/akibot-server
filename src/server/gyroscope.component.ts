@@ -14,7 +14,7 @@ export class GyroscopeComponent {
     private logger = factory.getLogger(this.constructor.name);
 
     constructor(private commandComponent: CommandComponent) {
-        this.logger.info("GyroscopeComponent.constructor");
+        this.logger.info("constructor");
         this.gyroscopeEvents = new EventEmitter();
         this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeAutoInterval, (autoInterval: number) => {
             this.onGyroscopeMode(autoInterval);
@@ -22,7 +22,7 @@ export class GyroscopeComponent {
     }
 
     private onGyroscopeMode(autoInterval: number) {
-        this.logger.debug("GyroscopeComponent.onGyroscopeMode: " + autoInterval);
+        this.logger.debug("onGyroscopeMode: " + autoInterval);
         if (autoInterval > 0) {
             this.getGyroscopeValue();
             this.intervalID = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
@@ -32,7 +32,7 @@ export class GyroscopeComponent {
     }
 
     private getGyroscopeValue() {
-        this.logger.trace("GyroscopeComponent.getGyroscopeValue");
+        this.logger.trace("getGyroscopeValue");
         var actualAngle = this.getRandomArbitrary(0, 360);
         this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeValue, actualAngle);
     }

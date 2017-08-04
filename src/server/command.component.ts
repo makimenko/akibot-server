@@ -7,7 +7,7 @@ export class CommandComponent {
     private logger = factory.getLogger(this.constructor.name);
 
     constructor() {
-        this.logger.info("CommandComponent.constructor");
+        this.logger.info("constructor");
         this.commandEvents = new EventEmitter ();
     }
     
