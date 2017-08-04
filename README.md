@@ -20,3 +20,6 @@ cd akibot-server
 npm install
 npm run serve
 ```
+
+## Use-Case: Orientation
+![Orientation Workflow Example](doc/Events.png?raw=true "Orientation Workflow Example")
