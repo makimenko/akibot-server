@@ -8,7 +8,8 @@
     "start": "ts-node src/index.ts",
     "serve": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts",
     "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts",
-    "sandbox2": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox2.ts"
+    "sandbox2": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox2.ts",
+    "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist"
   },
   "dependencies": {
     "express": "4.15.3",
