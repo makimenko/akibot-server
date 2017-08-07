@@ -44,8 +44,10 @@ export class OrientationComponent {
 
         if (!this.commandComponent.lock()) {
             this.logger.warn("Ignore: Another exclusive command is running!");
+            this.sendResponse(false);
         } else if (this.state == ORIENTATION_STATE.Busy) {
             this.logger.warn("Ignore: Busy");
+            this.sendResponse(false);
         } else {
             this.state = ORIENTATION_STATE.Busy;
             this.expectedAngle = angle;
@@ -62,7 +64,8 @@ export class OrientationComponent {
 
         if (this.isExpected(angle)) {
             this.logger.debug("Seems Orientation is finished");
-            this.endWork(true);
+            this.endWork();
+            this.sendResponse(true);
         } else {
             // Calculate direction:
             if (angle < this.expectedAngle) {
@@ -79,25 +82,27 @@ export class OrientationComponent {
 
     private onTimeout() {
         this.logger.warn("onTimeout");
-        this.endWork(false);
-
+        this.endWork();
+        this.sendResponse(false);
     }
 
-    private endWork(success: boolean) {
-        this.logger.debug("endWork: " + (success ? "SUCCESS" : "FAILURE"));
+    private endWork() {
+        this.logger.debug("endWork");
         // Stop all
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
         this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
         this.commandComponent.commandEvents.emit(WHEEL_EVENT.Stop);
 
-        // Send response:
-        this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, success, this.actualAngle);
-        this.commandComponent.unlock();
-
         // Clear variables:
-        this.actualAngle = undefined;
         this.state = ORIENTATION_STATE.Idle;
+        this.commandComponent.unlock();
+    }
+
+    private sendResponse(success: boolean) {
+        this.logger.debug("sendResponse: " + (success ? "SUCCESS" : "FAILURE"));
+        // Send response:
+        this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, success, this.actualAngle);        
     }
 
     private subscribeGyroscope() {

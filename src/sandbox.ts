@@ -16,8 +16,8 @@ var rightWheelComponent: WheelComponent = new WheelComponent(commandComponent, W
 
 //====================================================================================================
 log.info("Sandbox starting...");
-commandComponent.commandEvents.once(ORIENTATION_EVENT.OrientationResponse, (success:boolean, finalAngle: number) => {
+commandComponent.commandEvents.on(ORIENTATION_EVENT.OrientationResponse, (success:boolean, finalAngle: number) => {
     log.info("Orientation "+(success?"SUCEEDED":"FAILED")+"! Final angle is: " + finalAngle);
 });
 commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100);
-
+//commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 120);
