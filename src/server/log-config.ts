@@ -2,7 +2,7 @@ import { LoggerFactory, LoggerFactoryOptions, LFService, LogGroupRule, LogLevel,
 
 const options = new LoggerFactoryOptions()
     //.addLogGroupRule(new LogGroupRule(new RegExp("Wheel.+"), LogLevel.Trace))
-    .addLogGroupRule(new LogGroupRule(new RegExp(".*"), LogLevel.Info));
+    .addLogGroupRule(new LogGroupRule(new RegExp(".*"), LogLevel.Trace));
 
 
 export const factory = LFService.createNamedLoggerFactory("LoggerFactory", options);

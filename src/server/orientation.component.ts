@@ -41,15 +41,18 @@ export class OrientationComponent {
 
     private onOrientationRequest(angle: number) {
         this.logger.debug("onOrientationRequest: " + angle);
-        if (this.state == ORIENTATION_STATE.Idle) {
+
+        if (!this.commandComponent.lock()) {
+            this.logger.warn("Ignore: Another exclusive command is running!");
+        } else if (this.state == ORIENTATION_STATE.Busy) {
+            this.logger.warn("Ignore: Busy");
+        } else {
             this.state = ORIENTATION_STATE.Busy;
             this.expectedAngle = angle;
             this.actualAngle = undefined;
             this.subscribeGyroscope();
             this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);
             this.timeoutID = setTimeout(this.onTimeout, this.timeout);
-        } else {
-            this.logger.debug("Ignore Request");
         }
     }
 
@@ -87,9 +90,10 @@ export class OrientationComponent {
         this.unsubscribeGyroscope();
         this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
         this.commandComponent.commandEvents.emit(WHEEL_EVENT.Stop);
-        
+
         // Send response:
         this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, success, this.actualAngle);
+        this.commandComponent.unlock();
 
         // Clear variables:
         this.actualAngle = undefined;
@@ -105,7 +109,6 @@ export class OrientationComponent {
         this.logger.trace("unsubscribeGyroscope");
         this.commandComponent.commandEvents.removeListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
     }
-
 
 }
 
