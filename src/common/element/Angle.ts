@@ -1,19 +1,10 @@
-import { SimpleGeometryElement } from "./SimpleGeometryElement";
 import { RoundRobinUtils } from "../utils/RoundRobinUtils";
 
-export class Angle implements SimpleGeometryElement {
-    private rrUtils: RoundRobinUtils;
+export class Angle {
+    private rrUtils: RoundRobinUtils = new RoundRobinUtils(360);
 
-    public constructor(private radians: number) {
-        this.rrUtils = new RoundRobinUtils(360);
-    }
+    public constructor(public radians: number) {
 
-    public getRadians(): number {
-        return this.radians;
-    }
-
-    public setRadians(radians: number): void {
-        this.radians = radians;
     }
 
     public getDegrees(): number {
@@ -37,9 +28,9 @@ export class Angle implements SimpleGeometryElement {
     }
 
     public add(angle: Angle): void {
-        var value = this.radians + angle.getRadians();
+        var value = this.radians + angle.radians;
         value = this.normalizeRadian(value);
-        this.setRadians(value);
+        this.radians = value;
     }
 
     public normalizeRadian(radians: number): number {

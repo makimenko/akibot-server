@@ -1,8 +1,6 @@
-
-import { SimpleGeometryElement } from "./SimpleGeometryElement";
 import { Angle } from "./Angle";
 
-export class Distance implements SimpleGeometryElement {
+export class Distance {
     
     private errorAngle: Angle;
     private endObstacle: boolean;

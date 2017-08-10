@@ -16,9 +16,9 @@ export class VectorUtils {
         if (angle == null) {
             return vector2D;
         } else {
-            var x1 = vector2D.getX();
-            var y1 = vector2D.getY();
-            var angleRadians = angle.getRadians();
+            var x1 = vector2D.x;
+            var y1 = vector2D.y;
+            var angleRadians = angle.radians;
 
             var x2 = x1 * Math.cos(angleRadians) - y1 * Math.sin(angleRadians);
             var y2 = y1 * Math.cos(angleRadians) + x1 * Math.sin(angleRadians);
@@ -31,18 +31,18 @@ export class VectorUtils {
         var vector: Vector2D = this.rotate2DVector(line2D.getVector(), angle);
 
         var resultPoint2D: Point2D = new Point2D(0, 0);
-        resultPoint2D.setX(vector.getX() + line2D.getFrom().getX());
-        resultPoint2D.setY(vector.getY() + line2D.getFrom().getY());
+        resultPoint2D.x = vector.x + line2D.from.x;
+        resultPoint2D.y = vector.y + line2D.from.y;
 
         return resultPoint2D;
     }
 
     public rotateLine2D(line2D: Line2D, angle: Angle): Line2D {
-        return new Line2D(line2D.getFrom(), this.rotateEndOfLine2D(line2D, angle));
+        return new Line2D(line2D.from, this.rotateEndOfLine2D(line2D, angle));
     }
 
     public getNorthAngle(vector3d: Vector3D): Angle {
-        var radians: number = Math.atan2(vector3d.getY(), vector3d.getX());
+        var radians: number = Math.atan2(vector3d.y, vector3d.x);
         var angle = new Angle(radians);
         angle.add(this.offsetNorthAngle);
         return angle;

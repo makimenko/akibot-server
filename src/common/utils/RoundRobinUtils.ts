@@ -1,9 +1,7 @@
 
 export class RoundRobinUtils {
 
-    private degrees: number;
-
-    public constructor(degrees: number) {
+    public constructor(public degrees: number) {
 
     }
 
@@ -31,12 +29,5 @@ export class RoundRobinUtils {
         return Math.min(this.leftDistance(from, to), this.rightDistance(from, to));
     }
 
-    public getDegrees(): number {
-        return this.degrees;
-    }
-
-    public setDegrees(degrees: number): void {
-        this.degrees = degrees;
-    }
 
 }
