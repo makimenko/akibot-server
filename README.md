@@ -1,8 +1,8 @@
 # AkiBot Experimental Server on Node.js
 Sub-project of https://github.com/makimenko/akibot.git
 
-## Demo
-will follow later
+Client part: [akibot-ui](https://github.com/makimenko/akibot-ui)
+
 
 ## Pre-Installation
 1. Install [Git](https://git-scm.com)
