@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import {logFactory} from "../log-config";
+import { logFactory } from "../log-config";
 
 export class CommandComponent {
 

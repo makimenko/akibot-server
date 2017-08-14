@@ -1,5 +1,5 @@
-import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT} from ".";
-import {logFactory} from "../log-config";
+import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT } from ".";
+import { logFactory } from "../log-config";
 
 export const ORIENTATION_EVENT = {
     OrientationRequest: Symbol("OrientationRequest"),
@@ -100,7 +100,7 @@ export class OrientationComponent {
     private sendResponse(success: boolean) {
         this.logger.debug("sendResponse: " + (success ? "SUCCESS" : "FAILURE"));
         // Send response:
-        this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, success, this.actualAngle);        
+        this.commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationResponse, success, this.actualAngle);
     }
 
     private subscribeGyroscope() {
