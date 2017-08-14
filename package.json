@@ -12,7 +12,7 @@
     "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist"
   },
   "dependencies": {
-    "dateformat": "2.0.0",
+    "akibot-log": "git+https://github.com/makimenko/akibot-log.git",
     "express": "^4.15.4",
     "http": "0.0.0",
     "typescript-logging": "^0.4.0",

@@ -1,5 +1,5 @@
 import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT} from ".";
-import { logFactory } from "./Log";
+import {logFactory} from "../log-config";
 
 export const ORIENTATION_EVENT = {
     OrientationRequest: Symbol("OrientationRequest"),

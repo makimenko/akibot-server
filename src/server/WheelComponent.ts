@@ -1,5 +1,5 @@
 import { CommandComponent } from ".";
-import { Logger, logFactory } from "./Log";
+import { Logger, logFactory } from "../log-config";
 
 export const WHEEL_EVENT = {
     Stop: Symbol("Stop"),

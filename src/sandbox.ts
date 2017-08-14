@@ -1,5 +1,5 @@
 import { CommandComponent, OrientationComponent, ORIENTATION_EVENT, GyroscopeComponent, WheelComponent, WHEEL_LOCATION} from "./server";
-import {logFactory} from "./server/Log";
+import {logFactory} from "./log-config";
 
 const log = logFactory.getLogger("sandbox");
 

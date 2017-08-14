@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { CommandComponent } from ".";
-import { logFactory } from "./Log";
+import {logFactory} from "../log-config";
 
 export const GYROSCOPE_EVENT = {
     GyroscopeAutoInterval: Symbol("GyroscopeAutoInterval"),
