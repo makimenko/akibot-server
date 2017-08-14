@@ -1,4 +1,4 @@
-import {Logger, LogRule, LogLevel, LogFactory} from "../node_modules/akibot-log/src";
+import {Logger, LogRule, LogLevel, LogFactory, ConsoleLogAppender} from "akibot-log/dist";
 
 export {Logger};
 
@@ -12,4 +12,4 @@ var rules: LogRule[] = [
     }
 
 ]
-export const logFactory = new LogFactory(rules);
+export const logFactory = new LogFactory(new ConsoleLogAppender(), rules);
