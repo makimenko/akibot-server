@@ -1,7 +1,4 @@
-import { CommandComponent } from "./server/command.component";
-import { OrientationComponent, ORIENTATION_EVENT } from "./server/orientation.component";
-import { GyroscopeComponent } from "./server/gyroscope.component";
-import { WheelComponent, WHEEL_LOCATION } from "./server/wheel.component";
+import { CommandComponent, OrientationComponent, ORIENTATION_EVENT, GyroscopeComponent, WheelComponent, WHEEL_LOCATION} from "./server";
 import {factory} from "./server/log-config";
 
 const log = factory.getLogger("sandbox");

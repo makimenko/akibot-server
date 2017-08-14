@@ -1,4 +1,4 @@
-import { CommandComponent } from "./command.component";
+import { CommandComponent } from ".";
 import { factory } from "./log-config";
 import { Logger } from "typescript-logging";
 

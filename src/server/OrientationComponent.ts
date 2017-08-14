@@ -1,6 +1,4 @@
-import { CommandComponent } from "./command.component";
-import { GYROSCOPE_EVENT } from "./gyroscope.component";
-import { WHEEL_EVENT } from "./wheel.component";
+import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT} from ".";
 import { factory } from "./log-config";
 
 export const ORIENTATION_EVENT = {

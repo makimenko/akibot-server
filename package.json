@@ -12,10 +12,10 @@
     "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist"
   },
   "dependencies": {
-    "express": "4.15.3",
+    "express": "^4.15.4",
     "http": "0.0.0",
     "typescript-logging": "^0.4.0",
-    "ws": "3.1.0"
+    "ws": "^3.1.0"
   },
   "devDependencies": {
     "@types/express": "4.0.36",

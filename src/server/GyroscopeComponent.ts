@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { CommandComponent } from "./command.component";
+import { CommandComponent } from ".";
 import { factory } from "./log-config";
 
 export const GYROSCOPE_EVENT = {
