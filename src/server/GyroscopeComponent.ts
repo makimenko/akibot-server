@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { CommandComponent } from ".";
-import {logFactory} from "../log-config";
+import { logFactory } from "../log-config";
 
 export const GYROSCOPE_EVENT = {
     GyroscopeAutoInterval: Symbol("GyroscopeAutoInterval"),
@@ -22,7 +22,7 @@ export class GyroscopeComponent {
     }
 
     private onGyroscopeMode(autoInterval: number) {
-        this.logger.debug("onGyroscopeMode: " + autoInterval);
+        this.logger.debug("onGyroscopeMode: autoInterval=" + autoInterval + "ms");
         if (autoInterval > 0) {
             this.getGyroscopeValue();
             this.intervalID = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
