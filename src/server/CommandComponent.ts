@@ -1,10 +1,10 @@
 import { EventEmitter } from "events";
-import { factory } from "./log-config";
+import { logFactory } from "./Log";
 
 export class CommandComponent {
 
     public commandEvents: EventEmitter;
-    private logger = factory.getLogger(this.constructor.name);
+    private logger = logFactory.getLogger(this.constructor.name);
     private exclusiveCommandLock: boolean = false;
 
     constructor() {

@@ -1,7 +1,7 @@
 import { CommandComponent, OrientationComponent, ORIENTATION_EVENT, GyroscopeComponent, WheelComponent, WHEEL_LOCATION} from "./server";
-import {factory} from "./server/log-config";
+import {logFactory} from "./server/Log";
 
-const log = factory.getLogger("sandbox");
+const log = logFactory.getLogger("sandbox");
 
 //====================================================================================================
 log.info("Initializing starting...");

@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { CommandComponent } from ".";
-import { factory } from "./log-config";
+import { logFactory } from "./Log";
 
 export const GYROSCOPE_EVENT = {
     GyroscopeAutoInterval: Symbol("GyroscopeAutoInterval"),
@@ -11,7 +11,7 @@ export class GyroscopeComponent {
 
     public gyroscopeEvents: EventEmitter;
     private intervalID: any;
-    private logger = factory.getLogger(this.constructor.name);
+    private logger = logFactory.getLogger(this.constructor.name);
 
     constructor(private commandComponent: CommandComponent) {
         this.logger.info("constructor");

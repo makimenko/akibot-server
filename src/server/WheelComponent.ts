@@ -1,6 +1,5 @@
 import { CommandComponent } from ".";
-import { factory } from "./log-config";
-import { Logger } from "typescript-logging";
+import { Logger, logFactory } from "./Log";
 
 export const WHEEL_EVENT = {
     Stop: Symbol("Stop"),
@@ -22,7 +21,7 @@ export class WheelComponent {
 
     constructor(private commandComponent: CommandComponent, private wheelLocation: WHEEL_LOCATION) {
         this.wheelName = (wheelLocation == WHEEL_LOCATION.Left ? "Left" : "Right");
-        this.logger = factory.getLogger(this.constructor.name + ":" + this.wheelName);
+        this.logger = logFactory.getLogger(this.constructor.name + ":" + this.wheelName);
         this.logger.info("constructor");
 
         // bind a class context to the event listener:
