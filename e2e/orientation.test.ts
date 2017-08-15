@@ -8,7 +8,6 @@ let defaultTimeout: number = 1000;
 
 describe('Orientation', () => {
 
-
   it("Orientation status received", function () {
     this.timeout(defaultTimeout + 1000);
     return new Promise(function (resolve, reject) {
@@ -18,7 +17,6 @@ describe('Orientation', () => {
       commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
     });
   });
-
 
   it("Make sure that lock is called", function () {
     var spy = simon.spy(commandComponent, 'lock');
