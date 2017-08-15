@@ -21,7 +21,6 @@ export class OrientationComponent {
 
     private gyroscopeAutoInterval: number = 1000;
     private tolerance: number = 30;
-    private timeout: number = 10000;
     private timeoutID: any;
 
     constructor(public commandComponent: CommandComponent) {
@@ -32,12 +31,12 @@ export class OrientationComponent {
         this.onGyroscopeValue = this.onGyroscopeValue.bind(this);
         this.onTimeout = this.onTimeout.bind(this);
 
-        this.commandComponent.commandEvents.addListener(ORIENTATION_EVENT.OrientationRequest, (angle: number) => {
-            this.onOrientationRequest(angle);
+        this.commandComponent.commandEvents.addListener(ORIENTATION_EVENT.OrientationRequest, (angle: number, timeout: number) => {
+            this.onOrientationRequest(angle, timeout);
         });
     }
 
-    private onOrientationRequest(angle: number) {
+    private onOrientationRequest(angle: number, timeout: number) {
         this.logger.debug("onOrientationRequest: " + angle);
 
         if (!this.commandComponent.lock()) {
@@ -52,7 +51,7 @@ export class OrientationComponent {
             this.actualAngle = undefined;
             this.subscribeGyroscope();
             this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);
-            this.timeoutID = setTimeout(this.onTimeout, this.timeout);
+            this.timeoutID = setTimeout(this.onTimeout, timeout);
         }
     }
 

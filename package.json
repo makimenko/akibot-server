@@ -8,8 +8,8 @@
     "start": "ts-node src/index.ts",
     "serve": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts",
     "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts",
-    "sandbox2": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox2.ts",
-    "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist"
+    "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist",
+    "test": "mocha --delay -r ts-node/register e2e/**/*.test.ts"
   },
   "dependencies": {
     "akibot-log": "github:makimenko/akibot-log",
@@ -19,8 +19,13 @@
     "ws": "^3.1.0"
   },
   "devDependencies": {
+    "@types/chai": "4.0.3",
     "@types/express": "4.0.36",
+    "@types/mocha": "2.2.41",
     "@types/ws": "3.0.2",
+    "chai": "4.1.1",
+    "mocha": "3.5.0",
+    "ts-node": "3.3.0",
     "typescript": "2.4.2"
   }
 }
