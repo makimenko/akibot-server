@@ -16,7 +16,7 @@ git clone https://github.com/makimenko/akibot-server.git
 
 2. Install Global dependencies
 ```
-npm install typescript ts-node nodemon -g
+npm install typescript ts-node nodemon mocha chai -g
 ```
 
 3. Go to the project directory, install project dependencies and launch the server.
