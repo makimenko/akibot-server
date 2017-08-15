@@ -1,11 +1,13 @@
 import { expect, assert } from 'chai';
 import { commandComponent } from "../src/app";
-import { ORIENTATION_EVENT } from "../src/server/index";
+import { ORIENTATION_EVENT, WHEEL_EVENT } from "../src/server/index";
 import { logFactory } from "../src/log-config";
+import * as simon from 'sinon';
 
 let defaultTimeout: number = 1000;
 
 describe('Orientation', () => {
+
 
   it("Orientation status received", function () {
     this.timeout(defaultTimeout + 1000);
@@ -15,6 +17,14 @@ describe('Orientation', () => {
       });
       commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
     });
+  });
+
+
+  it("Make sure that lock is called", function () {
+    var spy = simon.spy(commandComponent, 'lock');
+    commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, 1000);
+    assert.equal(spy.callCount, 1);
+    spy.restore();
   });
 
 });
