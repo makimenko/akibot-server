@@ -1,7 +1,6 @@
-import { expect, assert } from 'chai';
+import { assert } from 'chai';
 import { commandComponent } from "../src/app";
-import { ORIENTATION_EVENT, WHEEL_EVENT } from "../src/server/index";
-import { logFactory } from "../src/log-config";
+import { ORIENTATION_EVENT } from "../src/server/index";
 import * as simon from 'sinon';
 
 let defaultTimeout: number = 1000;
