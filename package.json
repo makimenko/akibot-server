@@ -9,7 +9,7 @@
     "serve": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts",
     "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts",
     "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist",
-    "test": "mocha --delay -r ts-node/register e2e/**/*.test.ts"
+    "test": "mocha --delay --recursive -r ts-node/register ./e2e/**/*.test.ts"
   },
   "dependencies": {
     "akibot-log": "github:makimenko/akibot-log",
