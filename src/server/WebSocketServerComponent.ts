@@ -1,8 +1,11 @@
 import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
+import { logFactory, Logger } from "../log-config";
 
 export class WebSocketServerComponent {
+
+    private logger: Logger = logFactory.getLogger(this.constructor.name);
 
     // TODO: parameter
     private port: number = 3000;
@@ -13,16 +16,16 @@ export class WebSocketServerComponent {
     private clients: WebSocket[] = [];
 
     constructor() {
-        console.log("constructor");
+        this.logger.debug("constructor");
         this.expressApplication = express();
     }
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
-        console.log("onMessage");
+        this.logger.trace("onMessage: " + data.toString());
     }
 
     public start(): Promise<void> {
-        console.log("start");
+        this.logger.debug("Starting WSS..");
         return new Promise<void>((resolve, reject) => {
             this.httpServer = http.createServer(this.expressApplication);
             this.wss = new WebSocket.Server({ server: this.httpServer });
@@ -33,7 +36,7 @@ export class WebSocketServerComponent {
             });
 
             this.httpServer.listen(this.port, () => {
-                console.log(`Server is listening on port ${this.httpServer.address().port}`);
+                this.logger.info(`Server is listening on port ${this.httpServer.address().port}`);
             });
 
             return resolve();

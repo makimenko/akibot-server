@@ -14,7 +14,7 @@ export class GyroscopeComponent {
     private logger = logFactory.getLogger(this.constructor.name);
 
     constructor(private commandComponent: CommandComponent) {
-        this.logger.info("constructor");
+        this.logger.debug("constructor");
         this.gyroscopeEvents = new EventEmitter();
         this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeAutoInterval, (autoInterval: number) => {
             this.onGyroscopeMode(autoInterval);

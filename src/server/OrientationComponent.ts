@@ -1,5 +1,5 @@
 import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT } from ".";
-import { logFactory } from "../log-config";
+import { logFactory, Logger } from "../log-config";
 
 export const ORIENTATION_EVENT = {
     OrientationRequest: Symbol("OrientationRequest"),
@@ -13,7 +13,7 @@ export enum ORIENTATION_STATE {
 
 export class OrientationComponent {
 
-    private logger = logFactory.getLogger(this.constructor.name);
+    private logger : Logger = logFactory.getLogger(this.constructor.name);
 
     private state: ORIENTATION_STATE;
     private expectedAngle: number;
@@ -25,7 +25,7 @@ export class OrientationComponent {
     private timeoutID: any;
 
     constructor(public commandComponent: CommandComponent) {
-        this.logger.info("constructor");
+        this.logger.debug("constructor");
         this.state = ORIENTATION_STATE.Idle;
 
         // bind a class context to the event listener:

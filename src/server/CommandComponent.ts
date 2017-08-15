@@ -8,7 +8,7 @@ export class CommandComponent {
     private exclusiveCommandLock: boolean = false;
 
     constructor() {
-        this.logger.info("constructor");
+        this.logger.debug("constructor");
         this.commandEvents = new EventEmitter();
     }
 

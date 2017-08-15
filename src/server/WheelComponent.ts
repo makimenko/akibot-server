@@ -22,7 +22,7 @@ export class WheelComponent {
     constructor(private commandComponent: CommandComponent, private wheelLocation: WHEEL_LOCATION) {
         this.wheelName = (wheelLocation == WHEEL_LOCATION.Left ? "Left" : "Right");
         this.logger = logFactory.getLogger(this.constructor.name + ":" + this.wheelName);
-        this.logger.info("constructor");
+        this.logger.debug("constructor");
 
         // bind a class context to the event listener:
         this.onStop = this.onStop.bind(this);
