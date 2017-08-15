@@ -28,3 +28,32 @@ npm run serve
 
 ## Use-Case: Orientation
 ![Orientation Workflow Example](doc/Events.png?raw=true "Orientation Workflow Example")
+
+Sample logs:
+```
+[nodemon] starting `ts-node src/sandbox.ts`
+ 2017-8-15 09:59:52:  Info: sandbox                  : Initializing starting...
+ 2017-8-15 09:59:52: Debug: CommandComponent         : constructor
+ 2017-8-15 09:59:52: Debug: OrientationComponent     : constructor
+ 2017-8-15 09:59:52: Debug: GyroscopeComponent       : constructor
+ 2017-8-15 09:59:52: Debug: WheelComponent:Left      : constructor
+ 2017-8-15 09:59:52: Debug: WheelComponent:Right     : constructor
+ 2017-8-15 09:59:52:  Info: sandbox                  : Sandbox starting...
+ 2017-8-15 09:59:52: Debug: OrientationComponent     : onOrientationRequest: 100
+ 2017-8-15 09:59:52: Trace: OrientationComponent     : subscribeGyroscope
+ 2017-8-15 09:59:52: Debug: GyroscopeComponent       : onGyroscopeMode: autoInterval=1000ms
+ 2017-8-15 09:59:52: Trace: GyroscopeComponent       : getGyroscopeValue
+ 2017-8-15 09:59:52: Trace: OrientationComponent     : onGyroscopeValue: 137.9412548353855
+ 2017-8-15 09:59:52: Trace: WheelComponent:Left      : onRight
+ 2017-8-15 09:59:52: Trace: WheelComponent:Right     : onRight
+ 2017-8-15 09:59:53: Trace: GyroscopeComponent       : getGyroscopeValue
+ 2017-8-15 09:59:53: Trace: OrientationComponent     : onGyroscopeValue: 83.43736961338327
+ 2017-8-15 09:59:53: Debug: OrientationComponent     : Seems Orientation is finished
+ 2017-8-15 09:59:53: Debug: OrientationComponent     : endWork
+ 2017-8-15 09:59:53: Trace: OrientationComponent     : unsubscribeGyroscope
+ 2017-8-15 09:59:53: Debug: GyroscopeComponent       : onGyroscopeMode: autoInterval=0ms
+ 2017-8-15 09:59:53: Trace: WheelComponent:Left      : onStop
+ 2017-8-15 09:59:53: Trace: WheelComponent:Right     : onStop
+ 2017-8-15 09:59:53: Debug: OrientationComponent     : sendResponse: SUCCESS
+ 2017-8-15 09:59:53:  Info: sandbox                  : Orientation SUCEEDED! Final angle is: 83.43736961338327
+ ```
