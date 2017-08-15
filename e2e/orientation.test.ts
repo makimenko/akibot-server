@@ -11,7 +11,7 @@ describe('Orientation', () => {
     this.timeout(defaultTimeout + 1000);
     return new Promise(function (resolve, reject) {
       commandComponent.commandEvents.on(ORIENTATION_EVENT.OrientationResponse, (success: boolean, finalAngle: number) => {
-        resolve(true);
+        resolve();
       });
       commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
     });
