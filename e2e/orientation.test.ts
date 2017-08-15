@@ -17,16 +17,5 @@ describe('Orientation', () => {
     });
   });
 
-  it("Orientation status received2", function () {
-    this.timeout(defaultTimeout + 1000);
-    return new Promise(function (resolve, reject) {
-      commandComponent.commandEvents.on(ORIENTATION_EVENT.OrientationResponse, (success: boolean, finalAngle: number) => {
-        resolve(true);
-      });
-      commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
-    });
-  });
-
-
 });
 
