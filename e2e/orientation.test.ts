@@ -4,26 +4,29 @@ import { ORIENTATION_EVENT } from "../src/server/index";
 import { logFactory } from "../src/log-config";
 
 let defaultTimeout: number = 1000;
-let orientationStatusReceived: any;
 
-/***********************************************************
- * Do Some E2E Command Requests and catch responses
- */
-commandComponent.commandEvents.on(ORIENTATION_EVENT.OrientationResponse, (success: boolean, finalAngle: number) => {
-  orientationStatusReceived = true;
-});
-commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
+describe('Orientation', () => {
 
-/***********************************************************
- * Wait some time and then compare
- */
-setTimeout(() => {
-  describe('Orientation', () => {
-
-    it("Orientation status received", () => {
-      assert.isTrue(orientationStatusReceived);
+  it("Orientation status received", function () {
+    this.timeout(defaultTimeout + 1000);
+    return new Promise(function (resolve, reject) {
+      commandComponent.commandEvents.on(ORIENTATION_EVENT.OrientationResponse, (success: boolean, finalAngle: number) => {
+        resolve(true);
+      });
+      commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
     });
-
   });
-  run();
-}, defaultTimeout + 500);
+
+  it("Orientation status received2", function () {
+    this.timeout(defaultTimeout + 1000);
+    return new Promise(function (resolve, reject) {
+      commandComponent.commandEvents.on(ORIENTATION_EVENT.OrientationResponse, (success: boolean, finalAngle: number) => {
+        resolve(true);
+      });
+      commandComponent.commandEvents.emit(ORIENTATION_EVENT.OrientationRequest, 100, defaultTimeout);
+    });
+  });
+
+
+});
+
