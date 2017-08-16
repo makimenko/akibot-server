@@ -1,7 +1,7 @@
 import { CommandComponent, OrientationComponent, ORIENTATION_EVENT, GyroscopeComponent, WheelComponent, WHEEL_LOCATION, WebSocketServerComponent } from "./server";
 
 export var commandComponent: CommandComponent = new CommandComponent();
-export var webSocketServerComponent: WebSocketServerComponent = new WebSocketServerComponent();
+export var webSocketServerComponent: WebSocketServerComponent = new WebSocketServerComponent(commandComponent);
 export var orientationComponent: OrientationComponent = new OrientationComponent(commandComponent);
 export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent);
 export var wheelComponentLeft: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Left)

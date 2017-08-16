@@ -2,11 +2,11 @@ import { CommandComponent } from ".";
 import { Logger, logFactory } from "../log-config";
 
 export const WHEEL_EVENT = {
-    Stop: Symbol("Stop"),
-    Left: Symbol("Left"),
-    Right: Symbol("Right"),
-    Forward: Symbol("Forward"),
-    Backward: Symbol("Backward")
+    Stop: "Stop",
+    Left: "Left",
+    Right: "Right",
+    Forward: "Forward",
+    Backward: "Backward"
 };
 
 export enum WHEEL_LOCATION {

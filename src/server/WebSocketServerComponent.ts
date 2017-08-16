@@ -2,6 +2,9 @@ import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
 import { logFactory, Logger } from "../log-config";
+import { Message } from "../common/message/Message";
+import { OrientationRequest } from "../common/message/OrientationRequest";
+import { CommandComponent, ORIENTATION_EVENT } from "./index";
 
 export class WebSocketServerComponent {
 
@@ -15,17 +18,27 @@ export class WebSocketServerComponent {
     private wss: WebSocket.Server;
     private clients: WebSocket[] = [];
 
-    constructor() {
+    constructor(private commandComponent: CommandComponent) {
         this.logger.debug("constructor");
         this.expressApplication = express();
     }
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
-        if (data == "hi") {
-            this.broadcast("Welcome!");
-        }
+
+        var split:string[] = data.toString().split(";");
+        //console.log(split);
+
+
+        this.commandComponent.commandEvents.once(ORIENTATION_EVENT.OrientationResponse,(success: boolean, finalAngle: number) => {
+            this.broadcast((success?"SUCCESS":"FAILED")+": Final angle is: "+finalAngle);
+        });
+        //TODO: message handler registry / handlers and parsers
+        this.commandComponent.commandEvents.emit(split[0], Number(split[1]), Number(split[2]));
+
+        
     }
+
 
     public broadcast(msg: string) {
         this.logger.trace("Broadcasting: " + msg);

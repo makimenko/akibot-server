@@ -3,19 +3,20 @@ import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
 
 export const GYROSCOPE_EVENT = {
-    GyroscopeAutoInterval: Symbol("GyroscopeAutoInterval"),
-    GyroscopeValue: Symbol("GyroscopeValue")
+    GyroscopeAutoInterval: "GyroscopeAutoInterval",
+    GyroscopeValue: "GyroscopeValue"
 };
 
 export class GyroscopeComponent {
 
     public gyroscopeEvents: EventEmitter;
-    private intervalID: any;
+    private intervalID: NodeJS.Timer;
     private logger = logFactory.getLogger(this.constructor.name);
 
     constructor(private commandComponent: CommandComponent) {
         this.logger.debug("constructor");
         this.gyroscopeEvents = new EventEmitter();
+        this.onGyroscopeMode = this.onGyroscopeMode.bind(this);
         this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeAutoInterval, (autoInterval: number) => {
             this.onGyroscopeMode(autoInterval);
         });
@@ -24,9 +25,10 @@ export class GyroscopeComponent {
     private onGyroscopeMode(autoInterval: number) {
         this.logger.debug("onGyroscopeMode: autoInterval=" + autoInterval + "ms");
         if (autoInterval > 0) {
+            this.intervalID  = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
             this.getGyroscopeValue();
-            this.intervalID = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
         } else {
+            this.logger.trace("Clear interval with ID = "+this.intervalID);
             clearInterval(this.intervalID);
         }
     }

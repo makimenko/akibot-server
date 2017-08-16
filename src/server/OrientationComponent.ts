@@ -2,8 +2,8 @@ import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT } from ".";
 import { logFactory, Logger } from "../log-config";
 
 export const ORIENTATION_EVENT = {
-    OrientationRequest: Symbol("OrientationRequest"),
-    OrientationResponse: Symbol("OrientationResponse")
+    OrientationRequest: "OrientationRequest",
+    OrientationResponse: "OrientationResponse"
 };
 
 export enum ORIENTATION_STATE {
@@ -30,6 +30,7 @@ export class OrientationComponent {
         // bind a class context to the event listener:
         this.onGyroscopeValue = this.onGyroscopeValue.bind(this);
         this.onTimeout = this.onTimeout.bind(this);
+        this.onOrientationRequest = this.onOrientationRequest.bind(this);
 
         this.commandComponent.commandEvents.addListener(ORIENTATION_EVENT.OrientationRequest, (angle: number, timeout: number) => {
             this.onOrientationRequest(angle, timeout);
@@ -38,8 +39,10 @@ export class OrientationComponent {
 
     private onOrientationRequest(angle: number, timeout: number) {
         this.logger.debug("onOrientationRequest: " + angle);
-
-        if (!this.commandComponent.lock()) {
+        if (!Number.isInteger(angle) || !Number.isInteger(timeout)) {
+            this.logger.warn("Angle or timeouts are not integer values!")
+            this.sendResponse(false);
+        } else if (!this.commandComponent.lock()) {
             this.logger.warn("Ignore: Another exclusive command is running!");
             this.sendResponse(false);
         } else if (this.state == ORIENTATION_STATE.Busy) {
@@ -50,8 +53,8 @@ export class OrientationComponent {
             this.expectedAngle = angle;
             this.actualAngle = undefined;
             this.subscribeGyroscope();
-            this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);
             this.timeoutID = setTimeout(this.onTimeout, timeout);
+            this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);            
         }
     }
 
@@ -86,6 +89,7 @@ export class OrientationComponent {
     private endWork() {
         this.logger.debug("endWork");
         // Stop all
+        this.logger.trace("Clear timeout id = "+this.timeoutID);
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
         this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
