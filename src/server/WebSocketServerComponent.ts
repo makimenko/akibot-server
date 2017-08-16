@@ -22,7 +22,22 @@ export class WebSocketServerComponent {
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
+        if (data == "hi") {
+            this.broadcast("Welcome!");
+        }
     }
+
+    public broadcast(msg:string) {
+        this.clients.forEach((i) => {
+            this.logger.trace("Send to client: "+msg);
+            try {
+                i.send(msg);
+            } catch (e) {
+                this.logger.warn("Unable to send message: "+e);
+                //this.clients = this.clients.filter(item => item !== i);
+            }
+        });
+    } 
 
     public start(): Promise<void> {
         this.logger.debug("Starting WSS..");
