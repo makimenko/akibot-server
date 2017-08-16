@@ -27,17 +27,20 @@ export class WebSocketServerComponent {
         }
     }
 
-    public broadcast(msg:string) {
+    public broadcast(msg: string) {
+        this.logger.trace("Broadcasting: " + msg);
+        var idx = 0;
         this.clients.forEach((i) => {
-            this.logger.trace("Send to client: "+msg);
+            idx++;
+            this.logger.trace("Send to client " + idx + ": " + msg);
             try {
                 i.send(msg);
             } catch (e) {
-                this.logger.warn("Unable to send message: "+e);
+                this.logger.warn("Unable to send message: " + e);
                 //this.clients = this.clients.filter(item => item !== i);
             }
         });
-    } 
+    }
 
     public start(): Promise<void> {
         this.logger.debug("Starting WSS..");
