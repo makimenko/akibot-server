@@ -1,8 +1,11 @@
 import { Message } from "./Message";
+import { Angle } from "../index";
 
 export class OrientationRequest extends Message {
 
-    angle: number;
-    timeout: number;
+    public targetAngle: Angle;
+    public tolerance: Angle;
+    public timeout: number;
 
+    
 }

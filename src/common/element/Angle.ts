@@ -1,11 +1,12 @@
 import { RoundRobinUtils } from "../utils/RoundRobinUtils";
+import { Serializable } from "../index";
 
-export class Angle {
-    private rrUtils: RoundRobinUtils = new RoundRobinUtils(360);
+export class Angle implements Serializable {
 
-    public constructor(public radians: number) {
+    $name: string = this.constructor.name;
 
-    }
+    public radians: number;
+    
 
     public getDegrees(): number {
         return this.radiansToDegrees(this.radians);
@@ -24,7 +25,9 @@ export class Angle {
     }
 
     public calculateNegativeAngle(): Angle {
-        return new Angle(-this.radians);
+        var angle = new Angle();
+        angle.radians = -this.radians;
+        return angle;
     }
 
     public add(angle: Angle): void {
@@ -43,7 +46,7 @@ export class Angle {
     }
 
     public fuzzyEqual(b: Angle, toleranceDegrees: number): boolean {
-        var res: number = this.rrUtils.modularDistance(this.getDegrees(), b.getDegrees());
+        var res: number = RoundRobinUtils.modularDistance(this.getDegrees(), b.getDegrees());
         return res < toleranceDegrees;
     }
 

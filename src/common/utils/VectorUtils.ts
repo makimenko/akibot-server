@@ -8,8 +8,10 @@ export class VectorUtils {
     private offsetNorthAngle: Angle;
 
     constructor() {
-        var utils = new Angle(0);
-        this.offsetNorthAngle = new Angle(utils.degreesToRadians(-90));
+        var utils = new Angle();
+
+        this.offsetNorthAngle = new Angle();
+        this.offsetNorthAngle.radians = utils.degreesToRadians(-90)
     }
 
     public rotate2DVector(vector2D: Vector2D, angle: Angle): Vector2D {
@@ -43,7 +45,8 @@ export class VectorUtils {
 
     public getNorthAngle(vector3d: Vector3D): Angle {
         var radians: number = Math.atan2(vector3d.y, vector3d.x);
-        var angle = new Angle(radians);
+        var angle = new Angle();
+        angle.radians = 0;
         angle.add(this.offsetNorthAngle);
         return angle;
     }

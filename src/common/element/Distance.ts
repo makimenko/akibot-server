@@ -6,7 +6,8 @@ export class Distance {
     private endObstacle: boolean;
 
     public constructor(private distanceMm: number) {
-        this.errorAngle = new Angle(0);
+        this.errorAngle = new Angle();
+        this.errorAngle.radians = 0;
         this.endObstacle = false;
     }
 

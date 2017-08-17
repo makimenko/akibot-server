@@ -4,7 +4,8 @@ import * as WebSocket from 'ws';
 import { logFactory, Logger } from "../log-config";
 import { Message } from "../common/message/Message";
 import { OrientationRequest } from "../common/message/OrientationRequest";
-import { CommandComponent, ORIENTATION_EVENT } from "./index";
+import { CommandComponent } from "./index";
+import { OrientationResponse } from "../common/index";
 
 export class WebSocketServerComponent {
 
@@ -26,17 +27,21 @@ export class WebSocketServerComponent {
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
 
-        var split:string[] = data.toString().split(";");
-        //console.log(split);
+        var msg: Message = JSON.parse(data.toString());
+        console.log("Message type received: " + msg.msgType);
 
-
-        this.commandComponent.commandEvents.once(ORIENTATION_EVENT.OrientationResponse,(success: boolean, finalAngle: number) => {
-            this.broadcast((success?"SUCCESS":"FAILED")+": Final angle is: "+finalAngle);
-        });
-        //TODO: message handler registry / handlers and parsers
-        this.commandComponent.commandEvents.emit(split[0], Number(split[1]), Number(split[2]));
-
-        
+        if (msg.msgType == "OrientationRequest") {
+            var orientationRequest: OrientationRequest = JSON.parse(data.toString());
+            console.log("OrientationRequest received: " + orientationRequest);
+            console.log(orientationRequest.targetAngle);
+            console.log(orientationRequest.tolerance);
+            console.log(orientationRequest.timeout);
+            this.commandComponent.commandEvents.once(OrientationResponse.name, (orientationResponse: OrientationResponse) => {
+                this.broadcast((orientationResponse.success ? "SUCCESS" : "FAILED") + ": Final angle is: " + orientationResponse.finalAngle);
+            });
+            //TODO: message handler registry / handlers and parsers
+            this.commandComponent.commandEvents.emit(orientationRequest.msgType, orientationRequest);
+        }
     }
 
 
