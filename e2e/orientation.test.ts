@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { commandComponent } from "../src/app";
 import * as simon from 'sinon';
-import { OrientationResponse, OrientationRequest, Angle } from "../src/common";
+import { OrientationResponse, OrientationRequest, Angle, AngleUtils } from "../src/common";
 
 let defaultTimeout: number = 1000;
 
@@ -13,11 +13,9 @@ describe('Orientation', () => {
       commandComponent.commandEvents.on(OrientationResponse.name, (orientationResponse: OrientationResponse) => {
         resolve();
       });
-      var orientationRequest: OrientationRequest = new OrientationRequest(new Angle(0), new Angle(0), 1000);
-      orientationRequest.targetAngle.setDegrees(100);
-      orientationRequest.tolerance.setDegrees(10);
-      commandComponent.commandEvents.emit(OrientationRequest.name, orientationRequest);
+      var orientationRequest: OrientationRequest = new OrientationRequest(AngleUtils.createAngleFromDegrees(100), AngleUtils.createAngleFromDegrees(10), 1000);
       console.log(JSON.stringify(orientationRequest));
+      commandComponent.commandEvents.emit(OrientationRequest.name, orientationRequest);
     });
   });
 

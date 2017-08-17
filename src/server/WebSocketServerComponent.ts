@@ -5,7 +5,7 @@ import { logFactory, Logger } from "../log-config";
 import { Message } from "../common/message/Message";
 import { OrientationRequest } from "../common/message/OrientationRequest";
 import { CommandComponent } from "./index";
-import { OrientationResponse } from "../common/index";
+import * as common from "../common";
 
 export class WebSocketServerComponent {
 
@@ -27,23 +27,15 @@ export class WebSocketServerComponent {
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
 
-        var msg: Message = JSON.parse(data.toString());
-        console.log("Message type received: " + msg.msgType);
+        var jsonInput = JSON.parse(data.toString());
 
-        if (msg.msgType == "OrientationRequest") {
-            var orientationRequest: OrientationRequest = JSON.parse(data.toString());
-            console.log("OrientationRequest received: " + orientationRequest);
-            console.log(orientationRequest.targetAngle);
-            console.log(orientationRequest.tolerance);
-            console.log(orientationRequest.timeout);
-            this.commandComponent.commandEvents.once(OrientationResponse.name, (orientationResponse: OrientationResponse) => {
-                this.broadcast((orientationResponse.success ? "SUCCESS" : "FAILED") + ": Final angle is: " + orientationResponse.finalAngle);
-            });
-            //TODO: message handler registry / handlers and parsers
-            this.commandComponent.commandEvents.emit(orientationRequest.msgType, orientationRequest);
-        }
+        var message: Message = common.SerializationUtils.deserialize(jsonInput, common);
+
+        this.commandComponent.commandEvents.once(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
+            this.broadcast((orientationResponse.success ? "SUCCESS" : "FAILED") + ": Final angle is: " + orientationResponse.finalAngle);
+        });
+        this.commandComponent.commandEvents.emit(message.$name, message);
     }
-
 
     public broadcast(msg: string) {
         this.logger.trace("Broadcasting: " + msg);

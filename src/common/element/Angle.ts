@@ -1,48 +1,36 @@
 import { RoundRobinUtils } from "../utils/RoundRobinUtils";
-import { Serializable } from "../index";
+import { Serializable, AngleUtils } from "../index";
 
 export class Angle implements Serializable {
 
     $name: string = this.constructor.name;
-
-    public radians: number;
     
+    constructor(public radians?: number) {
+
+    }
 
     public getDegrees(): number {
-        return this.radiansToDegrees(this.radians);
-    }
-
-    public radiansToDegrees(radians: number) {
-        return radians * 180 / Math.PI;
-    }
-
-    public degreesToRadians(degrees: number) {
-        return degrees * Math.PI / 180;
-    }
+        if (this.radians == undefined) 
+            throw "Undefined radians";
+        return AngleUtils.radiansToDegrees(this.radians);
+    }  
 
     public setDegrees(degrees: number): void {
-        this.radians = this.degreesToRadians(degrees);
+        this.radians = AngleUtils.degreesToRadians(degrees);
     }
 
-    public calculateNegativeAngle(): Angle {
-        var angle = new Angle();
-        angle.radians = -this.radians;
-        return angle;
+    public createNegativeAngle(): Angle {
+        if (this.radians == undefined) 
+            throw "Undefined radians";
+        return new Angle(-this.radians);;
     }
 
     public add(angle: Angle): void {
+        if (this.radians == undefined || angle.radians == undefined) 
+            throw "Undefined radians";
         var value = this.radians + angle.radians;
-        value = this.normalizeRadian(value);
+        value = AngleUtils.normalizeRadian(value);
         this.radians = value;
-    }
-
-    public normalizeRadian(radians: number): number {
-        var circle: number = Math.PI * 2;
-        var a: number = radians % circle;
-        if (a < 0) {
-            a += circle;
-        }
-        return a;
     }
 
     public fuzzyEqual(b: Angle, toleranceDegrees: number): boolean {

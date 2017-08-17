@@ -9,6 +9,7 @@ export * from './element/Line2D';
 export * from './element/Line3D';
 
 
+export * from './utils/AngleUtils';
 export * from './utils/RoundRobinUtils';
 export * from './utils/VectorUtils';
 export * from './utils/SerializationUtils';

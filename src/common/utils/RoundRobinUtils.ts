@@ -1,6 +1,6 @@
 
 export module RoundRobinUtils {
-    
+
     var degrees: 360;
 
     export function add(a: number, b: number): number {

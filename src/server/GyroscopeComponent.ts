@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
+import { Angle, AngleUtils } from "../common";
 
 export const GYROSCOPE_EVENT = {
     GyroscopeAutoInterval: "GyroscopeAutoInterval",
@@ -25,18 +26,19 @@ export class GyroscopeComponent {
     private onGyroscopeMode(autoInterval: number) {
         this.logger.debug("onGyroscopeMode: autoInterval=" + autoInterval + "ms");
         if (autoInterval > 0) {
-            this.intervalID  = setInterval(() => { this.getGyroscopeValue() }, autoInterval);
-            this.getGyroscopeValue();
+            this.intervalID = setInterval(() => { this.emitGyroscopeValue() }, autoInterval);
+            this.emitGyroscopeValue();
         } else {
-            this.logger.trace("Clear interval with ID = "+this.intervalID);
+            this.logger.trace("Clear interval with ID = " + this.intervalID);
             clearInterval(this.intervalID);
         }
     }
 
-    private getGyroscopeValue() {
+    private emitGyroscopeValue() {
         this.logger.trace("getGyroscopeValue");
-        var actualAngle = this.getRandomArbitrary(0, 360);
-        this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeValue, actualAngle);
+        var degrees = this.getRandomArbitrary(0, 360);
+        var newAngle: Angle = AngleUtils.createAngleFromDegrees(degrees);
+        this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeValue, newAngle);
     }
 
     private getRandomArbitrary(min: number, max: number) {

@@ -21,7 +21,7 @@ describe('Serialization and Deserialization', () => {
     orientationRequest.targetAngle.radians = 1.23;
 
     var jsonText: string = JSON.stringify(orientationRequest);
-    assert.equal(jsonText, '{"$name":"OrientationRequest","timeout":1234,"targetAngle":{"$name":"Angle","radians":1.23}}');
+    assert.equal(jsonText, '{"$name":"OrientationRequest","targetAngle":{"radians":1.23,"$name":"Angle"},"timeout":1234}');
 
     // Deserialize:
     var orientationRequest: common.OrientationRequest = common.SerializationUtils.deserialize(JSON.parse(jsonText), common);
@@ -29,7 +29,11 @@ describe('Serialization and Deserialization', () => {
     assert.equal(orientationRequest.timeout, 1234);
     var expectedAngle: common.Angle = new common.Angle();
     expectedAngle.radians = 1.23;
-    assert.equal(orientationRequest.targetAngle.toString(), expectedAngle.toString());
+    if (orientationRequest.targetAngle != undefined) {
+      assert.equal(orientationRequest.targetAngle.toString(), expectedAngle.toString());
+    } else {
+      assert.fail();
+    }
   });
 
 });
