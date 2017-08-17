@@ -26,15 +26,12 @@ export class WebSocketServerComponent {
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
-
         var jsonInput = JSON.parse(data.toString());
-
         var message: Message = common.SerializationUtils.deserialize(jsonInput, common);
-
         this.commandComponent.commandEvents.once(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
-            this.broadcast((orientationResponse.success ? "SUCCESS" : "FAILED") + ": Final angle is: " + orientationResponse.finalAngle);
+            this.broadcast(JSON.stringify(orientationResponse));
         });
-        this.commandComponent.commandEvents.emit(message.$name, message);
+        this.commandComponent.emitMessage(message);
     }
 
     public broadcast(msg: string) {

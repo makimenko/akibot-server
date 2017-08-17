@@ -1,13 +1,6 @@
 import { CommandComponent } from ".";
 import { Logger, logFactory } from "../log-config";
-
-export const WHEEL_EVENT = {
-    Stop: "Stop",
-    Left: "Left",
-    Right: "Right",
-    Forward: "Forward",
-    Backward: "Backward"
-};
+import { WheelCommand } from "../common/index";
 
 export enum WHEEL_LOCATION {
     Left,
@@ -25,38 +18,17 @@ export class WheelComponent {
         this.logger.debug("constructor");
 
         // bind a class context to the event listener:
-        this.onStop = this.onStop.bind(this);
-        this.onLeft = this.onLeft.bind(this);
-        this.onRight = this.onRight.bind(this);
-        this.onForward = this.onForward.bind(this);
-        this.onBackward = this.onBackward.bind(this);
+        this.onWheelCommand = this.onWheelCommand.bind(this);
 
         // Subscribe to command events
-        this.commandComponent.commandEvents.addListener(WHEEL_EVENT.Stop, this.onStop);
-        this.commandComponent.commandEvents.addListener(WHEEL_EVENT.Left, this.onLeft);
-        this.commandComponent.commandEvents.addListener(WHEEL_EVENT.Right, this.onRight);
-        this.commandComponent.commandEvents.addListener(WHEEL_EVENT.Forward, this.onForward);
-        this.commandComponent.commandEvents.addListener(WHEEL_EVENT.Backward, this.onBackward);
+        this.commandComponent.commandEvents.addListener(WheelCommand.name, this.onWheelCommand);
     }
 
-    private onStop() {
-        this.logger.trace("onStop");
-    }
-
-    private onLeft() {
-        this.logger.trace("onLeft");
-    }
-
-    private onRight() {
-        this.logger.trace("onRight");
-    }
-
-    private onForward() {
-        this.logger.trace("onForward");
-    }
-
-    private onBackward() {
-        this.logger.trace("onBackward");
+    private onWheelCommand(wheelCommand: WheelCommand) {
+        if (wheelCommand == undefined || wheelCommand.direction == undefined) {
+            throw "Wheel command direction is undefined"
+        }
+        this.logger.trace(wheelCommand.direction);
     }
 
 }

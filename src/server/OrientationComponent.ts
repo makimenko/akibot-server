@@ -1,6 +1,6 @@
-import { CommandComponent, GYROSCOPE_EVENT, WHEEL_EVENT } from ".";
+import { CommandComponent } from ".";
 import { logFactory, Logger } from "../log-config";
-import { OrientationRequest, Angle, OrientationResponse, AngleUtils } from "../common";
+import { OrientationRequest, Angle, OrientationResponse, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, WheelCommand } from "../common";
 
 export enum ORIENTATION_STATE {
     Idle,
@@ -24,11 +24,10 @@ export class OrientationComponent {
         this.state = ORIENTATION_STATE.Idle;
 
         // bind a class context to the event listener:
-        this.onGyroscopeValue = this.onGyroscopeValue.bind(this);
+        this.onGyroscopeValueResponse = this.onGyroscopeValueResponse.bind(this);
         this.onTimeout = this.onTimeout.bind(this);
         this.onOrientationRequest = this.onOrientationRequest.bind(this);
 
-        console.log("*** OrientationRequest.name=" + OrientationRequest.name); // TODO: remove
         this.commandComponent.commandEvents.addListener(OrientationRequest.name, (orientationRequest: OrientationRequest) => {
             this.onOrientationRequest(orientationRequest);
         });
@@ -51,23 +50,25 @@ export class OrientationComponent {
             this.actualAngle = undefined;
             this.subscribeGyroscope();
             this.timeoutID = setTimeout(this.onTimeout, orientationRequest.timeout);
-            this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, this.gyroscopeAutoInterval);
+            this.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(this.gyroscopeAutoInterval));
         }
     }
 
-    private onGyroscopeValue(angle: Angle) {
-        this.logger.trace("onGyroscopeValue: " + angle);
-        this.actualAngle = angle;
-        if (this.isExpected(angle)) {
+    private onGyroscopeValueResponse(gyroscopeValueResponse: GyroscopeValueResponse) {
+        this.logger.trace("onGyroscopeValue: " + gyroscopeValueResponse.angle);
+        this.actualAngle = gyroscopeValueResponse.angle;
+        if (this.actualAngle == undefined) {
+            throw "Actual angle could not be undefined"
+        } else if (this.isExpected(this.actualAngle)) {
             this.logger.debug("Seems Orientation is finished and angle is Ok");
             this.endWork();
             this.sendResponse(true);
         } else {
             // TODO: Calculate direction: Modular comparison, find shorter direction
-            if (angle.getDegrees() < this.targetAngle.getDegrees()) {
-                this.commandComponent.commandEvents.emit(WHEEL_EVENT.Left);
+            if (this.actualAngle.getDegrees() < this.targetAngle.getDegrees()) {
+                this.commandComponent.emitMessage(new WheelCommand("Left"));
             } else {
-                this.commandComponent.commandEvents.emit(WHEEL_EVENT.Right);
+                this.commandComponent.emitMessage(new WheelCommand("Right"));
             }
         }
     }
@@ -89,8 +90,8 @@ export class OrientationComponent {
         this.logger.trace("Clear timeout id = " + this.timeoutID);
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
-        this.commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
-        this.commandComponent.commandEvents.emit(WHEEL_EVENT.Stop);
+        this.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(0));
+        this.commandComponent.emitMessage(new WheelCommand("Stop"));
 
         // Clear variables:
         this.state = ORIENTATION_STATE.Idle;
@@ -101,17 +102,17 @@ export class OrientationComponent {
         this.logger.debug("sendResponse: " + (success ? "SUCCESS" : "FAILURE") + ", actualAngle=" + this.actualAngle);
         // Send response:
         var orientationResponse: OrientationResponse = new OrientationResponse(success, this.actualAngle);
-        this.commandComponent.commandEvents.emit(OrientationResponse.name, orientationResponse);
+        this.commandComponent.emitMessage(orientationResponse);
     }
 
     private subscribeGyroscope() {
         this.logger.trace("subscribeGyroscope");
-        this.commandComponent.commandEvents.addListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
+        this.commandComponent.commandEvents.addListener(GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
     }
 
     private unsubscribeGyroscope() {
         this.logger.trace("unsubscribeGyroscope");
-        this.commandComponent.commandEvents.removeListener(GYROSCOPE_EVENT.GyroscopeValue, this.onGyroscopeValue);
+        this.commandComponent.commandEvents.removeListener(GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
     }
 
 }

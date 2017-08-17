@@ -1,7 +1,6 @@
 import { assert } from 'chai';
-import { commandComponent } from "../src/app";
-import { GYROSCOPE_EVENT } from "../src/server/index";
-import { Angle } from "../src/common/index";
+import * as app from "../src/app";
+import { Angle, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "../src/common";
 
 let defaultTimeout: number = 1000;
 
@@ -11,16 +10,17 @@ describe('Gyroscope', () => {
     this.timeout(defaultTimeout + 1000);
     return new Promise(function (resolve, reject) {
       var count: number = 0;
-      commandComponent.commandEvents.on(GYROSCOPE_EVENT.GyroscopeValue, (angle: Angle) => {
-        assert.isTrue(angle instanceof Angle);
-        assert.isTrue(angle.getDegrees() >= 0 && angle.getDegrees() <= 360);
+      app.commandComponent.commandEvents.on(GyroscopeValueResponse.name, (gyroscopeValueResponse: GyroscopeValueResponse) => {
+        assert.isTrue(gyroscopeValueResponse instanceof GyroscopeValueResponse);
+        assert.isTrue(gyroscopeValueResponse.angle instanceof Angle);
+        assert.isTrue(gyroscopeValueResponse.angle != undefined && gyroscopeValueResponse.angle.getDegrees() >= 0 && gyroscopeValueResponse.angle.getDegrees() <= 360);
         count++;
       });
-      commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 100);
+      app.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(100));
 
       setTimeout(() => {
         assert.isTrue(count > 7);
-        commandComponent.commandEvents.emit(GYROSCOPE_EVENT.GyroscopeAutoInterval, 0);
+        app.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(0));
         resolve();
       }, defaultTimeout);
     });

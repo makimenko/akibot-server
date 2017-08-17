@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { logFactory } from "../log-config";
+import { Message } from "../common";
 
 export class CommandComponent {
 
@@ -10,6 +11,11 @@ export class CommandComponent {
     constructor() {
         this.logger.debug("constructor");
         this.commandEvents = new EventEmitter();
+    }
+
+    public emitMessage(message: Message) {
+        this.logger.trace("emitMessage:" + JSON.stringify(message));
+        this.commandEvents.emit(message.$name, message);
     }
 
     public lock(): boolean {

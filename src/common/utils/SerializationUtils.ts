@@ -1,6 +1,5 @@
 export module SerializationUtils {
 
-
     export function deserialize(json: any, environment: any) {
         var instance = new environment[json.$name]();
         for (var prop in json) {
@@ -14,7 +13,6 @@ export module SerializationUtils {
                 instance[prop] = json[prop];
             }
         }
-
         return instance;
     }
 

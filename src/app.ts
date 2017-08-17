@@ -8,4 +8,4 @@ export var wheelComponentLeft: WheelComponent = new WheelComponent(commandCompon
 export var wheelComponentRight: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Right);
 
 
-webSocketServerComponent.start();
+

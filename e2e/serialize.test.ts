@@ -1,6 +1,4 @@
 import { assert } from 'chai';
-import { commandComponent } from "../src/app";
-import * as simon from 'sinon';
 import * as common from "../src/common";
 
 describe('Serialization and Deserialization', () => {
