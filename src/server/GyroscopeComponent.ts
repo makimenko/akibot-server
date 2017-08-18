@@ -6,13 +6,11 @@ import { Angle, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse
 
 export class GyroscopeComponent {
 
-    public gyroscopeEvents: EventEmitter;
     private intervalID: NodeJS.Timer;
     private logger = logFactory.getLogger(this.constructor.name);
 
     constructor(private commandComponent: CommandComponent) {
         this.logger.debug("constructor");
-        this.gyroscopeEvents = new EventEmitter();
         this.onGyroscopeAutoIntervalCommand = this.onGyroscopeAutoIntervalCommand.bind(this);
         this.commandComponent.commandEvents.addListener(GyroscopeAutoIntervalCommand.name, (gyroscopeAutoIntervalCommand: GyroscopeAutoIntervalCommand) => {
             this.onGyroscopeAutoIntervalCommand(gyroscopeAutoIntervalCommand);

@@ -1,6 +1,7 @@
 export module SerializationUtils {
 
     export function deserialize(json: any, environment: any) {
+        //console.log("deserialize: "+json.$name);
         try {
             var instance = new environment[json.$name]();
             for (var prop in json) {
@@ -10,7 +11,8 @@ export module SerializationUtils {
                 if (Array.isArray(json[prop])) {
                     var arr: any = [];
                     Array.from(json[prop]).forEach((i) => {
-                        arr.push(deserialize(json[prop], environment));
+                        //console.log(i);
+                        arr.push(deserialize(i, environment));
                     });
                     instance[prop] = arr;
                 } else if (typeof json[prop] === 'object') {
@@ -21,8 +23,8 @@ export module SerializationUtils {
             }
             return instance;
         } catch (err) {
-            // console.error("Failed to deserialize:");
-            // console.error(json);
+            //console.error("Failed to deserialize:");
+            //console.error(json);
             throw err;
         }
     }

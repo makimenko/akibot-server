@@ -69,5 +69,13 @@ export class WebSocketServerComponent {
         });
     }
 
+
+    public stop():void {
+        this.logger.debug("Stopping WSS..");        
+        this.wss.close();
+        this.httpServer.close();
+    }
+
+
 }
 

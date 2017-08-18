@@ -23,7 +23,7 @@ describe('World Utils', () => {
     gyroscopeNode.stickToParent = true;
     var distanceCenterNode = new common.BaseNode("distanceCenterNode", robotNode);
     //console.log(worldNode);
-    console.log(common.SerializationUtils.jsonStringify(worldNode));
+    //console.log(common.SerializationUtils.jsonStringify(worldNode));
 
   });
 

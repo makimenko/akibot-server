@@ -26,8 +26,9 @@ npm install
 npm run serve
 ```
 
+
 ## Use-Case: Orientation
-![Orientation Workflow Example](doc/Events.png?raw=true "Orientation Workflow Example")
+![Orientation Workflow Example](doc/Orientation.png?raw=true "Orientation Workflow Example")
 
 Sample logs:
 ```
@@ -57,3 +58,9 @@ Sample logs:
  2017-8-15 09:59:53: Debug: OrientationComponent     : sendResponse: SUCCESS
  2017-8-15 09:59:53:  Info: sandbox                  : Orientation SUCEEDED! Final angle is: 83.43736961338327
  ```
+
+## World Nodes
+![World Nodes](doc/Nodes.png?raw=true "World Nodes")
+
+## Use-Case: Synchronization of World Content
+![World Content Example](doc/WorldContent.png?raw=true "World Content Example")

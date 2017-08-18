@@ -28,9 +28,7 @@ export class OrientationComponent {
         this.onTimeout = this.onTimeout.bind(this);
         this.onOrientationRequest = this.onOrientationRequest.bind(this);
 
-        this.commandComponent.commandEvents.addListener(OrientationRequest.name, (orientationRequest: OrientationRequest) => {
-            this.onOrientationRequest(orientationRequest);
-        });
+        this.commandComponent.commandEvents.addListener(OrientationRequest.name, this.onOrientationRequest);
     }
 
     private onOrientationRequest(orientationRequest: OrientationRequest) {

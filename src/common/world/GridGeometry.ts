@@ -2,7 +2,7 @@ import { Geometry, GridConfiguration } from "..";
 
 export class GridGeometry extends Geometry {
     
-    private grid: number[][];
+    //TODO: private grid: number[][];
 
     public constructor(public gridConfiguration: GridConfiguration) {
         super();
