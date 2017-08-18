@@ -18,12 +18,12 @@ describe('Web Socket Tests', () => {
           var ws: WebSocket = new WebSocket("ws://localhost:3000");
           ws.on("open", () => {
             var orientationRequest: common.OrientationRequest = new common.OrientationRequest(common.AngleUtils.createAngleFromDegrees(90), common.AngleUtils.createAngleFromDegrees(10), 500);
-            var jsonString: string = JSON.stringify(orientationRequest);
+            var jsonString: string = common.SerializationUtils.jsonStringify(orientationRequest);
             ws.send(jsonString);
           });
 
           ws.on("message", (data: WebSocket.Data) => {
-            var jsonString: any = JSON.parse(data.toString());
+            var jsonString: any = common.SerializationUtils.jsonParse(data.toString());
             var orientationResponse: common.OrientationResponse = common.SerializationUtils.deserialize(jsonString, common);
             assert.isBoolean(orientationResponse.success);
             resolve();

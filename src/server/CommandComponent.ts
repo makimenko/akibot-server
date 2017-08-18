@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { logFactory } from "../log-config";
-import { Message } from "../common";
+import * as common from "../common";
 
 export class CommandComponent {
 
@@ -13,8 +13,8 @@ export class CommandComponent {
         this.commandEvents = new EventEmitter();
     }
 
-    public emitMessage(message: Message) {
-        this.logger.trace("emitMessage:" + JSON.stringify(message));
+    public emitMessage(message: common.Message) {
+        this.logger.trace("emitMessage:" + common.SerializationUtils.jsonStringify(message));
         this.commandEvents.emit(message.$name, message);
     }
 

@@ -7,12 +7,12 @@ export module SerializationUtils {
                 if (!json.hasOwnProperty(prop)) {
                     continue;
                 }
-                if (Array.isArray(json[prop]) ) {
-                    console.log("######");
+                if (Array.isArray(json[prop])) {
+                    var arr: any = [];
                     Array.from(json[prop]).forEach((i) => {
-                        console.log(i);
+                        arr.push(deserialize(json[prop], environment));
                     });
-                   
+                    instance[prop] = arr;
                 } else if (typeof json[prop] === 'object') {
                     instance[prop] = deserialize(json[prop], environment);
                 } else {
@@ -21,13 +21,13 @@ export module SerializationUtils {
             }
             return instance;
         } catch (err) {
-            console.error("Failed to deserialize:");
-            console.error(json);
+            // console.error("Failed to deserialize:");
+            // console.error(json);
             throw err;
         }
     }
 
-    export function jsonStringify(obj: any) {
+    export function jsonStringify(obj: any): string {
         var cache: any = [];
         return JSON.stringify(obj, function (key, value) {
             if (typeof value === 'object' && value !== null) {
@@ -41,5 +41,9 @@ export module SerializationUtils {
             return value;
         });
     }
+    export function jsonParse(jsonString: string): any {
+        return JSON.parse(jsonString);
+    }
+
 
 }

@@ -5,7 +5,7 @@ describe('Serialization and Deserialization', () => {
 
   it("Deserialize simple Message", function () {
     var jsonString: string = '{"$name":"Message"  }';
-    var json = JSON.parse(jsonString);
+    var json = common.SerializationUtils.jsonParse(jsonString);
 
     var message: common.Message = common.SerializationUtils.deserialize(json, common);
     assert.equal(message.$name, common.Message.name);
@@ -18,11 +18,13 @@ describe('Serialization and Deserialization', () => {
     orientationRequest.targetAngle = new common.Angle();
     orientationRequest.targetAngle.radians = 1.23;
 
-    var jsonText: string = JSON.stringify(orientationRequest);
+    var jsonText: string = common.SerializationUtils.jsonStringify(orientationRequest);
+    var jsonText2: string = JSON.stringify(orientationRequest); // intentionally use direct JSON here
     assert.equal(jsonText, '{"$name":"OrientationRequest","targetAngle":{"$name":"Angle","radians":1.23},"timeout":1234}');
+    assert.equal(jsonText2, '{"$name":"OrientationRequest","targetAngle":{"$name":"Angle","radians":1.23},"timeout":1234}');
 
     // Deserialize:
-    var orientationRequest: common.OrientationRequest = common.SerializationUtils.deserialize(JSON.parse(jsonText), common);
+    var orientationRequest: common.OrientationRequest = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(jsonText), common);
     assert.equal(orientationRequest.$name, "OrientationRequest");
     assert.equal(orientationRequest.timeout, 1234);
     var expectedAngle: common.Angle = new common.Angle();
@@ -36,7 +38,7 @@ describe('Serialization and Deserialization', () => {
 
   function testSerializeDeserialize(obj: any): void {
     var jsonText: string = common.SerializationUtils.jsonStringify(obj);
-    var resultMessage: common.Message = common.SerializationUtils.deserialize(JSON.parse(jsonText), common);
+    var resultMessage: common.Message = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(jsonText), common);
     var jsonTextAfter: string = common.SerializationUtils.jsonStringify(resultMessage);
     assert.equal(jsonText, jsonTextAfter);
   }

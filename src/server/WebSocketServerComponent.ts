@@ -26,25 +26,26 @@ export class WebSocketServerComponent {
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
-        var jsonInput = JSON.parse(data.toString());
+        var jsonInput = common.SerializationUtils.jsonParse(data.toString());
         var message: Message = common.SerializationUtils.deserialize(jsonInput, common);
         this.commandComponent.commandEvents.once(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
-            this.broadcast(JSON.stringify(orientationResponse));
+            this.broadcast(orientationResponse);
         });
         this.commandComponent.emitMessage(message);
     }
 
-    public broadcast(msg: string) {
-        this.logger.trace("Broadcasting: " + msg);
+    public broadcast(message: Message) {
+        var msgText: string = common.SerializationUtils.jsonStringify(message);
+        this.logger.trace("Broadcasting to " + this.clients.length + " clients: " + msgText);
         var idx = 0;
         this.clients.forEach((i) => {
             idx++;
-            this.logger.trace("Send to client " + idx + ": " + msg);
+            this.logger.trace("Send to client " + idx + ": " + msgText);
             try {
-                i.send(msg);
+                i.send(msgText);
             } catch (e) {
                 this.logger.warn("Unable to send message: " + e);
-                //this.clients = this.clients.filter(item => item !== i);
+                // TODO: do something with such client
             }
         });
     }
