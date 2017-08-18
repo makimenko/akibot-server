@@ -1,4 +1,3 @@
-import { RoundRobinUtils } from "../utils/RoundRobinUtils";
 import { Serializable, AngleUtils, Element } from "../index";
 
 export class Angle extends Element {
@@ -17,12 +16,6 @@ export class Angle extends Element {
         this.radians = AngleUtils.degreesToRadians(degrees);
     }
 
-    public createNegativeAngle(): Angle {
-        if (this.radians == undefined) 
-            throw "Undefined radians";
-        return new Angle(-this.radians);;
-    }
-
     public add(angle: Angle): void {
         if (this.radians == undefined || angle.radians == undefined) 
             throw "Undefined radians";
@@ -32,7 +25,7 @@ export class Angle extends Element {
     }
 
     public fuzzyEqual(b: Angle, toleranceDegrees: number): boolean {
-        var res: number = RoundRobinUtils.modularDistance(this.getDegrees(), b.getDegrees());
+        var res: number = AngleUtils.modularDistanceDegrees(this.getDegrees(), b.getDegrees());
         return res < toleranceDegrees;
     }
 

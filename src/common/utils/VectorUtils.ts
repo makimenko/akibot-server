@@ -1,9 +1,4 @@
-import { Angle } from "../element/Angle";
-import { Vector2D } from "../element/Vector2D";
-import { Point2D } from "../element/Point2D";
-import { Line2D } from "../element/Line2D";
-import { Vector3D } from "../element/Vector3D";
-import { AngleUtils } from "../index";
+import { Angle, Vector2D, Point2D, Line2D, Vector3D, AngleUtils } from "..";
 
 export module VectorUtils {
 
