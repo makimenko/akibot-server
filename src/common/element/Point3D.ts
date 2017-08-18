@@ -1,5 +1,4 @@
-
-import { Dimension3D } from "./Dimension3D";
+import { Dimension3D } from "..";
 
 export class Point3D extends Dimension3D {
 

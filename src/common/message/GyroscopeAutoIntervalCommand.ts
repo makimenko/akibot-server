@@ -1,4 +1,4 @@
-import { Message } from "../index";
+import { Message } from "..";
 
 export class GyroscopeAutoIntervalCommand extends Message {
 

@@ -1,5 +1,4 @@
-
-import { Dimension2D } from "./Dimension2D";
+import { Dimension2D } from "..";
 
 export class Vector2D extends Dimension2D {
 

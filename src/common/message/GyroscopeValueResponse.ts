@@ -1,4 +1,4 @@
-import { Message, Angle } from "../index";
+import { Message, Angle } from "..";
 
 export class GyroscopeValueResponse extends Message {
 

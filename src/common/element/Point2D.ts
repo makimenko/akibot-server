@@ -1,5 +1,4 @@
-
-import { Dimension2D } from "./Dimension2D";
+import { Dimension2D } from "..";
 
 export class Point2D extends Dimension2D {
 

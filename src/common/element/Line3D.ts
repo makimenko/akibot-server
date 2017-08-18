@@ -1,9 +1,9 @@
-import { Point3D } from "./Point3D";
-import { Vector3D } from "./Vector3D";
+import { Point3D, Vector3D, Element} from "..";
 
-export class Line3D {
+export class Line3D extends Element {
 
     public constructor(public from: Point3D, public to: Point3D) {
+        super();
         
     }
 

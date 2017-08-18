@@ -19,11 +19,11 @@ describe('Orientation', () => {
   });
 
   it("Make sure that lock is called", function () {
-    var spy = simon.spy(app.commandComponent, 'lock');
-    var orientationRequest: OrientationRequest = new OrientationRequest(new Angle(0), new Angle(0), 50);
+    var spyLock = simon.spy(app.commandComponent, 'lock');
+    var orientationRequest: OrientationRequest = new OrientationRequest(new Angle(0), new Angle(0), 500);
     app.commandComponent.emitMessage(orientationRequest);
-    assert.equal(spy.callCount, 1);
-    spy.restore();
+    assert.equal(spyLock.callCount, 1);
+    spyLock.restore();
   });
 
 });

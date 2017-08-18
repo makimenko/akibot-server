@@ -1,12 +1,10 @@
 import { RoundRobinUtils } from "../utils/RoundRobinUtils";
-import { Serializable, AngleUtils } from "../index";
+import { Serializable, AngleUtils, Element } from "../index";
 
-export class Angle implements Serializable {
+export class Angle extends Element {
 
-    $name: string = this.constructor.name;
-    
     constructor(public radians?: number) {
-
+        super();
     }
 
     public getDegrees(): number {

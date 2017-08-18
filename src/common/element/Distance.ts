@@ -1,11 +1,12 @@
-import { Angle } from "./Angle";
+import { Angle, Element } from "..";
 
-export class Distance {
+export class Distance extends Element {
     
     private errorAngle: Angle;
     private endObstacle: boolean;
 
     public constructor(private distanceMm: number) {
+        super();
         this.errorAngle = new Angle();
         this.errorAngle.radians = 0;
         this.endObstacle = false;

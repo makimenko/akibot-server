@@ -1,9 +1,9 @@
-import { Point2D } from "./Point2D";
-import { Vector2D } from "./Vector2D";
+import { Point2D , Vector2D, Element } from "..";
 
-export class Line2D {
+export class Line2D extends Element {
 
     public constructor(public from: Point2D, public to: Point2D) {
+        super();
     }
 
     public getVector(): Vector2D {

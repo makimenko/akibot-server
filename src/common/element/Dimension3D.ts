@@ -1,4 +1,4 @@
-import { Dimension2D } from "./Dimension2D";
+import { Dimension2D } from "..";
 
 export class Dimension3D extends Dimension2D {
 
