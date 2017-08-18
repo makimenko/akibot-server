@@ -21,3 +21,13 @@ export * from './message/OrientationResponse';
 export * from './message/GyroscopeAutoIntervalCommand';
 export * from './message/GyroscopeValueResponse';
 export * from './message/WheelCommand';
+
+export * from './world/WorldElement';
+export * from './world/Geometry';
+export * from './world/BaseNode';
+export * from './world/BoxGeometry';
+export * from './world/ColladaGeometry';
+export * from './world/GridConfiguration';
+export * from './world/GridGeometry';
+export * from './world/Material';
+export * from './world/NodeTransformation3D';

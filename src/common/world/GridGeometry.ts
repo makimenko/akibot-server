@@ -1,10 +1,11 @@
-import { Geometry } from "./Geometry";
-import { GridConfiguration } from "./GridConfiguration";
+import { Geometry, GridConfiguration } from "..";
 
-export class GridGeometry implements Geometry {
+export class GridGeometry extends Geometry {
+    
     private grid: number[][];
 
     public constructor(public gridConfiguration: GridConfiguration) {
+        super();
         /* how to init?
          this.grid = new int[gridConfiguration.getCellCountX()][gridConfiguration.getCellCountY()];
 
