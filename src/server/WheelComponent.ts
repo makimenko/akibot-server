@@ -1,6 +1,6 @@
 import { CommandComponent } from ".";
 import { Logger, logFactory } from "../log-config";
-import { WheelCommand } from "../common/index";
+import { WheelCommand, WHEEL_DIRECTION } from "../common";
 
 export enum WHEEL_LOCATION {
     Left,
@@ -28,7 +28,7 @@ export class WheelComponent {
         if (wheelCommand == undefined || wheelCommand.direction == undefined) {
             throw "Wheel command direction is undefined"
         }
-        this.logger.trace(wheelCommand.direction);
+        this.logger.trace(WHEEL_DIRECTION[wheelCommand.direction]);
     }
 
 }

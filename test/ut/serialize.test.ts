@@ -40,6 +40,8 @@ describe('Serialization and Deserialization', () => {
     var jsonText: string = common.SerializationUtils.jsonStringify(obj);
     var resultMessage: common.Message = common.SerializationUtils.deserialize(common.SerializationUtils.jsonParse(jsonText), common);
     var jsonTextAfter: string = common.SerializationUtils.jsonStringify(resultMessage);
+    //console.log(jsonText);
+    //console.log(jsonTextAfter);
     assert.equal(jsonText, jsonTextAfter);
   }
 
@@ -92,6 +94,11 @@ describe('Serialization and Deserialization', () => {
   it("Test not serializable (class is not included into common mudule)", function () {
     class SampleOfBadClass2 extends common.Message { kuku: string; };
     assert.throws(function () { testSerializeDeserialize(new SampleOfBadClass2()) }, Error);
+  });
+
+  it("Test enums", function () {
+    testSerializeDeserialize(new common.WheelCommand(common.WHEEL_DIRECTION.Stop));
+    testSerializeDeserialize(new common.WheelCommand(common.WHEEL_DIRECTION.Left));
   });
 
 });

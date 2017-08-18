@@ -1,6 +1,6 @@
 import { CommandComponent } from ".";
 import { logFactory, Logger } from "../log-config";
-import { OrientationRequest, Angle, OrientationResponse, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, WheelCommand } from "../common";
+import { OrientationRequest, Angle, OrientationResponse, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, WheelCommand, WHEEL_DIRECTION} from "../common";
 
 export enum ORIENTATION_STATE {
     Idle,
@@ -66,9 +66,9 @@ export class OrientationComponent {
         } else {
             // TODO: Calculate direction: Modular comparison, find shorter direction
             if (this.actualAngle.getDegrees() < this.targetAngle.getDegrees()) {
-                this.commandComponent.emitMessage(new WheelCommand("Left"));
+                this.commandComponent.emitMessage(new WheelCommand(WHEEL_DIRECTION.Left));
             } else {
-                this.commandComponent.emitMessage(new WheelCommand("Right"));
+                this.commandComponent.emitMessage(new WheelCommand(WHEEL_DIRECTION.Right));
             }
         }
     }
@@ -91,7 +91,7 @@ export class OrientationComponent {
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
         this.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(0));
-        this.commandComponent.emitMessage(new WheelCommand("Stop"));
+        this.commandComponent.emitMessage(new WheelCommand(WHEEL_DIRECTION.Stop));
 
         // Clear variables:
         this.state = ORIENTATION_STATE.Idle;
