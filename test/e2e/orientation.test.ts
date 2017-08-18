@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import * as app from "../src/app";
+import * as app from "../../src/app";
 import * as simon from 'sinon';
-import { OrientationResponse, OrientationRequest, Angle, AngleUtils } from "../src/common";
+import { OrientationResponse, OrientationRequest, Angle, AngleUtils } from "../../src/common";
 
 let defaultTimeout: number = 1000;
 

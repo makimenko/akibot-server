@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import * as common from "../src/common";
+import * as common from "../../src/common";
 
 describe('Serialization and Deserialization', () => {
 

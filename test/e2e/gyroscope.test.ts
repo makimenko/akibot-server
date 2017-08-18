@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import * as app from "../src/app";
-import { Angle, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "../src/common";
+import * as app from "../../src/app";
+import { Angle, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "../../src/common";
 
 let defaultTimeout: number = 1000;
 
