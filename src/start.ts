@@ -1,3 +1,3 @@
-import * as app from "../src/app";
+import * as app from "./app";
 
 app.webSocketServerComponent.start();

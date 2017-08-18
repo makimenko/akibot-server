@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import * as common from "../../src/common";
 
 describe('Serialization and Deserialization', () => {
@@ -34,15 +34,14 @@ describe('Serialization and Deserialization', () => {
     }
   });
 
+  function testSerializeDeserialize(obj: any): void {
+    var jsonText: string = JSON.stringify(obj);
+    var resultMessage: common.Message = common.SerializationUtils.deserialize(JSON.parse(jsonText), common);
+    var jsonTextAfter: string = JSON.stringify(resultMessage);
+    assert.equal(jsonText, jsonTextAfter);
+  }
+
   it("Make sure that all important classes are serializable", function () {
-
-    function testSerializeDeserialize(message: common.Message) {
-      var jsonText: string = JSON.stringify(message);
-      var resultMessage: common.Message = common.SerializationUtils.deserialize(JSON.parse(jsonText), common);
-      var jsonTextAfter: string = JSON.stringify(resultMessage);
-      assert.equal(jsonText, jsonTextAfter);
-    }
-
     testSerializeDeserialize(new common.Element());
     testSerializeDeserialize(new common.Dimension2D(1, 2));
     testSerializeDeserialize(new common.Dimension3D(1, 2, 3));
@@ -55,7 +54,16 @@ describe('Serialization and Deserialization', () => {
     testSerializeDeserialize(new common.GyroscopeValueResponse(common.AngleUtils.createAngleFromDegrees(7)));
     testSerializeDeserialize(new common.OrientationRequest(common.AngleUtils.createAngleFromDegrees(55), common.AngleUtils.createAngleFromDegrees(10), 123));
     testSerializeDeserialize(new common.OrientationResponse(true, common.AngleUtils.createAngleFromDegrees(78)));
+  });
 
+  it("Test not serializable ($name is missing)", function () {
+    class SampleOfBadClass { kuku: string; }
+    assert.throws(function () { testSerializeDeserialize(new SampleOfBadClass()) }, Error);
+  });
+
+  it("Test not serializable (class is not included into common mudule)", function () {
+    class SampleOfBadClass2 extends common.Message { kuku: string; };
+    assert.throws(function () { testSerializeDeserialize(new SampleOfBadClass2()) }, Error);
   });
 
 });
