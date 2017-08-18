@@ -2,12 +2,12 @@ import { Geometry, NodeTransformation3D, WorldElement } from "..";
 
 export class BaseNode extends WorldElement {
 
-    childs: BaseNode[];
+    childs: BaseNode[] = Array<BaseNode>();
 
-    public constructor(public name: string, public geometry?: Geometry, public transformation?: NodeTransformation3D, public stickToParent?: boolean, public parentNode?: BaseNode) {
+    public constructor(public name: string, private parentNode?: BaseNode, public geometry?: Geometry, public transformation?: NodeTransformation3D, public stickToParent?: boolean) {
         super();
-        if (parentNode != undefined)
-            parentNode.attachChild(this);
+        if (this.parentNode != undefined)
+            this.parentNode.attachChild(this);
     }
 
     public toString(): string {

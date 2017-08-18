@@ -35,9 +35,9 @@ describe('Serialization and Deserialization', () => {
   });
 
   function testSerializeDeserialize(obj: any): void {
-    var jsonText: string = JSON.stringify(obj);
+    var jsonText: string = common.SerializationUtils.jsonStringify(obj);
     var resultMessage: common.Message = common.SerializationUtils.deserialize(JSON.parse(jsonText), common);
-    var jsonTextAfter: string = JSON.stringify(resultMessage);
+    var jsonTextAfter: string = common.SerializationUtils.jsonStringify(resultMessage);
     assert.equal(jsonText, jsonTextAfter);
   }
 
@@ -61,7 +61,6 @@ describe('Serialization and Deserialization', () => {
   it("Make sure that all WorldElement are serializable", function () {
     testSerializeDeserialize(new common.WorldElement());
     testSerializeDeserialize(new common.Geometry());
-    testSerializeDeserialize(new common.BaseNode("baseNode", new common.ColladaGeometry("filename.txt"), new common.NodeTransformation3D(), true));
     testSerializeDeserialize(new common.BoxGeometry(new common.Dimension3D(1, 2, 3), new common.Material()));
 
     testSerializeDeserialize(new common.ColladaGeometry("myfile.txt"));
@@ -69,6 +68,19 @@ describe('Serialization and Deserialization', () => {
     testSerializeDeserialize(new common.GridGeometry(new common.GridConfiguration(10, 12, 50, 2, new common.Vector3D(0, 1, -1))));
     testSerializeDeserialize(new common.Material());
   });
+
+  it("Make sure that BaseNode is serializable", function () {
+    testSerializeDeserialize(new common.BaseNode("baseNode", undefined, new common.ColladaGeometry("filename.txt"), new common.NodeTransformation3D(), true));
+  });
+
+
+  it("Make sure that sample of World Content is serializable", function () {
+    var worldNode = new common.BaseNode("worldNode");
+    var gridNode = new common.BaseNode("gridNode", worldNode);
+    assert.throws(() => { testSerializeDeserialize(worldNode) }, Error);
+    common.SerializationUtils.jsonStringify(worldNode);
+  });
+
 
   it("Test not serializable ($name is missing)", function () {
     class SampleOfBadClass { kuku: string; }
