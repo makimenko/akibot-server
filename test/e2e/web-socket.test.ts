@@ -4,7 +4,7 @@ import * as common from "akibot-common/dist";
 import * as WebSocket from 'ws';
 
 describe('Web Socket Tests', () => {
-/*
+
   it("OrientationRequest", function () {
 
     // Increasing test timeout, because this E2E test is long-running
@@ -32,9 +32,8 @@ describe('Web Socket Tests', () => {
 
     });
 
-
   });
-*/
+
 
 
   it("WorldContentRequest", function () {

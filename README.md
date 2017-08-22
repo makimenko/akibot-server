@@ -2,6 +2,7 @@
 Sub-project of https://github.com/makimenko/akibot.git
 
 Client part: [akibot-ui](https://github.com/makimenko/akibot-ui)
+Common (server and client) components: [akibot-common](https://github.com/makimenko/akibot-common)
 
 
 ## Pre-Installation
