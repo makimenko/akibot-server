@@ -32,6 +32,19 @@ export class WebSocketServerComponent {
         this.commandComponent.emitMessage(message);
     }
 
+    private onClientClose(client: WebSocket, code: number, message: string) {
+        this.logger.info("onClientClose: " + code + ": " + message);
+        this.removeClient(client);
+    }
+
+    private removeClient(client: WebSocket) {
+        this.logger.debug("removeClient");
+        var index = this.clients.indexOf(client, 0);
+        if (index > -1) {
+            this.clients.splice(index, 1);
+        }
+    }
+
     public broadcast(message: common.Message) {
         var msgText: string = common.SerializationUtils.jsonStringify(message);
         this.logger.trace("Broadcasting to " + this.clients.length + " clients: " + msgText);
@@ -55,8 +68,9 @@ export class WebSocketServerComponent {
             this.wss = new WebSocket.Server({ server: this.httpServer });
 
             this.wss.on("connection", (client: WebSocket, request: http.IncomingMessage) => {
-                client.on("message", (data: WebSocket.Data) => this.onMessage(client, data));
                 this.clients.push(client);
+                client.on("message", (data: WebSocket.Data) => this.onMessage(client, data));
+                client.on("close", (code: number, message: string) => this.onClientClose(client, code, message));
             });
 
             this.httpServer.listen(this.port, () => {
@@ -68,8 +82,8 @@ export class WebSocketServerComponent {
     }
 
 
-    public stop():void {
-        this.logger.debug("Stopping WSS..");        
+    public stop(): void {
+        this.logger.debug("Stopping WSS..");
         this.wss.close();
         this.httpServer.close();
     }
