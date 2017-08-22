@@ -1,5 +1,5 @@
 import { Gyroscope } from "./Gyroscope";
-import { Vector3D } from "../../common"
+import { Vector3D } from "akibot-common/dist";
 
 export class FakeGyroscope implements Gyroscope {
 

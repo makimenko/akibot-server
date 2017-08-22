@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import * as app from "../../src/app";
-import * as common from "../../src/common";
+import * as common from "akibot-common/dist";
 import * as WebSocket from 'ws';
 
 describe('Web Socket Tests', () => {

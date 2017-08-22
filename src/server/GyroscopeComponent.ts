@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
-import { Angle, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "../common";
+import { Angle, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "akibot-common/dist";
 
 
 export class GyroscopeComponent {

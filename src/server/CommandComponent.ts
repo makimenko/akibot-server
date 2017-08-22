@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { logFactory } from "../log-config";
-import * as common from "../common";
+import * as common from "akibot-common/dist";
 
 export class CommandComponent {
 

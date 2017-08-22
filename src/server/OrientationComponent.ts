@@ -1,6 +1,6 @@
 import { CommandComponent } from ".";
 import { logFactory, Logger } from "../log-config";
-import { OrientationRequest, Angle, OrientationResponse, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, WheelCommand, WHEEL_DIRECTION} from "../common";
+import { OrientationRequest, Angle, OrientationResponse, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, WheelCommand, WHEEL_DIRECTION} from "akibot-common/dist";
 
 export enum ORIENTATION_STATE {
     Idle,

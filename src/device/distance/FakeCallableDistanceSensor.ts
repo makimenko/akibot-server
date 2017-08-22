@@ -1,5 +1,5 @@
 import { CallableDistanceSensor } from "./CallableDistanceSensor";
-import { Angle, Distance } from "../../common";
+import { Angle, Distance } from "akibot-common/dist";
 
 export class FakeCallableDistanceSensor implements CallableDistanceSensor {
 

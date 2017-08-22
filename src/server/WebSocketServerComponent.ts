@@ -2,10 +2,8 @@ import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
 import { logFactory, Logger } from "../log-config";
-import { Message } from "../common/message/Message";
-import { OrientationRequest } from "../common/message/OrientationRequest";
 import { CommandComponent } from "./index";
-import * as common from "../common";
+import * as common from "akibot-common/dist";
 
 export class WebSocketServerComponent {
 
@@ -27,14 +25,14 @@ export class WebSocketServerComponent {
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
         var jsonInput = common.SerializationUtils.jsonParse(data.toString());
-        var message: Message = common.SerializationUtils.deserialize(jsonInput, common);
+        var message: common.Message = common.SerializationUtils.deserialize(jsonInput, common);
         this.commandComponent.commandEvents.once(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
             this.broadcast(orientationResponse);
         });
         this.commandComponent.emitMessage(message);
     }
 
-    public broadcast(message: Message) {
+    public broadcast(message: common.Message) {
         var msgText: string = common.SerializationUtils.jsonStringify(message);
         this.logger.trace("Broadcasting to " + this.clients.length + " clients: " + msgText);
         var idx = 0;

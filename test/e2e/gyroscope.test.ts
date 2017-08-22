@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import * as app from "../../src/app";
-import { Angle, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "../../src/common";
+import { Angle, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "akibot-common/dist";
 
 let defaultTimeout: number = 1000;
 

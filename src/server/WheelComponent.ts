@@ -1,6 +1,6 @@
 import { CommandComponent } from ".";
 import { Logger, logFactory } from "../log-config";
-import { WheelCommand, WHEEL_DIRECTION } from "../common";
+import { WheelCommand, WHEEL_DIRECTION } from "akibot-common/dist";
 
 export enum WHEEL_LOCATION {
     Left,

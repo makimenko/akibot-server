@@ -1,6 +1,6 @@
 import { CommandComponent, WebSocketServerComponent } from ".";
 import { Logger, logFactory } from "../log-config";
-import * as common from "../common";
+import * as common from "akibot-common/dist";
 
 export class WorldComponent {
 
