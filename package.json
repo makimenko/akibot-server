@@ -12,8 +12,8 @@
     "test": "mocha --recursive -r ts-node/register ./test/**/*.test.ts"
   },
   "dependencies": {
-    "akibot-log": "github:makimenko/akibot-log",
     "akibot-common": "github:makimenko/akibot-common",
+    "akibot-log": "github:makimenko/akibot-log",
     "express": "^4.15.4",
     "http": "0.0.0",
     "ws": "^3.1.0"

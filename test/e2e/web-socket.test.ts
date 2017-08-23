@@ -56,9 +56,14 @@ describe('Web Socket Tests', () => {
             var worldContentResponse: common.WorldContentResponse = common.SerializationUtils.deserialize(jsonString, common);
             if (worldContentResponse.worldNode == undefined)
               throw "undefined";
-            assert.equal(worldContentResponse.worldNode.name, "worldNode");
-            assert.equal(worldContentResponse.worldNode.childs[0].name, "gridNode");
-            assert.equal(worldContentResponse.worldNode.childs[0].childs.length, 1);
+
+            assert.isDefined(worldContentResponse.worldNode);
+            assert.isDefined(worldContentResponse.worldNode.gridConfiguration);
+            assert.equal(worldContentResponse.worldNode.gridConfiguration.cellCountX, 100);
+            
+            assert.isDefined(worldContentResponse.worldNode.robotNode);
+            assert.isTrue(worldContentResponse.worldNode.robotNode.modelFileName.length > 5)
+
             app.webSocketServerComponent.stop();
             resolve();
           });
