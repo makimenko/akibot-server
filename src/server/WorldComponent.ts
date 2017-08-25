@@ -22,15 +22,17 @@ export class WorldComponent {
     private initWorldContent() {
 
         // TODO: make it configurable
-        var gridCellCountX = 100;
-        var gridCellCountY = 100; //TODO: remove
+        var gridCellCount = 100;
         var gridCellSizeMm = 100;
         var gridMaxObstacleCount = 10;
-        var gridOffsetVector = new common.Vector3D(gridCellCountX * gridCellSizeMm / 2, gridCellCountY * gridCellSizeMm / 2, 0);
-        var gridConfiguration = new common.GridConfiguration(gridCellCountX, gridCellCountY, gridCellSizeMm, gridMaxObstacleCount, gridOffsetVector);
+        var gridOffsetVector = new common.Vector3D(gridCellCount * gridCellSizeMm / 2, gridCellCount * gridCellSizeMm / 2, 0);
+        var gridConfiguration = new common.GridConfiguration(gridCellCount, gridCellSizeMm, gridMaxObstacleCount, gridOffsetVector);
+        var gridNode = new common.GridNode(gridConfiguration);
+
+        gridNode.data = common.GridUtils.createGridData(gridConfiguration.cellCount, gridConfiguration.unknownValue);
 
         this.robotNode = new common.RobotNode("./assets/model/AkiBot.dae", new common.NodeTransformation3D());
-        this.worldNode = new common.WorldNode(gridConfiguration, this.robotNode);
+        this.worldNode = new common.WorldNode(gridNode, this.robotNode);
 
     }
 

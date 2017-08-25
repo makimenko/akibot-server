@@ -58,8 +58,9 @@ describe('Web Socket Tests', () => {
               throw "undefined";
 
             assert.isDefined(worldContentResponse.worldNode);
-            assert.isDefined(worldContentResponse.worldNode.gridConfiguration);
-            assert.equal(worldContentResponse.worldNode.gridConfiguration.cellCountX, 100);
+            assert.isDefined(worldContentResponse.worldNode.gridNode);
+            assert.isDefined(worldContentResponse.worldNode.gridNode.gridConfiguration);
+            assert.equal(worldContentResponse.worldNode.gridNode.gridConfiguration.cellCount, 100);
             
             assert.isDefined(worldContentResponse.worldNode.robotNode);
             assert.isTrue(worldContentResponse.worldNode.robotNode.modelFileName.length > 5)
