@@ -25,7 +25,7 @@ export class WorldComponent {
         var gridCellCount = 100;
         var gridCellSizeMm = 100;
         var gridMaxObstacleCount = 10;
-        var gridOffsetVector = new common.Vector3D(gridCellCount * gridCellSizeMm / 2, gridCellCount * gridCellSizeMm / 2, 0);
+        var gridOffsetVector = new common.Vector3D(-gridCellCount * gridCellSizeMm / 2, -gridCellCount * gridCellSizeMm / 2, 0);
         var gridConfiguration = new common.GridConfiguration(gridCellCount, gridCellSizeMm, gridMaxObstacleCount, gridOffsetVector);
         var gridNode = new common.GridNode(gridConfiguration);
 
