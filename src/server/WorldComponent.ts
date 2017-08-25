@@ -38,7 +38,22 @@ export class WorldComponent {
 
     private onGyroscopeValueResponse(gyroscopeValueResponse: common.GyroscopeValueResponse) {
         this.logger.trace("onGyroscopeValueResponse: " + gyroscopeValueResponse.angle);
-        //TODO:
+
+        if (this.worldNode.robotNode.transformation == undefined) {
+            this.worldNode.robotNode.transformation = new common.NodeTransformation3D();
+        }
+
+        if (gyroscopeValueResponse.angle != undefined && gyroscopeValueResponse.angle.radians != undefined) {
+            if (this.worldNode.robotNode.transformation.rotation == undefined) {
+                this.worldNode.robotNode.transformation.rotation = new common.Vector3D(0, 0, 0);
+            }
+            this.worldNode.robotNode.transformation.rotation.z = gyroscopeValueResponse.angle.radians;
+
+            // Notify all
+            var robotTransformationEvent = new common.RobotTransformationEvent(this.worldNode.robotNode.transformation);
+            this.webSocketServerComponent.broadcast(robotTransformationEvent);
+        }
+
     }
 
     private onWorldContentRequest(worldContentRequest: common.WorldContentRequest) {
