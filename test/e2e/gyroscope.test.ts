@@ -14,7 +14,9 @@ describe('Gyroscope', () => {
         assert.isTrue(gyroscopeValueResponse instanceof GyroscopeValueResponse);
         assert.isTrue(gyroscopeValueResponse.angle instanceof Angle);
         assert.isTrue(gyroscopeValueResponse.angle != undefined && gyroscopeValueResponse.angle.getDegrees() >= 0 && gyroscopeValueResponse.angle.getDegrees() <= 360);
-        count++;
+        if (gyroscopeValueResponse.angle != undefined && gyroscopeValueResponse.angle.radians != undefined && gyroscopeValueResponse.angle.radians > 0) {
+          count++;
+        }
       });
       app.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(100));
 
@@ -25,5 +27,6 @@ describe('Gyroscope', () => {
       }, defaultTimeout);
     });
   });
+
 
 });

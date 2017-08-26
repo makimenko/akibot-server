@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
 import { Angle, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse } from "akibot-common/dist";
+import { Gyroscope } from "../device/gyroscope/Gyroscope";
 
 
 export class GyroscopeComponent {
@@ -9,7 +10,7 @@ export class GyroscopeComponent {
     private intervalID: NodeJS.Timer;
     private logger = logFactory.getLogger(this.constructor.name);
 
-    constructor(private commandComponent: CommandComponent) {
+    constructor(private commandComponent: CommandComponent, private gyroscope: Gyroscope) {
         this.logger.debug("constructor");
         this.onGyroscopeAutoIntervalCommand = this.onGyroscopeAutoIntervalCommand.bind(this);
         this.commandComponent.commandEvents.addListener(GyroscopeAutoIntervalCommand.name, (gyroscopeAutoIntervalCommand: GyroscopeAutoIntervalCommand) => {
@@ -33,15 +34,10 @@ export class GyroscopeComponent {
 
     private emitGyroscopeValue() {
         this.logger.trace("getGyroscopeValue");
-        var degrees = this.getRandomArbitrary(0, 360);
-        var newAngle: Angle = AngleUtils.createAngleFromDegrees(degrees);
-        var gyroscopeValueResponse: GyroscopeValueResponse = new GyroscopeValueResponse(newAngle);
-        this.commandComponent.emitMessage(gyroscopeValueResponse);
-    }
 
-    private getRandomArbitrary(min: number, max: number) {
-        return Math.random() * (max - min) + min;
+        var northAngle = this.gyroscope.getNorthAngle();
+        var response: GyroscopeValueResponse = new GyroscopeValueResponse(northAngle);
+        this.commandComponent.emitMessage(response);
     }
-
 
 }
