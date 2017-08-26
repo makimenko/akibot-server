@@ -33,7 +33,7 @@ export class GyroscopeComponent {
     }
 
     private emitGyroscopeValue() {
-        this.logger.trace("getGyroscopeValue");
+        this.logger.trace("emitGyroscopeValue");
 
         var northAngle = this.gyroscope.getNorthAngle();
         var response: GyroscopeValueResponse = new GyroscopeValueResponse(northAngle);
