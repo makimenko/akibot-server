@@ -14,8 +14,10 @@ export class WorldComponent {
 
         this.onGyroscopeValueResponse = this.onGyroscopeValueResponse.bind(this);
         this.onWorldContentRequest = this.onWorldContentRequest.bind(this);
+        this.onDistanceValueResponse = this.onDistanceValueResponse.bind(this);
 
         this.commandComponent.commandEvents.addListener(common.GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
+        this.commandComponent.commandEvents.addListener(common.DistanceValueResponse.name, this.onDistanceValueResponse);
         this.commandComponent.commandEvents.addListener(common.WorldContentRequest.name, this.onWorldContentRequest);
     }
 
@@ -60,6 +62,16 @@ export class WorldComponent {
         this.logger.trace("onWorldContentRequest");
         var worldContentResponse = new common.WorldContentResponse(this.worldNode);
         this.webSocketServerComponent.broadcast(worldContentResponse)
+    }
+
+    private onDistanceValueResponse(distanceValueResponse: common.DistanceValueResponse) {
+        this.logger.trace("onDistanceValueResponse: " + distanceValueResponse.distance);
+
+        var distanceNode = this.robotNode.devices[0]; // TODO: allow multiple distance meters
+        if (distanceNode != undefined) {
+            this.logger.trace("updateGridDistance");
+            common.GridUtils.updateGridDistance(this.worldNode.gridNode, this.robotNode, distanceNode, distanceValueResponse.distance);
+        }
     }
 
 }

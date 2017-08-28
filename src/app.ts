@@ -16,3 +16,5 @@ export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(comma
 
 var distanceCenter = new FakeCallableDistanceSensor(10000, 1000, true, common.AngleUtils.createAngleFromDegrees(10));
 export var distanceCenterComponent = new DistanceComponent(commandComponent, distanceCenter, new common.DistanceAutoIntervalCommand(0));
+//var distanceNode = new common.DeviceNode(new common.NodeTransformation3D());
+
