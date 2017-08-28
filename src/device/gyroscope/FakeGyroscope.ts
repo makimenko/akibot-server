@@ -1,7 +1,8 @@
-import { Gyroscope } from "./Gyroscope";
-import { Vector3D, Angle } from "akibot-common/dist";
+import { Vector3D, Angle, Distance } from "akibot-common/dist";
 import * as common from "akibot-common/dist";
 import { logFactory } from "../../log-config";
+import { CallableDevice } from "../CallableDevice";
+import { Gyroscope } from "./Gyroscope";
 
 
 export class FakeGyroscope implements Gyroscope {
@@ -10,27 +11,19 @@ export class FakeGyroscope implements Gyroscope {
     private offsetNorthAngle: common.Angle = common.AngleUtils.createAngleFromDegrees(0);
 
     public constructor(private offset: Vector3D) {
+        this.logger.debug("constructor");
 
     }
 
-    public getNorthAngle(): Angle {
-        this.logger.trace("getNorthAngle");
-        var vector = this.getVector();
-        vector.add(this.offset);
-        var northAngle = common.VectorUtils.getNorthAngle(vector, this.offsetNorthAngle);
-        this.logger.trace("northAngle=" + northAngle);
-        return northAngle;
-    }
-
-    private getVector() {
+    public getValue(): Vector3D {
+        this.logger.debug("getValue");
         var x: number = Math.random();
         var y: number = Math.random();
         var z: number = Math.random();
         var vector3D: Vector3D = new Vector3D(x, y, z);
         vector3D.add(this.offset);
-        this.logger.trace("gyroVector=" + vector3D);
+        this.logger.trace("gyroVector=" + vector3D.toString());
         return vector3D;
     }
-
 
 }

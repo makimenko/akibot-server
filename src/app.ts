@@ -12,7 +12,7 @@ export var wheelComponentRight: WheelComponent = new WheelComponent(commandCompo
 
 var gyroOffset = new common.Vector3D(0, 0, 0);
 var gyroscope: Gyroscope = new FakeGyroscope(gyroOffset);
-export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope);
+export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope, new common.GyroscopeAutoIntervalCommand(0));
 
 var distanceCenter = new FakeCallableDistanceSensor(10000, 1000, true, common.AngleUtils.createAngleFromDegrees(10));
-export var distanceCenterComponent = new DistanceComponent(commandComponent, distanceCenter);
+export var distanceCenterComponent = new DistanceComponent(commandComponent, distanceCenter, new common.DistanceAutoIntervalCommand(0));

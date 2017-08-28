@@ -1,8 +1,6 @@
-import { Device } from "../Device";
+import { CallableDevice } from "../CallableDevice";
 import { Distance } from "akibot-common/dist";
 
-export interface CallableDistanceSensor extends Device {
-
-    getDistance(): Distance;
+export interface CallableDistanceSensor extends CallableDevice<Distance> {
 
 }

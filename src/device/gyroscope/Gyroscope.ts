@@ -1,8 +1,6 @@
-import { Angle } from "akibot-common/dist";
-import { Device } from "../Device";
+import { CallableDevice } from "../CallableDevice";
+import { Vector3D } from "akibot-common/dist";
 
-export interface Gyroscope extends Device {
-
-    getNorthAngle(): Angle;
+export interface Gyroscope extends CallableDevice<Vector3D> {
 
 }
