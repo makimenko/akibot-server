@@ -26,7 +26,7 @@ export class WheelComponent {
 
     private onWheelCommand(wheelCommand: WheelCommand) {
         if (wheelCommand == undefined || wheelCommand.direction == undefined) {
-            throw "Wheel command direction is undefined"
+            throw new Error("Wheel command direction is undefined");
         }
         this.logger.trace(WHEEL_DIRECTION[wheelCommand.direction]);
     }

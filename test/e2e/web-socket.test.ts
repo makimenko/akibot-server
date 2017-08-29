@@ -55,7 +55,7 @@ describe('Web Socket Tests', () => {
             var jsonString: any = common.SerializationUtils.jsonParse(data.toString());
             var worldContentResponse: common.WorldContentResponse = common.SerializationUtils.deserialize(jsonString, common);
             if (worldContentResponse.worldNode == undefined)
-              throw "undefined";
+              throw new Error("undefined worldNode");
 
             assert.isDefined(worldContentResponse.worldNode);
             assert.isDefined(worldContentResponse.worldNode.gridNode);

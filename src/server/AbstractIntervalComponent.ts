@@ -20,7 +20,7 @@ export abstract class AbstractIntervalComponent<T extends Element, C extends Aut
 
     private onAutoIntervalCommand(autoIntervalCommand: AutoIntervalCommand) {
         if (autoIntervalCommand == undefined || autoIntervalCommand.interval == undefined) {
-            throw "Mandatory attributes are undefined"
+            throw new Error("Mandatory attributes are undefined");
         }
         this.logger.debug("onAutoIntervalCommand: autoInterval=" + autoIntervalCommand.interval + "ms");
         if (autoIntervalCommand.interval > 0) {

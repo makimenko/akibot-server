@@ -34,7 +34,7 @@ export class OrientationComponent {
     private onOrientationRequest(orientationRequest: OrientationRequest) {
         this.logger.debug("onOrientationRequest: " + orientationRequest);
         if (orientationRequest == undefined || orientationRequest.targetAngle == undefined || orientationRequest.tolerance == undefined) {
-            throw "Undefined mandatory parameters of OrientationRequest";
+            throw new Error("Undefined mandatory parameters of OrientationRequest");
         } if (!this.commandComponent.lock()) {
             this.logger.warn("Ignore: Another exclusive command is running!");
             this.sendResponse(false);
@@ -56,7 +56,7 @@ export class OrientationComponent {
         this.logger.trace("onGyroscopeValue: " + gyroscopeValueResponse.angle);
         this.actualAngle = gyroscopeValueResponse.angle;
         if (this.actualAngle == undefined) {
-            throw "Actual angle could not be undefined"
+            throw new Error("Actual angle could not be undefined");
         } else if (this.isExpected(this.actualAngle)) {
             this.logger.debug("Seems Orientation is finished and angle is Ok");
             this.endWork();

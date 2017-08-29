@@ -31,11 +31,20 @@ export class WorldComponent {
         var gridConfiguration = new common.GridConfiguration(gridCellCount, gridCellSizeMm, gridMaxObstacleCount, gridOffsetVector);
         var gridNode = new common.GridNode(gridConfiguration);
 
+        // TODO
         gridNode.data = common.GridUtils.createGridData(gridConfiguration.cellCount, gridConfiguration.unknownValue);
 
         this.robotNode = new common.RobotNode("./assets/model/AkiBot.dae", new common.NodeTransformation3D());
         this.worldNode = new common.WorldNode(gridNode, this.robotNode);
 
+        // TODO: support multiplse distances (add device ID)
+        var distanceCenterNode = new common.DeviceNode(new common.NodeTransformation3D());
+        distanceCenterNode.transformation.position.y = 10;
+        this.attachDeviceToRobot(distanceCenterNode);
+    }
+
+    public attachDeviceToRobot(deviceNode: common.DeviceNode) {
+        this.robotNode.devices.push(deviceNode);
     }
 
     private onGyroscopeValueResponse(gyroscopeValueResponse: common.GyroscopeValueResponse) {
