@@ -27,6 +27,10 @@ npm install
 npm run serve
 ```
 
+## Sample UI
+https://github.com/makimenko/akibot-ui
+![UI Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/UI_Sample1.png "UI Example")
+
 
 ## Use-Case: Orientation
 ![Orientation Workflow Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Orientation.png "Orientation Workflow Example")
