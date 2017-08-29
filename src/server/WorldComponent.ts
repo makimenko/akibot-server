@@ -79,6 +79,9 @@ export class WorldComponent {
         if (distanceNode != undefined) {
             this.logger.trace("updateGridDistance");
             this.gridHandler.updateGridDistance(this.robotNode, distanceNode, distanceValueResponse.distance);
+
+            var gridUpdateEvent = new common.GridUpdateEvent(this.worldNode.gridNode.data);
+            this.webSocketServerComponent.broadcast(gridUpdateEvent);
         }
     }
 

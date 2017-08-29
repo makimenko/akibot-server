@@ -16,7 +16,7 @@ export class FakeGyroscope implements Gyroscope {
     }
 
     public getValue(): Vector3D {
-        this.logger.debug("getValue");
+        this.logger.trace("getValue");
         var x: number = Math.random();
         var y: number = Math.random();
         var z: number = Math.random();

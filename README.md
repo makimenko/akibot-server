@@ -29,7 +29,7 @@ npm run serve
 
 
 ## Use-Case: Orientation
-![Orientation Workflow Example](doc/Orientation.png?raw=true "Orientation Workflow Example")
+![Orientation Workflow Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Orientation.png "Orientation Workflow Example")
 
 Sample logs:
 ```
@@ -61,7 +61,7 @@ Sample logs:
  ```
 
 ## World Nodes
-![World Nodes](doc/Nodes.png?raw=true "World Nodes")
+![World Nodes](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Nodes.png "World Nodes")
 
 ## Use-Case: Synchronization of World Content
-![World Content Example](doc/WorldContent.png?raw=true "World Content Example")
+![World Content Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/WorldContent.png "World Content Example")
