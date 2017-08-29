@@ -10,10 +10,10 @@ export var orientationComponent: OrientationComponent = new OrientationComponent
 export var wheelComponentLeft: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Left)
 export var wheelComponentRight: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Right);
 
-var gyroOffset = new common.Vector3D(0, 0, 0);
+var gyroOffset = new common.Vector3D(-0.5, -0.5, 0);
 var gyroscope: Gyroscope = new FakeGyroscope(gyroOffset);
 export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope, new common.GyroscopeAutoIntervalCommand(0));
 
-var distanceCenter = new FakeCallableDistanceSensor(10000, 1000, true, common.AngleUtils.createAngleFromDegrees(10));
+var distanceCenter = new FakeCallableDistanceSensor(2000, 500, true, common.AngleUtils.createAngleFromDegrees(10));
 export var distanceCenterComponent = new DistanceComponent(commandComponent, distanceCenter, new common.DistanceAutoIntervalCommand(0));
 

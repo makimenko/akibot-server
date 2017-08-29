@@ -15,8 +15,9 @@ describe('Grid Utils', () => {
     } else {
       var gridConfiguration = config;
     }
-    var gridNode = new common.GridNode(gridConfiguration)
-    return new GridHandler(gridNode);
+    var gridNode = new common.GridNode(gridConfiguration);
+    var gridHandler = new GridHandler(gridNode);
+    return gridHandler;
   }
 
   it("createGridData: 1", function () {

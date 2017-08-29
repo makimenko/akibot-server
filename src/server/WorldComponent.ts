@@ -35,7 +35,6 @@ export class WorldComponent {
         this.robotNode = new common.RobotNode("./assets/model/AkiBot.dae", new common.NodeTransformation3D());
         this.worldNode = new common.WorldNode(gridNode, this.robotNode);
         this.gridHandler = new GridHandler(gridNode);
-        gridNode.data = this.gridHandler.createGridData(gridConfiguration.cellCount, gridConfiguration.unknownValue);
 
         // TODO: support multiplse distances (add device ID)
         var distanceCenterNode = new common.DeviceNode(new common.NodeTransformation3D());

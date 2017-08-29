@@ -3,11 +3,15 @@ import { Logger, logFactory } from "../log-config";
 
 export class GridHandler {
 
-    public constructor(public gridNode: common.GridNode) {
+    private logger: Logger = logFactory.getLogger(this.constructor.name);
 
+    public constructor(public gridNode: common.GridNode) {
+        this.logger.debug("constructor");
+        this.initGridDataIfNeeded();
     }
 
     public createGridData(cells: number, val: number): number[][] {
+        this.logger.debug("Creating grid data");
         var res: number[][] = [];
         for (var i = 0; i < cells; i++) {
             var set = new Array(cells).fill(val);
@@ -23,7 +27,6 @@ export class GridHandler {
     }
 
     public add(addressX: number, addressY: number) {
-        this.initGridDataIfNeeded();
         // ("add(" + addressX + ", " + addressY + ")");
         if (this.gridNode.data[addressX][addressY] == this.gridNode.gridConfiguration.unknownValue) {
             this.gridNode.data[addressX][addressY] = 1;
@@ -35,7 +38,6 @@ export class GridHandler {
     }
 
     public remove(addressX: number, addressY: number) {
-        this.initGridDataIfNeeded();
         // ("remove(" + x + ", " + y + ")");
         var v = this.gridNode.data[addressX][addressY];
         if (v == this.gridNode.gridConfiguration.unknownValue) {
@@ -48,7 +50,7 @@ export class GridHandler {
     }
 
     public addLine(line: common.Line2D, endIsObstacle: boolean) {
-        var raster: number[][] = this.rasterize(line, endIsObstacle);
+        var raster: number[][] = this.rasterize(line, endIsObstacle); 
         for (var i = 0; i < raster.length; i++) {
             var x = raster[i][0];
             var y = raster[i][1];
@@ -89,6 +91,7 @@ export class GridHandler {
     }
 
     public addDistance(positionOffset: common.Vector3D, northAngle: common.Angle, distance: common.Distance) {
+        this.logger.trace("addDistance (positionOffset=" + positionOffset.toString() + ", northAngle=" + northAngle.toString() + ", distance=" + distance.distanceMm)
         var line: common.Line2D = this.calculateNorthLine(positionOffset, northAngle, distance.distanceMm);
         this.addLineWithAngle(line, distance.errorAngle, distance.endObstacle);
     }
@@ -99,11 +102,13 @@ export class GridHandler {
         offsetPoint.x = point.x - this.gridNode.gridConfiguration.offsetVector.x;
         offsetPoint.y = point.y - this.gridNode.gridConfiguration.offsetVector.y;
 
-        if (offsetPoint.x >= this.gridNode.gridConfiguration.cellCount * this.gridNode.gridConfiguration.cellSizeMm
+        var maxSize = this.gridNode.gridConfiguration.cellCount * this.gridNode.gridConfiguration.cellSizeMm;
+
+        if (offsetPoint.x >= maxSize
             || offsetPoint.x < 0
-            || offsetPoint.y >= this.gridNode.gridConfiguration.cellCount * this.gridNode.gridConfiguration.cellSizeMm
+            || offsetPoint.y >= maxSize
             || offsetPoint.y < 0) {
-            throw new RangeError("Outside World (point=" + point.toString() + ", offsetPoint=" + offsetPoint.toString() + ")");
+            throw new RangeError("Outside World (point with offset " + offsetPoint.toString() + " out of range 0.." + maxSize + ")");
         }
         return offsetPoint;
     }
@@ -131,7 +136,7 @@ export class GridHandler {
 
         //var res: number[][] = new [distance][3];
         //console.log("distance=" + distance);
-        var res: number[][] = new Array(distance);
+        var res: number[][] = new Array();
 
         // Bresenham's line algorithm
         var w = x2 - x;
@@ -181,7 +186,7 @@ export class GridHandler {
             } else {
                 set[2] = 0;
             }
-            res[i] = set;
+            res.push(set);
 
             numerator += shortest;
             if (!(numerator < longest)) {
@@ -204,6 +209,7 @@ export class GridHandler {
     }
 
     public updateGridDistance(robotNode: common.RobotNode, distanceNode: common.DeviceNode, distance: common.Distance) {
+        this.logger.trace("updateGridDistance: " + distance.distanceMm);
         var relativeTransformation: common.NodeTransformation3D = common.VectorUtils.calculateRelativeTransformation(robotNode.transformation, distanceNode.transformation);
         var northAngle: common.Angle = new common.Angle(relativeTransformation.rotation.z);
         this.addDistance(relativeTransformation.position, northAngle, distance);
