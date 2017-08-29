@@ -7,20 +7,29 @@ export class GridHandler {
 
     }
 
+    public createGridData(cells: number, val: number): number[][] {
+        var res: number[][] = [];
+        for (var i = 0; i < cells; i++) {
+            var set = new Array(cells).fill(val);
+            res.push(set);
+        }
+        return res;
+    }
+
     public initGridDataIfNeeded() {
-        if (this.data == undefined) {
-            this.data = GridUtils.createGridData(this.gridConfiguration.cellCount, this.gridConfiguration.unknownValue);
+        if (this.gridNode.data == undefined) {
+            this.gridNode.data = this.createGridData(this.gridNode.gridConfiguration.cellCount, this.gridNode.gridConfiguration.unknownValue);
         }
     }
 
     public add(addressX: number, addressY: number) {
         this.initGridDataIfNeeded();
         // ("add(" + addressX + ", " + addressY + ")");
-        if (this.data[addressX][addressY] == this.gridConfiguration.unknownValue) {
-            this.data[addressX][addressY] = 1;
+        if (this.gridNode.data[addressX][addressY] == this.gridNode.gridConfiguration.unknownValue) {
+            this.gridNode.data[addressX][addressY] = 1;
             //changeSequence++;
-        } else if (this.data[addressX][addressY] < this.gridConfiguration.maxObstacleCount) {
-            this.data[addressX][addressY]++;
+        } else if (this.gridNode.data[addressX][addressY] < this.gridNode.gridConfiguration.maxObstacleCount) {
+            this.gridNode.data[addressX][addressY]++;
             //changeSequence++;
         }
     }
@@ -28,18 +37,18 @@ export class GridHandler {
     public remove(addressX: number, addressY: number) {
         this.initGridDataIfNeeded();
         // ("remove(" + x + ", " + y + ")");
-        var v = this.data[addressX][addressY];
-        if (v == this.gridConfiguration.unknownValue) {
-            this.data[addressX][addressY] = this.gridConfiguration.emptyValue;
+        var v = this.gridNode.data[addressX][addressY];
+        if (v == this.gridNode.gridConfiguration.unknownValue) {
+            this.gridNode.data[addressX][addressY] = this.gridNode.gridConfiguration.emptyValue;
             //changeSequence++;
-        } else if (v > this.gridConfiguration.emptyValue) {
-            this.data[addressX][addressY]--;
+        } else if (v > this.gridNode.gridConfiguration.emptyValue) {
+            this.gridNode.data[addressX][addressY]--;
             //changeSequence++;
         }
     }
 
-    public addLine(line: Line2D, endIsObstacle: boolean) {
-        var raster: number[][] = GridUtils.rasterize(line, endIsObstacle, this.gridConfiguration);
+    public addLine(line: common.Line2D, endIsObstacle: boolean) {
+        var raster: number[][] = this.rasterize(line, endIsObstacle);
         for (var i = 0; i < raster.length; i++) {
             var x = raster[i][0];
             var y = raster[i][1];
@@ -53,23 +62,23 @@ export class GridHandler {
         }
     }
 
-    public iterateEndOfLine(line: Line2D, line2: Line2D, endIsObstacle: boolean) {
-        var arrLeft: number[][] = GridUtils.rasterize(new Line2D(line2.to, line.to), endIsObstacle, this.gridConfiguration);
+    public iterateEndOfLine(line: common.Line2D, line2: common.Line2D, endIsObstacle: boolean) {
+        var arrLeft: number[][] = this.rasterize(new common.Line2D(line2.to, line.to), endIsObstacle);
         if (arrLeft.length > 2) {
             for (var i = 1; i < arrLeft.length - 1; i++) {
-                this.addLine(new Line2D(line.from
-                    , new Point2D(
-                        arrLeft[i][0] * this.gridConfiguration.cellSizeMm + this.gridConfiguration.offsetVector.x,
-                        arrLeft[i][1] * this.gridConfiguration.cellSizeMm + this.gridConfiguration.offsetVector.y
+                this.addLine(new common.Line2D(line.from
+                    , new common.Point2D(
+                        arrLeft[i][0] * this.gridNode.gridConfiguration.cellSizeMm + this.gridNode.gridConfiguration.offsetVector.x,
+                        arrLeft[i][1] * this.gridNode.gridConfiguration.cellSizeMm + this.gridNode.gridConfiguration.offsetVector.y
                     )
                 ), endIsObstacle);
             }
         }
     }
 
-    public addLineWithAngle(line: Line2D, errorAngle: Angle, endIsObstacle: boolean) {
-        var lineLeft = VectorUtils.rotateLine2D(line, errorAngle);
-        var lineRight = VectorUtils.rotateLine2D(line, AngleUtils.createNegativeAngle(errorAngle));
+    public addLineWithAngle(line: common.Line2D, errorAngle: common.Angle, endIsObstacle: boolean) {
+        var lineLeft = common.VectorUtils.rotateLine2D(line, errorAngle);
+        var lineRight = common.VectorUtils.rotateLine2D(line, common.AngleUtils.createNegativeAngle(errorAngle));
 
         this.addLine(line, endIsObstacle);
         this.addLine(lineLeft, endIsObstacle);
@@ -79,8 +88,8 @@ export class GridHandler {
         this.iterateEndOfLine(line, lineRight, endIsObstacle);
     }
 
-    public addDistance(positionOffset: Vector3D, northAngle: Angle, distance: Distance) {
-        var line: Line2D = GridUtils.calculateNorthLine(positionOffset, northAngle, distance.distanceMm);
+    public addDistance(positionOffset: common.Vector3D, northAngle: common.Angle, distance: common.Distance) {
+        var line: common.Line2D = this.calculateNorthLine(positionOffset, northAngle, distance.distanceMm);
         this.addLineWithAngle(line, distance.errorAngle, distance.endObstacle);
     }
 
@@ -128,14 +137,17 @@ export class GridHandler {
         var w = x2 - x;
         var h = y2 - y;
         var dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+
         if (w < 0)
             dx1 = -1;
         else if (w > 0)
             dx1 = 1;
+
         if (h < 0)
             dy1 = -1;
         else if (h > 0)
             dy1 = 1;
+
         if (w < 0)
             dx2 = -1;
         else if (w > 0)
@@ -194,7 +206,7 @@ export class GridHandler {
     public updateGridDistance(robotNode: common.RobotNode, distanceNode: common.DeviceNode, distance: common.Distance) {
         var relativeTransformation: common.NodeTransformation3D = common.VectorUtils.calculateRelativeTransformation(robotNode.transformation, distanceNode.transformation);
         var northAngle: common.Angle = new common.Angle(relativeTransformation.rotation.z);
-        this.gridNode.addDistance(relativeTransformation.position, northAngle, distance);
+        this.addDistance(relativeTransformation.position, northAngle, distance);
     }
 
     public printGridData() {

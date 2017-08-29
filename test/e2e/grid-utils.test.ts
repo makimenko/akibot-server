@@ -1,22 +1,41 @@
 import { assert } from 'chai';
-import * as common from "..";
+import * as common from "akibot-common/dist";
+import { GridHandler } from "../../src/server/GridHandler";
+
+interface ITestWorld {
+  worldNode: common.WorldNode;
+  gridHandler: GridHandler;
+}
 
 describe('Grid Utils', () => {
 
+  function createSimpliestGridHandler(config?: common.GridConfiguration): GridHandler {
+    if (config == undefined) {
+      var gridConfiguration = new common.GridConfiguration(2, 10, 1, new common.Vector3D(-10, -10, 0));
+    } else {
+      var gridConfiguration = config;
+    }
+    var gridNode = new common.GridNode(gridConfiguration)
+    return new GridHandler(gridNode);
+  }
+
   it("createGridData: 1", function () {
-    var actual: number[][] = common.GridUtils.createGridData(1, 8);
+    var gridHandler = createSimpliestGridHandler();
+    var actual: number[][] = gridHandler.createGridData(1, 8);
     var expected: number[][] = [[8]]
     assert.deepEqual(expected, actual);
   });
 
   it("createGridData: 2", function () {
-    var actual: number[][] = common.GridUtils.createGridData(2, 9);
+    var gridHandler = createSimpliestGridHandler();
+    var actual: number[][] = gridHandler.createGridData(2, 9);
     var expected: number[][] = [[9, 9], [9, 9]];
     assert.deepEqual(expected, actual);
   });
 
   it("createGridData: 2 with update", function () {
-    var actual: number[][] = common.GridUtils.createGridData(2, 0);
+    var gridHandler = createSimpliestGridHandler();
+    var actual: number[][] = gridHandler.createGridData(2, 0);
     actual[0][0] = 1;
     actual[0][1] = 2;
     actual[1][0] = 3;
@@ -25,26 +44,24 @@ describe('Grid Utils', () => {
     assert.deepEqual(expected, actual);
   });
 
-
   it('getAddress with offset', function () {
-    var config = new common.GridConfiguration(2, 10, 1, new common.Vector3D(-10, -10, 0));
-    assert.equal(1, common.GridUtils.getAddressX(new common.Point2D(5, 4), config));
-    assert.equal(1, common.GridUtils.getAddressY(new common.Point2D(5, 4), config));
-    assert.equal(0, common.GridUtils.getAddressX(new common.Point2D(-5, -4), config));
-    assert.equal(0, common.GridUtils.getAddressY(new common.Point2D(-5, -4), config));
+    var gridHandler = createSimpliestGridHandler(new common.GridConfiguration(2, 10, 1, new common.Vector3D(-10, -10, 0)));
+    assert.equal(1, gridHandler.getAddressX(new common.Point2D(5, 4)));
+    assert.equal(1, gridHandler.getAddressY(new common.Point2D(5, 4)));
+    assert.equal(0, gridHandler.getAddressX(new common.Point2D(-5, -4)));
+    assert.equal(0, gridHandler.getAddressY(new common.Point2D(-5, -4)));
   });
 
   it('addPoint with offset', function () {
-    var config = new common.GridConfiguration(2, 10, 1, new common.Vector3D(-10, -10, 0));
-    var gridNode = new common.GridNode(config);
+    var gridHandler = createSimpliestGridHandler(new common.GridConfiguration(2, 10, 1, new common.Vector3D(-10, -10, 0)));
     var point = new common.Point2D(5, 5);
-    gridNode.add(common.GridUtils.getAddressX(point, config), common.GridUtils.getAddressY(point, config));
-    assert.equal(gridNode.data[1][1], 1);
-
+    gridHandler.add(gridHandler.getAddressX(point), gridHandler.getAddressY(point));
+    assert.equal(gridHandler.gridNode.data[1][1], 1);
   });
 
 
-  function createTestWorld(): common.WorldNode {
+
+  function createTestWorld(): ITestWorld {
     var COORD_PRECISSION = 0.01;
     var ROTATION_PRECISSION = 0.0000001;
 
@@ -63,27 +80,33 @@ describe('Grid Utils', () => {
     var distanceNode = new common.DeviceNode(distanceTransformation);
 
     robotNode.devices.push(distanceNode);
-    return worldNode;
+
+    var gridHandler = new GridHandler(gridNode);
+
+    return {
+      worldNode,
+      gridHandler
+    };
   }
 
   it("Grid update: addLine", function () {
-    var worldNode = createTestWorld();
-    worldNode.gridNode.addLine(new common.Line2D(new common.Point2D(0, 0), new common.Point2D(0, 0)), false);
-    assert.equal(worldNode.gridNode.data[5][5], 0);
+    var testWorld = createTestWorld();
+    testWorld.gridHandler.addLine(new common.Line2D(new common.Point2D(0, 0), new common.Point2D(0, 0)), false);
+    assert.equal(testWorld.worldNode.gridNode.data[5][5], 0);
   });
 
 
   it("Grid update: ", function () {
 
-    var worldNode = createTestWorld();
+    var testWorld = createTestWorld();
 
-    var gridNode = worldNode.gridNode;
-    var gridConfiguration = worldNode.gridNode.gridConfiguration;
-    var distanceNode = worldNode.robotNode.devices[0];
+    var gridNode = testWorld.worldNode.gridNode;
+    var gridConfiguration = testWorld.worldNode.gridNode.gridConfiguration;
+    var distanceNode = testWorld.worldNode.robotNode.devices[0];
 
     var distance = new common.Distance(2, common.AngleUtils.createAngleFromDegrees(0), true);
 
-    common.GridUtils.updateGridDistance(gridNode, worldNode.robotNode, distanceNode, distance);
+    testWorld.gridHandler.updateGridDistance(testWorld.worldNode.robotNode, distanceNode, distance);
 
     assert.equal(gridNode.data[4][9], gridConfiguration.unknownValue);
     assert.equal(gridNode.data[5][9], gridConfiguration.maxObstacleCount);
@@ -101,8 +124,9 @@ describe('Grid Utils', () => {
 
 
   it('Rasterize', function () {
-    var config = new common.GridConfiguration(10, 1, 1, new common.Vector3D(0, 0, 0));
-    var res: number[][] = common.GridUtils.rasterize(new common.Line2D(new common.Point2D(3, 3), new common.Point2D(1, 1)), true, config);
+    var gridHandler = createSimpliestGridHandler(new common.GridConfiguration(10, 1, 1, new common.Vector3D(0, 0, 0)));
+
+    var res: number[][] = gridHandler.rasterize(new common.Line2D(new common.Point2D(3, 3), new common.Point2D(1, 1)), true);
 
     //console.log(res);
 

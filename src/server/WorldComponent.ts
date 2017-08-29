@@ -1,12 +1,14 @@
 import { CommandComponent, WebSocketServerComponent } from ".";
 import { Logger, logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
+import { GridHandler } from "./GridHandler";
 
 export class WorldComponent {
 
     private logger: Logger = logFactory.getLogger(this.constructor.name);
     public worldNode: common.WorldNode;
     public robotNode: common.RobotNode;
+    public gridHandler: GridHandler;
 
     constructor(private commandComponent: CommandComponent, private webSocketServerComponent: WebSocketServerComponent) {
         this.logger.debug("constructor");
@@ -22,7 +24,6 @@ export class WorldComponent {
     }
 
     private initWorldContent() {
-
         // TODO: make it configurable
         var gridCellCount = 100;
         var gridCellSizeMm = 100;
@@ -31,11 +32,10 @@ export class WorldComponent {
         var gridConfiguration = new common.GridConfiguration(gridCellCount, gridCellSizeMm, gridMaxObstacleCount, gridOffsetVector);
         var gridNode = new common.GridNode(gridConfiguration);
 
-        // TODO
-        gridNode.data = common.GridUtils.createGridData(gridConfiguration.cellCount, gridConfiguration.unknownValue);
-
         this.robotNode = new common.RobotNode("./assets/model/AkiBot.dae", new common.NodeTransformation3D());
         this.worldNode = new common.WorldNode(gridNode, this.robotNode);
+        this.gridHandler = new GridHandler(gridNode);
+        gridNode.data = this.gridHandler.createGridData(gridConfiguration.cellCount, gridConfiguration.unknownValue);
 
         // TODO: support multiplse distances (add device ID)
         var distanceCenterNode = new common.DeviceNode(new common.NodeTransformation3D());
@@ -79,7 +79,7 @@ export class WorldComponent {
         var distanceNode = this.robotNode.devices[0]; // TODO: allow multiple distance meters
         if (distanceNode != undefined) {
             this.logger.trace("updateGridDistance");
-            common.GridUtils.updateGridDistance(this.worldNode.gridNode, this.robotNode, distanceNode, distanceValueResponse.distance);
+            this.gridHandler.updateGridDistance(this.robotNode, distanceNode, distanceValueResponse.distance);
         }
     }
 
