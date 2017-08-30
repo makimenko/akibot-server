@@ -50,8 +50,6 @@ describe('Web Socket Tests', () => {
           });
 
           ws.on("message", (data: WebSocket.Data) => {
-            console.log("####");
-            console.log(data);
             var jsonString: any = common.SerializationUtils.jsonParse(data.toString());
             var worldContentResponse: common.WorldContentResponse = common.SerializationUtils.deserialize(jsonString, common);
             if (worldContentResponse.worldNode == undefined)

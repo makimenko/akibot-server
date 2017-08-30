@@ -20,14 +20,17 @@ export class CommandComponent {
 
     public lock(): boolean {
         if (this.exclusiveCommandLock) {
+            this.logger.warn("lock: failed");
             return false;
         } else {
+            this.logger.trace("lock: suceeded");
             this.exclusiveCommandLock = true;
             return true;
         }
     }
 
     public unlock(): void {
+        this.logger.trace("unlock");
         this.exclusiveCommandLock = false;
     }
 

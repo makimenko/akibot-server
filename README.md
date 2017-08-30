@@ -1,8 +1,11 @@
 # AkiBot Experimental Server on Node.js
 Sub-project of https://github.com/makimenko/akibot.git
 
-Client part: [akibot-ui](https://github.com/makimenko/akibot-ui)
-Common (server and client) components: [akibot-common](https://github.com/makimenko/akibot-common)
+Set of projects:
+1. Client part: [akibot-ui](https://github.com/makimenko/akibot-ui)
+2. Common (server and client) components: [akibot-common](https://github.com/makimenko/akibot-common)
+4. Simple logger: [akibot-log](https://github.com/makimenko/akibot-log)
+5. Documents and images: [akibot-doc](https://github.com/makimenko/akibot-doc)
 
 
 ## Pre-Installation
@@ -31,6 +34,8 @@ npm run serve
 https://github.com/makimenko/akibot-ui
 ![UI Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/UI_Sample1.png "UI Example")
 
+## Comcept
+![World Nodes](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Nodes.png "World Nodes")
 
 ## Use-Case: Orientation
 ![Orientation Workflow Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Orientation.png "Orientation Workflow Example")
@@ -63,9 +68,6 @@ Sample logs:
  2017-8-15 09:59:53: Debug: OrientationComponent     : sendResponse: SUCCESS
  2017-8-15 09:59:53:  Info: sandbox                  : Orientation SUCEEDED! Final angle is: 83.43736961338327
  ```
-
-## World Nodes
-![World Nodes](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Nodes.png "World Nodes")
 
 ## Use-Case: Synchronization of World Content
 ![World Content Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/WorldContent.png "World Content Example")

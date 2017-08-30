@@ -20,15 +20,18 @@ export class WebSocketServerComponent {
     constructor(private commandComponent: CommandComponent) {
         this.logger.debug("constructor");
         this.expressApplication = express();
+    
+        // Forward necessary command responses to WS Clients:
+        // TODO: Group such commands/responses?
+        this.commandComponent.commandEvents.on(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
+            this.broadcast(orientationResponse);
+        });
     }
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {
         this.logger.trace("onMessage: " + data.toString());
         var jsonInput = common.SerializationUtils.jsonParse(data.toString());
         var message: common.Message = common.SerializationUtils.deserialize(jsonInput, common);
-        this.commandComponent.commandEvents.once(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
-            this.broadcast(orientationResponse);
-        });
         this.commandComponent.emitMessage(message);
     }
 
