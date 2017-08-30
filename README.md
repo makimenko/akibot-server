@@ -34,7 +34,7 @@ npm run serve
 https://github.com/makimenko/akibot-ui
 ![UI Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/UI_Sample1.png "UI Example")
 
-## Comcept
+## Concept
 ![World Nodes](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Nodes.png "World Nodes")
 
 ## Use-Case: Orientation
@@ -68,6 +68,3 @@ Sample logs:
  2017-8-15 09:59:53: Debug: OrientationComponent     : sendResponse: SUCCESS
  2017-8-15 09:59:53:  Info: sandbox                  : Orientation SUCEEDED! Final angle is: 83.43736961338327
  ```
-
-## Use-Case: Synchronization of World Content
-![World Content Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/WorldContent.png "World Content Example")
