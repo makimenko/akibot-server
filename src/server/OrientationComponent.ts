@@ -1,6 +1,6 @@
 import { CommandComponent } from ".";
 import { logFactory, Logger } from "../log-config";
-import { OrientationRequest, Angle, OrientationResponse, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, WheelCommand, WHEEL_DIRECTION} from "akibot-common/dist";
+import * as common from "akibot-common/dist";
 
 export enum ORIENTATION_STATE {
     Idle,
@@ -12,9 +12,9 @@ export class OrientationComponent {
     private logger: Logger = logFactory.getLogger(this.constructor.name);
 
     private state: ORIENTATION_STATE;
-    private targetAngle: Angle;
-    private tolerance: Angle;
-    private actualAngle?: Angle;
+    private targetAngle: common.Angle;
+    private tolerance: common.Angle;
+    private actualAngle?: common.Angle;
 
     private gyroscopeAutoInterval: number = 1000;
     private timeoutID: any;
@@ -28,10 +28,10 @@ export class OrientationComponent {
         this.onTimeout = this.onTimeout.bind(this);
         this.onOrientationRequest = this.onOrientationRequest.bind(this);
 
-        this.commandComponent.commandEvents.addListener(OrientationRequest.name, this.onOrientationRequest);
+        this.commandComponent.commandEvents.addListener(common.OrientationRequest.name, this.onOrientationRequest);
     }
 
-    private onOrientationRequest(orientationRequest: OrientationRequest) {
+    private onOrientationRequest(orientationRequest: common.OrientationRequest) {
         this.logger.debug("onOrientationRequest: " + orientationRequest);
         if (orientationRequest == undefined || orientationRequest.targetAngle == undefined || orientationRequest.tolerance == undefined) {
             throw new Error("Undefined mandatory parameters of OrientationRequest");
@@ -48,11 +48,11 @@ export class OrientationComponent {
             this.actualAngle = undefined;
             this.subscribeGyroscope();
             this.timeoutID = setTimeout(this.onTimeout, orientationRequest.timeout);
-            this.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(this.gyroscopeAutoInterval));
+            this.commandComponent.emitMessage(new common.GyroscopeAutoIntervalCommand(this.gyroscopeAutoInterval));
         }
     }
 
-    private onGyroscopeValueResponse(gyroscopeValueResponse: GyroscopeValueResponse) {
+    private onGyroscopeValueResponse(gyroscopeValueResponse: common.GyroscopeValueResponse) {
         this.logger.trace("onGyroscopeValue: " + gyroscopeValueResponse.angle);
         this.actualAngle = gyroscopeValueResponse.angle;
         if (this.actualAngle == undefined) {
@@ -64,14 +64,14 @@ export class OrientationComponent {
         } else {
             // TODO: Calculate direction: Modular comparison, find shorter direction
             if (this.actualAngle.getDegrees() < this.targetAngle.getDegrees()) {
-                this.commandComponent.emitMessage(new WheelCommand(WHEEL_DIRECTION.Left));
+                this.commandComponent.emitMessage(new common.WheelCommand(common.WHEEL_DIRECTION.Left));
             } else {
-                this.commandComponent.emitMessage(new WheelCommand(WHEEL_DIRECTION.Right));
+                this.commandComponent.emitMessage(new common.WheelCommand(common.WHEEL_DIRECTION.Right));
             }
         }
     }
 
-    private isExpected(angle: Angle) {
+    private isExpected(angle: common.Angle) {
         return angle.getDegrees() >= this.targetAngle.getDegrees() - this.tolerance.getDegrees()
             && angle.getDegrees() <= this.targetAngle.getDegrees() + this.tolerance.getDegrees();
     }
@@ -88,8 +88,8 @@ export class OrientationComponent {
         this.logger.trace("Clear timeout id = " + this.timeoutID);
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
-        this.commandComponent.emitMessage(new GyroscopeAutoIntervalCommand(0));
-        this.commandComponent.emitMessage(new WheelCommand(WHEEL_DIRECTION.Stop));
+        this.commandComponent.emitMessage(new common.GyroscopeAutoIntervalCommand(0));
+        this.commandComponent.emitMessage(new common.WheelCommand(common.WHEEL_DIRECTION.Stop));
 
         // Clear variables:
         this.state = ORIENTATION_STATE.Idle;
@@ -99,18 +99,18 @@ export class OrientationComponent {
     private sendResponse(success: boolean) {
         this.logger.debug("sendResponse: " + (success ? "SUCCESS" : "FAILURE") + ", actualAngle=" + this.actualAngle);
         // Send response:
-        var orientationResponse: OrientationResponse = new OrientationResponse(success, this.actualAngle);
+        var orientationResponse: common.OrientationResponse = new common.OrientationResponse(success, this.actualAngle);
         this.commandComponent.emitMessage(orientationResponse);
     }
 
     private subscribeGyroscope() {
         this.logger.trace("subscribeGyroscope");
-        this.commandComponent.commandEvents.addListener(GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
+        this.commandComponent.commandEvents.addListener(common.GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
     }
 
     private unsubscribeGyroscope() {
         this.logger.trace("unsubscribeGyroscope");
-        this.commandComponent.commandEvents.removeListener(GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
+        this.commandComponent.commandEvents.removeListener(common.GyroscopeValueResponse.name, this.onGyroscopeValueResponse);
     }
 
 }

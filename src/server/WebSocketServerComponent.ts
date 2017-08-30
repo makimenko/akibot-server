@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as http from 'http';
 import * as WebSocket from 'ws';
 import { logFactory, Logger } from "../log-config";
-import { CommandComponent } from "./index";
+import { CommandComponent } from ".";
 import * as common from "akibot-common/dist";
 
 export class WebSocketServerComponent {

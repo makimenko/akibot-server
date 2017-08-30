@@ -1,7 +1,6 @@
-import { CommandComponent, WebSocketServerComponent } from ".";
+import { CommandComponent, WebSocketServerComponent, GridHandler } from ".";
 import { Logger, logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
-import { GridHandler } from "./GridHandler";
 
 export class WorldComponent {
 

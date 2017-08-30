@@ -2,9 +2,8 @@ import { EventEmitter } from "events";
 import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
-import { AbstractIntervalComponent } from "./AbstractIntervalComponent";
-import { CallableDevice } from "../device/CallableDevice";
-import { Gyroscope } from "../device";
+import { AbstractIntervalComponent } from ".";
+import { CallableDevice, Gyroscope } from "../device";
 
 
 export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3D, common.GyroscopeAutoIntervalCommand> {

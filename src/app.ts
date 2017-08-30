@@ -1,7 +1,6 @@
-import { CommandComponent, OrientationComponent, GyroscopeComponent, WheelComponent, WHEEL_LOCATION, WebSocketServerComponent, WorldComponent } from "./server";
+import { CommandComponent, OrientationComponent, GyroscopeComponent, WheelComponent, WHEEL_LOCATION, WebSocketServerComponent, WorldComponent, DistanceComponent } from "./server";
 import { Gyroscope, FakeGyroscope, FakeCallableDistanceSensor } from "./device";
 import * as common from "akibot-common/dist";
-import { DistanceComponent } from "./server/DistanceComponent";
 
 export var commandComponent: CommandComponent = new CommandComponent();
 export var webSocketServerComponent: WebSocketServerComponent = new WebSocketServerComponent(commandComponent);

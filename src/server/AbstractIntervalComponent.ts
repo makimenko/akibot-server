@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
 import { Angle, AngleUtils, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, Element, AutoIntervalCommand, ValueResponse } from "akibot-common/dist";
-import { CallableDevice } from "../device/CallableDevice";
+import { CallableDevice } from "../device";
 
 
 export abstract class AbstractIntervalComponent<T extends Element, C extends AutoIntervalCommand> {
