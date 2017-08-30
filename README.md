@@ -4,6 +4,7 @@ Sub-project of https://github.com/makimenko/akibot.git
 Set of projects:
 1. Client part: [akibot-ui](https://github.com/makimenko/akibot-ui)
 2. Common (server and client) components: [akibot-common](https://github.com/makimenko/akibot-common)
+3. Devices (I2C-BUS, GPIO): [akibot-common](https://github.com/makimenko/akibot-common)
 4. Simple logger: [akibot-log](https://github.com/makimenko/akibot-log)
 5. Documents and images: [akibot-doc](https://github.com/makimenko/akibot-doc)
 
