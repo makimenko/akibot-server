@@ -9,6 +9,7 @@
     "serve": "nodemon --watch src/**/*.ts --exec ts-node src/start.ts",
     "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts",
     "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist",
+    "undeploy": "if exist r:\\akibot-server\\dist (rmdir r:\\akibot-server\\dist /q /s)",
     "test": "mocha --recursive -r ts-node/register ./test/**/*.test.ts"
   },
   "dependencies": {
