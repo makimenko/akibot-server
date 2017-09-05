@@ -5,7 +5,7 @@
   "repository": "https://github.com/makimenko/akibot-server.git",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/start.ts",
     "serve": "nodemon --watch src/**/*.ts --exec ts-node src/start.ts",
     "sandbox": "nodemon --watch src/**/*.ts --exec ts-node src/sandbox.ts",
     "deploy": "tsc && xcopy /s /i /y dist r:\\akibot-server\\dist",
