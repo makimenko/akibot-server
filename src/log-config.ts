@@ -2,7 +2,7 @@ import { Logger, LogRule, LogLevel, LogFactory, ConsoleLogAppender } from "akibo
 
 var rules: LogRule[] = [
     { pattern: new RegExp(".*"), logLevel: LogLevel.Debug },
-    { pattern: new RegExp("Gyroscope"), logLevel: LogLevel.Debug },
+    { pattern: new RegExp("Gyroscope"), logLevel: LogLevel.Trace },
     { pattern: new RegExp("Distance"), logLevel: LogLevel.Debug }
 ]
 export { Logger };

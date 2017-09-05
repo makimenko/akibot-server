@@ -9,7 +9,8 @@ export var orientationComponent: OrientationComponent = new OrientationComponent
 export var wheelComponentLeft: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Left)
 export var wheelComponentRight: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Right);
 
-var gyroOffset = new common.Vector3D(-0.5, -0.5, 0);
+
+var gyroOffset = new common.Vector3D(-105.5, 389.5, -99);
 var gyroscope: Gyroscope = new DefaultGyroscope(gyroOffset);
 export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope);
 
