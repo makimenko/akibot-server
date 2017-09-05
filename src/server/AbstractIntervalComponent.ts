@@ -10,7 +10,7 @@ export abstract class AbstractIntervalComponent<T extends Element, C extends Aut
     private intervalID: NodeJS.Timer;
     protected logger = logFactory.getLogger(this.constructor.name);
 
-    constructor(private commandComponent: CommandComponent, private device: CallableDevice<T>, private template: C) {
+    constructor(protected commandComponent: CommandComponent, protected device: CallableDevice<T>, protected template: C) {
         this.logger.debug("constructor");
         this.onAutoIntervalCommand = this.onAutoIntervalCommand.bind(this);
         this.commandComponent.commandEvents.addListener(template.$name, (autoIntervalCommand: C) => {

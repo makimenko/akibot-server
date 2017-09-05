@@ -1,13 +1,6 @@
-/*
-import { HMC5883L } from './HMC5883L.js';
-import { logFactory } from "../../log-config";
-
-export interface IGyroscopeValue {
-    x: number,
-    y: number,
-    z: number
-};
-
+import { logFactory } from "../log-config";
+import { Gyroscope } from "../device";
+import { Vector3D } from "akibot-common/dist";
 
 export interface IGyroscopeStats {
     minX: number,
@@ -18,7 +11,6 @@ export interface IGyroscopeStats {
     maxZ: number
 }
 
-
 export class GyroscopeCalibration {
 
     private logger = logFactory.getLogger(this.constructor.name);
@@ -26,26 +18,27 @@ export class GyroscopeCalibration {
     private timeoutID: NodeJS.Timer;
     private stats: IGyroscopeStats;
 
-    constructor(public gyroscope: HMC5883L) {
+    constructor(private gyroscope: Gyroscope) {
         this.logger.debug("constructor");
         this.calibrateIteration = this.calibrateIteration.bind(this);
         this.clearTimers = this.clearTimers.bind(this);
     }
 
-    public calibrate(maxTime: number, intervalMs: number): Promise<IGyroscopeValue> {
-        this.logger.info("Starting calibration...");
+    public calibrate(maxTime: number, intervalMs: number): Promise<Vector3D> {
+        this.logger.info("Running calibration...");
         this.resetStats();
 
-        return new Promise<IGyroscopeValue>((resolve, reject) => {
+        return new Promise<Vector3D>((resolve, reject) => {
             this.intervalID = setInterval(this.calibrateIteration, intervalMs);
             this.timeoutID = setTimeout(() => {
                 this.clearTimers();
                 this.logger.debug("Calculating gyroscope offset from: " + JSON.stringify(this.stats));
-                var calibrationResult: IGyroscopeValue = {
-                    x: (this.stats.maxX + this.stats.minX) / 2,
-                    y: (this.stats.maxY + this.stats.minY) / 2,
-                    z: (this.stats.maxZ + this.stats.minZ) / 2,
-                }
+                var calibrationResult: Vector3D = new Vector3D(
+                    (this.stats.maxX + this.stats.minX) / 2,
+                    (this.stats.maxY + this.stats.minY) / 2,
+                    (this.stats.maxZ + this.stats.minZ) / 2
+                );
+
                 this.logger.debug("Calibration finished with result: " + JSON.stringify(calibrationResult));
                 resolve(calibrationResult);
             }, maxTime);
@@ -62,7 +55,7 @@ export class GyroscopeCalibration {
 
     private calibrateIteration() {
         this.logger.trace("calibrateIteration");
-        var data: IGyroscopeValue = this.gyroscope.readMag();
+        var data: Vector3D = this.gyroscope.getValue();
         this.updateStats(data);
     }
 
@@ -78,7 +71,7 @@ export class GyroscopeCalibration {
         }
     }
 
-    private updateStats(value: IGyroscopeValue): void {
+    private updateStats(value: Vector3D): void {
         this.logger.trace("updateStats: " + JSON.stringify(value));
         if (value.x < this.stats.minX) {
             this.stats.minX = value.x;
@@ -101,4 +94,3 @@ export class GyroscopeCalibration {
     }
 
 }
-*/
