@@ -1,5 +1,5 @@
 import { CommandComponent, OrientationComponent, GyroscopeComponent, WheelComponent, WHEEL_LOCATION, WebSocketServerComponent, WorldComponent, DistanceComponent } from "./server";
-import { Gyroscope, FakeGyroscope, FakeCallableDistanceSensor } from "./device";
+import { Gyroscope, DefaultGyroscope, DefaultCallableDistanceSensor } from "./device";
 import * as common from "akibot-common/dist";
 
 export var commandComponent: CommandComponent = new CommandComponent();
@@ -10,9 +10,12 @@ export var wheelComponentLeft: WheelComponent = new WheelComponent(commandCompon
 export var wheelComponentRight: WheelComponent = new WheelComponent(commandComponent, WHEEL_LOCATION.Right);
 
 var gyroOffset = new common.Vector3D(-0.5, -0.5, 0);
-var gyroscope: Gyroscope = new FakeGyroscope(gyroOffset);
+var gyroscope: Gyroscope = new DefaultGyroscope(gyroOffset);
 export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope, new common.GyroscopeAutoIntervalCommand(0));
 
-var distanceCenter = new FakeCallableDistanceSensor(2000, 500, true, common.AngleUtils.createAngleFromDegrees(10));
+//TODO: fixme
+const DISTANCE_CENTER_TRIGGER_PIN = 2;
+const DISTANCE_CENTER_ECHO_PIN = 3;
+var distanceCenter = new DefaultCallableDistanceSensor(DISTANCE_CENTER_TRIGGER_PIN, DISTANCE_CENTER_ECHO_PIN);
 export var distanceCenterComponent = new DistanceComponent(commandComponent, distanceCenter, new common.DistanceAutoIntervalCommand(0));
 

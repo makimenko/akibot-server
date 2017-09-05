@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "akibot-common": "github:makimenko/akibot-common",
+    "akibot-device": "github:makimenko/akibot-device",
     "akibot-log": "github:makimenko/akibot-log",
     "express": "^4.15.4",
     "http": "0.0.0",
