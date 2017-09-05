@@ -32,7 +32,7 @@ export class OrientationComponent {
     }
 
     private onOrientationRequest(orientationRequest: common.OrientationRequest) {
-        this.logger.debug("onOrientationRequest: " + orientationRequest);
+        this.logger.debug("onOrientationRequest: " + JSON.stringify(orientationRequest));
         if (orientationRequest == undefined || orientationRequest.targetAngle == undefined || orientationRequest.tolerance == undefined) {
             throw new Error("Undefined mandatory parameters of OrientationRequest");
         } if (!this.commandComponent.lock()) {

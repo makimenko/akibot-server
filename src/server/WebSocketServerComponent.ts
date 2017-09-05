@@ -26,6 +26,11 @@ export class WebSocketServerComponent {
         this.commandComponent.commandEvents.on(common.OrientationResponse.name, (orientationResponse: common.OrientationResponse) => {
             this.broadcast(orientationResponse);
         });
+
+        this.commandComponent.commandEvents.on(common.GyroscopeCalibrationResponse.name, (gyroscopeCalibrationResponse: common.GyroscopeCalibrationResponse) => {
+            this.broadcast(gyroscopeCalibrationResponse);
+        });
+
     }
 
     private onMessage(client: WebSocket, data: WebSocket.Data) {

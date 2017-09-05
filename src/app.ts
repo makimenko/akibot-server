@@ -11,7 +11,7 @@ export var wheelComponentRight: WheelComponent = new WheelComponent(commandCompo
 
 var gyroOffset = new common.Vector3D(-0.5, -0.5, 0);
 var gyroscope: Gyroscope = new DefaultGyroscope(gyroOffset);
-export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope, new common.GyroscopeAutoIntervalCommand(0));
+export var gyroscopeComponent: GyroscopeComponent = new GyroscopeComponent(commandComponent, gyroscope);
 
 //TODO: fixme
 const DISTANCE_CENTER_TRIGGER_PIN = 2;
