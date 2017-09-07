@@ -8,7 +8,8 @@ export interface IGyroscopeStats {
     minZ: number,
     maxX: number,
     maxY: number,
-    maxZ: number
+    maxZ: number,
+    iterations: number
 }
 
 export class GyroscopeCalibration {
@@ -67,12 +68,13 @@ export class GyroscopeCalibration {
             minZ: 100000,
             maxX: -100000,
             maxY: -100000,
-            maxZ: -100000
+            maxZ: -100000,
+            iterations: 0
         }
     }
 
     private updateStats(value: Vector3D): void {
-        this.logger.trace("updateStats: " + JSON.stringify(value));
+        this.logger.trace("updateStats: consider value: " + JSON.stringify(value));
         if (value.x < this.stats.minX) {
             this.stats.minX = value.x;
         }
@@ -91,6 +93,7 @@ export class GyroscopeCalibration {
         if (value.z > this.stats.maxZ) {
             this.stats.maxZ = value.z;
         }
+        this.stats.iterations++;
     }
 
 }
