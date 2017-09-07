@@ -30,7 +30,6 @@ export class DefaultGyroscope implements Gyroscope {
 
     public getValue(): common.Vector3D {
         this.logger.trace("getValue");
-        var data = this.gyroscope.readMag();
         var vector3D = this.getRawValue();
         vector3D.add(this.offset);
         this.logger.trace("Final vector3D: " + vector3D.toString());
