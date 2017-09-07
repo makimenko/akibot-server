@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import * as app from "../../src/app";
 import { Angle, GyroscopeAutoIntervalCommand, GyroscopeValueResponse, GyroscopeCalibrationResponse, Vector3D, GyroscopeCalibrationRequest } from "akibot-common/dist";
+import { isFake } from "akibot-device";
 
 let defaultTimeout: number = 1000;
 
@@ -30,30 +31,26 @@ describe('Gyroscope', () => {
 
 
   it("Gyroscope Calibration", function () {
-    this.timeout(defaultTimeout + 1000);
-    return new Promise(function (resolve, reject) {
-      app.commandComponent.commandEvents.on(GyroscopeCalibrationResponse.name, (gyroscopeCalibrationResponse: GyroscopeCalibrationResponse) => {
-        assert.isDefined(gyroscopeCalibrationResponse.offsetVector);
-        assert.isTrue(gyroscopeCalibrationResponse.offsetVector instanceof Vector3D);
+    if (isFake) {
+      this.timeout(defaultTimeout + 1000);
+      return new Promise(function (resolve, reject) {
+        app.commandComponent.commandEvents.on(GyroscopeCalibrationResponse.name, (gyroscopeCalibrationResponse: GyroscopeCalibrationResponse) => {
+          assert.isDefined(gyroscopeCalibrationResponse.offsetVector);
+          assert.isTrue(gyroscopeCalibrationResponse.offsetVector instanceof Vector3D);
 
-        const minValue = -1000;
-        const maxValue = 1000;
+          const delta = 0.1;
+          assert.closeTo(gyroscopeCalibrationResponse.offsetVector.x, 0, delta);
+          assert.closeTo(gyroscopeCalibrationResponse.offsetVector.y, 0, delta);
+          assert.closeTo(gyroscopeCalibrationResponse.offsetVector.z, 0, delta);
 
-        assert.isAbove(gyroscopeCalibrationResponse.offsetVector.x, minValue);
-        assert.isBelow(gyroscopeCalibrationResponse.offsetVector.x, maxValue);
+          resolve();
+        });
+        app.commandComponent.emitMessage(new GyroscopeCalibrationRequest(1000, 50));
 
-        assert.isAbove(gyroscopeCalibrationResponse.offsetVector.y, minValue);
-        assert.isBelow(gyroscopeCalibrationResponse.offsetVector.y, maxValue);
-
-        assert.isAbove(gyroscopeCalibrationResponse.offsetVector.z, minValue);
-        assert.isBelow(gyroscopeCalibrationResponse.offsetVector.z, maxValue);
-
-        resolve();
       });
-      app.commandComponent.emitMessage(new GyroscopeCalibrationRequest(1000, 100));
-
-    });
-  });
+    }
+  }
+  );
 
 
 

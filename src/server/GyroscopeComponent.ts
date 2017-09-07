@@ -1,16 +1,18 @@
 import { CommandComponent, AbstractIntervalComponent, GyroscopeCalibration } from ".";
 import { logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
-import { CallableDevice } from "../device";
+import { CallableDevice, DefaultGyroscope, Gyroscope } from "../device";
 
 
 export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3D, common.GyroscopeAutoIntervalCommand> {
 
     public offsetVector: common.Vector3D = new common.Vector3D(0, 0, 0);
     public offsetNorthAngle: common.Angle = common.AngleUtils.createAngleFromDegrees(0);
+    private gyroscope: Gyroscope;
 
-    constructor(commandComponent: CommandComponent, device: CallableDevice<common.Vector3D>) {
+    constructor(commandComponent: CommandComponent, device: Gyroscope) {
         super(commandComponent, device, new common.GyroscopeAutoIntervalCommand(0));
+        this.gyroscope = device;
 
         this.onGyroscopeCalibrationRequest = this.onGyroscopeCalibrationRequest.bind(this);
         this.commandComponent.commandEvents.addListener(common.GyroscopeCalibrationRequest.name, (gyroscopeCalibrationRequest: common.GyroscopeCalibrationRequest) => {
@@ -22,7 +24,7 @@ export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3
         this.logger.debug("onGyroscopeCalibrationRequest: " + JSON.stringify(gyroscopeCalibrationRequest));
 
         if (this.commandComponent.lock()) {
-            var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.device);
+            var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.gyroscope);
             gyroscopeCalibration
                 .calibrate(gyroscopeCalibrationRequest.maxTimeMs, gyroscopeCalibrationRequest.intervalMs)
                 .then((result: common.Vector3D) => {
@@ -38,6 +40,18 @@ export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3
         } else {
             this.logger.warn("Skip gyroscope calibration (anouther command is running)");
         }
+        var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.gyroscope);
+
+        gyroscopeCalibration
+            .calibrate(gyroscopeCalibrationRequest.maxTimeMs, gyroscopeCalibrationRequest.intervalMs)
+            .then((result: common.Vector3D) => {
+                this.logger.trace("Calibration finished, sending result");
+                var response = new common.GyroscopeCalibrationResponse(result);
+                this.commandComponent.emitMessage(response);
+            })
+            .catch((reason: any) => {
+                this.logger.error(reason);
+            })
     }
 
     public createValueResponse(value: common.Vector3D): common.GyroscopeValueResponse {

@@ -1,5 +1,5 @@
 import { logFactory } from "../log-config";
-import { Gyroscope } from "../device";
+import { Gyroscope, DefaultGyroscope } from "../device";
 import { Vector3D } from "akibot-common/dist";
 
 export interface IGyroscopeStats {
@@ -55,7 +55,7 @@ export class GyroscopeCalibration {
 
     private calibrateIteration() {
         this.logger.trace("calibrateIteration");
-        var data: Vector3D = this.gyroscope.getValue();
+        var data: Vector3D = this.gyroscope.getRawValue();
         this.updateStats(data);
     }
 

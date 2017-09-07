@@ -1,0 +1,28 @@
+{
+  "startup": {
+    "gyroscopeAutoInterval": 3000,
+    "distanceAutoInterval": 2000
+  },
+  "gyroscope": {
+    "address": "0x1e",
+    "offset": {
+      "x": -105.5,
+      "y": 389.5,
+      "z": -99
+    }
+  },
+  "distance": {
+    "center": {
+      "triggerPin": 2,
+      "echoPin": 3
+    }
+  },
+  "grid": {
+    "cellCount": 100,
+    "cellSizeMm": 100,
+    "maxObstacleCount": 10
+  },
+  "robot": {
+    "modelFile": "./assets/model/AkiBot.dae"
+  }
+}

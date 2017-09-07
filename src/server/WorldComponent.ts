@@ -1,6 +1,7 @@
 import { CommandComponent, WebSocketServerComponent, GridHandler } from ".";
 import { Logger, logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
+import * as nconf from "nconf";
 
 export class WorldComponent {
 
@@ -23,21 +24,26 @@ export class WorldComponent {
     }
 
     private initWorldContent() {
-        // TODO: make it configurable
-        var gridCellCount = 100;
-        var gridCellSizeMm = 100;
-        var gridMaxObstacleCount = 10;
+        this.logger.debug("initWorldContent");
+
+        var gridCellCount = Number(nconf.get("grid:cellCount"));
+        var gridCellSizeMm = Number(nconf.get("grid:cellSizeMm"));
+        var gridMaxObstacleCount = Number(nconf.get("grid:maxObstacleCount"));
+        var robotModelFile: string = nconf.get("robot:modelFile");
+
+        this.logger.trace("gridCellCount=" + gridCellCount + ", gridCellSizeMm=" + gridCellSizeMm + ", gridMaxObstacleCount=" + gridMaxObstacleCount);
+
         var gridOffsetVector = new common.Vector3D(-gridCellCount * gridCellSizeMm / 2, -gridCellCount * gridCellSizeMm / 2, 0);
         var gridConfiguration = new common.GridConfiguration(gridCellCount, gridCellSizeMm, gridMaxObstacleCount, gridOffsetVector);
         var gridNode = new common.GridNode(gridConfiguration);
 
-        this.robotNode = new common.RobotNode("./assets/model/AkiBot.dae", new common.NodeTransformation3D());
+        this.robotNode = new common.RobotNode(robotModelFile, new common.NodeTransformation3D());
         this.worldNode = new common.WorldNode(gridNode, this.robotNode);
         this.gridHandler = new GridHandler(gridNode);
 
         // TODO: support multiplse distances (add device ID)
         var distanceCenterNode = new common.DeviceNode(new common.NodeTransformation3D());
-        distanceCenterNode.transformation.position.y = 10;
+        //distanceCenterNode.transformation.position.y = 10;
         this.attachDeviceToRobot(distanceCenterNode);
     }
 
@@ -72,13 +78,12 @@ export class WorldComponent {
     }
 
     private onDistanceValueResponse(distanceValueResponse: common.DistanceValueResponse) {
-        this.logger.trace("onDistanceValueResponse: " + distanceValueResponse.distance);
-
-        var distanceNode = this.robotNode.devices[0]; // TODO: allow multiple distance meters
+        this.logger.trace("onDistanceValueResponse: " + JSON.stringify(distanceValueResponse.distance));
+        // TODO: allow multiple distance meters
+        var distanceNode = this.robotNode.devices[0];
         if (distanceNode != undefined) {
             this.logger.trace("updateGridDistance");
             this.gridHandler.updateGridDistance(this.robotNode, distanceNode, distanceValueResponse.distance);
-
             var gridUpdateEvent = new common.GridUpdateEvent(this.worldNode.gridNode.data);
             this.webSocketServerComponent.broadcast(gridUpdateEvent);
         }
