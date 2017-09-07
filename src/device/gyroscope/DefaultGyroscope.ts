@@ -2,17 +2,30 @@ import * as common from "akibot-common/dist";
 import { logFactory } from "../../log-config";
 import { CallableDevice, Gyroscope } from "..";
 import { HMC5883L } from "akibot-device";
+import * as nconf from "nconf";
 
 export class DefaultGyroscope implements Gyroscope {
 
     private logger = logFactory.getLogger(this.constructor.name);
     private offsetNorthAngle: common.Angle = common.AngleUtils.createAngleFromDegrees(0);
     private gyroscope: HMC5883L;
-    private GYROSCOPE_DEFAULT_I2C_ADDRESS: number = 0x1e;
+    private address: number;
+    private offset: common.Vector3D;
 
-    public constructor(private offset: common.Vector3D) {
+    public constructor() {
         this.logger.debug("constructor");
-        this.gyroscope = new HMC5883L(this.GYROSCOPE_DEFAULT_I2C_ADDRESS);
+
+        // Configuring gyroscope offset:
+        var offsetFromConfig = nconf.get("gyroscope:offset");
+        this.offset = new common.Vector3D(offsetFromConfig.x, offsetFromConfig.y, offsetFromConfig.z);
+
+        // Configuring physical I2C.1 Address:
+        this.logger.trace("Gyroscope offset: " + this.offset);
+        this.address = Number(nconf.get('gyroscope:address'));
+        this.logger.trace("Gyroscope address: " + this.address);
+
+        // Create instance
+        this.gyroscope = new HMC5883L(this.address);
     }
 
     public getValue(): common.Vector3D {

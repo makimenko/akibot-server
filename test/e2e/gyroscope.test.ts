@@ -38,7 +38,7 @@ describe('Gyroscope', () => {
           assert.isDefined(gyroscopeCalibrationResponse.offsetVector);
           assert.isTrue(gyroscopeCalibrationResponse.offsetVector instanceof Vector3D);
 
-          const delta = 0.05;
+          const delta = 0.1;
           assert.closeTo(gyroscopeCalibrationResponse.offsetVector.x, 0, delta);
           assert.closeTo(gyroscopeCalibrationResponse.offsetVector.y, 0, delta);
           assert.closeTo(gyroscopeCalibrationResponse.offsetVector.z, 0, delta);
