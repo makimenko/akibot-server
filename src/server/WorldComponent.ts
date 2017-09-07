@@ -23,6 +23,7 @@ export class WorldComponent {
     }
 
     private initWorldContent() {
+        this.logger.debug("initWorldContent");
         // TODO: make it configurable
         var gridCellCount = 100;
         var gridCellSizeMm = 100;

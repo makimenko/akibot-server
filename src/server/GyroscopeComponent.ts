@@ -1,16 +1,18 @@
 import { CommandComponent, AbstractIntervalComponent, GyroscopeCalibration } from ".";
 import { logFactory } from "../log-config";
 import * as common from "akibot-common/dist";
-import { CallableDevice } from "../device";
+import { CallableDevice, DefaultGyroscope, Gyroscope } from "../device";
 
 
 export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3D, common.GyroscopeAutoIntervalCommand> {
 
     public offsetVector: common.Vector3D = new common.Vector3D(0, 0, 0);
     public offsetNorthAngle: common.Angle = common.AngleUtils.createAngleFromDegrees(0);
+    private gyroscope: Gyroscope;
 
-    constructor(commandComponent: CommandComponent, device: CallableDevice<common.Vector3D>) {
+    constructor(commandComponent: CommandComponent, device: Gyroscope) {
         super(commandComponent, device, new common.GyroscopeAutoIntervalCommand(0));
+        this.gyroscope = device;
 
         this.onGyroscopeCalibrationRequest = this.onGyroscopeCalibrationRequest.bind(this);
         this.commandComponent.commandEvents.addListener(common.GyroscopeCalibrationRequest.name, (gyroscopeCalibrationRequest: common.GyroscopeCalibrationRequest) => {
@@ -20,7 +22,7 @@ export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3
 
     private onGyroscopeCalibrationRequest(gyroscopeCalibrationRequest: common.GyroscopeCalibrationRequest) {
         this.logger.debug("onGyroscopeCalibrationRequest: " + JSON.stringify(gyroscopeCalibrationRequest));
-        var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.device);
+        var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.gyroscope);
 
         gyroscopeCalibration
             .calibrate(gyroscopeCalibrationRequest.maxTimeMs, gyroscopeCalibrationRequest.intervalMs)
