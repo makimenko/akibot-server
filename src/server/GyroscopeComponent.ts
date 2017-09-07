@@ -20,18 +20,24 @@ export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3
 
     private onGyroscopeCalibrationRequest(gyroscopeCalibrationRequest: common.GyroscopeCalibrationRequest) {
         this.logger.debug("onGyroscopeCalibrationRequest: " + JSON.stringify(gyroscopeCalibrationRequest));
-        var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.device);
 
-        gyroscopeCalibration
-            .calibrate(gyroscopeCalibrationRequest.maxTimeMs, gyroscopeCalibrationRequest.intervalMs)
-            .then((result: common.Vector3D) => {
-                this.logger.trace("Calibration finished, sending result");
-                var response = new common.GyroscopeCalibrationResponse(result);
-                this.commandComponent.emitMessage(response);
-            })
-            .catch((reason: any) => {
-                this.logger.error(reason);
-            })
+        if (this.commandComponent.lock()) {
+            var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.device);
+            gyroscopeCalibration
+                .calibrate(gyroscopeCalibrationRequest.maxTimeMs, gyroscopeCalibrationRequest.intervalMs)
+                .then((result: common.Vector3D) => {
+                    this.logger.trace("Calibration finished, sending result");
+                    var response = new common.GyroscopeCalibrationResponse(result);
+                    this.commandComponent.emitMessage(response);
+                    this.commandComponent.unlock();
+                })
+                .catch((reason: any) => {
+                    this.logger.error(reason);
+                    this.commandComponent.unlock();
+                })
+        } else {
+            this.logger.warn("Skip gyroscope calibration (anouther command is running)");
+        }
     }
 
     public createValueResponse(value: common.Vector3D): common.GyroscopeValueResponse {
