@@ -31,6 +31,10 @@
       "pinFirstA": 3,
       "pinSecondA": 2
     },
-    "left": {}
+    "left": {
+      "pinEN": 23,
+      "pinFirstA": 0,
+      "pinSecondA": 7
+    }
   }
 }

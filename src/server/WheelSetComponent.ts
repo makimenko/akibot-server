@@ -7,14 +7,14 @@ import { DefaultWheel, Wheel, WHEEL_LOCATION } from "../device/index";
 export class WheelSetComponent {
 
     private logger = logFactory.getLogger(this.constructor.name);
-    //private leftWheel: Wheel;
+    private leftWheel: Wheel;
     private rightWheel: Wheel;
     private DEFAULT_SPEED: number = 0.5;
 
     constructor(private commandComponent: CommandComponent) {
         this.logger.debug("constructor");
 
-        //this.leftWheel = new DefaultWheel(WHEEL_LOCATION.left);
+        this.leftWheel = new DefaultWheel(WHEEL_LOCATION.left);
         this.rightWheel = new DefaultWheel(WHEEL_LOCATION.right);
         this.stop();
 
@@ -26,7 +26,7 @@ export class WheelSetComponent {
     }
 
     public stop() {
-        //this.leftWheel.stop();
+        this.leftWheel.stop();
         this.rightWheel.stop();
     }
 
@@ -40,16 +40,16 @@ export class WheelSetComponent {
         if (wheelCommand.direction == WHEEL_DIRECTION.Stop) {
             this.stop();
         } else if (wheelCommand.direction == WHEEL_DIRECTION.Forward) {
-            //this.leftWheel.forward(this.DEFAULT_SPEED);
+            this.leftWheel.forward(this.DEFAULT_SPEED);
             this.rightWheel.forward(this.DEFAULT_SPEED);
         } else if (wheelCommand.direction == WHEEL_DIRECTION.Backward) {
-            //this.leftWheel.backward(this.DEFAULT_SPEED);
+            this.leftWheel.backward(this.DEFAULT_SPEED);
             this.rightWheel.backward(this.DEFAULT_SPEED);
         } else if (wheelCommand.direction == WHEEL_DIRECTION.Right) {
             //this.leftWheel.forward(this.DEFAULT_SPEED);
             this.rightWheel.backward(this.DEFAULT_SPEED);
         } else if (wheelCommand.direction == WHEEL_DIRECTION.Left) {
-            //this.leftWheel.backward(this.DEFAULT_SPEED);
+            this.leftWheel.backward(this.DEFAULT_SPEED);
             this.rightWheel.forward(this.DEFAULT_SPEED);
         } else {
             throw new Error("Unknown wheelCommand: " + JSON.stringify(wheelCommand));
