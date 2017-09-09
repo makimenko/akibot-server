@@ -1,6 +1,6 @@
 import { CommandComponent } from ".";
 import { logFactory } from "../log-config";
-import { WheelCommand, WHEEL_DIRECTION } from "akibot-common/dist";
+import { WheelSetCommand, WHEEL_SET_DIRECTION } from "akibot-common/dist";
 import { DefaultWheel, Wheel, WHEEL_LOCATION } from "../device/index";
 
 
@@ -19,10 +19,10 @@ export class WheelSetComponent {
         this.stop();
 
         // bind a class context to the event listener:
-        this.onWheelCommand = this.onWheelCommand.bind(this);
+        this.onWheelSetCommand = this.onWheelSetCommand.bind(this);
 
         // Subscribe to command events
-        this.commandComponent.commandEvents.addListener(WheelCommand.name, this.onWheelCommand);
+        this.commandComponent.commandEvents.addListener(WheelSetCommand.name, this.onWheelSetCommand);
     }
 
     public stop() {
@@ -30,29 +30,27 @@ export class WheelSetComponent {
         this.rightWheel.stop();
     }
 
-    private onWheelCommand(wheelCommand: WheelCommand) {
-        if (wheelCommand.direction != undefined)
-            this.logger.trace("onWheelCommand: " + WHEEL_DIRECTION[wheelCommand.direction]);
-        else {
-            this.logger.trace("onWheelCommand: " + JSON.stringify(wheelCommand));
-        }
+    private onWheelSetCommand(wheelSetCommand: WheelSetCommand) {
+        this.logger.trace("onWheelSetCommand: " + WHEEL_SET_DIRECTION[wheelSetCommand.direction]);
+        
+        var speed = (wheelSetCommand.pctSpeed==undefined? this.DEFAULT_SPEED : wheelSetCommand.pctSpeed);
 
-        if (wheelCommand.direction == WHEEL_DIRECTION.Stop) {
+        if (wheelSetCommand.direction == WHEEL_SET_DIRECTION.Stop) {
             this.stop();
-        } else if (wheelCommand.direction == WHEEL_DIRECTION.Forward) {
-            this.leftWheel.forward(this.DEFAULT_SPEED);
-            this.rightWheel.forward(this.DEFAULT_SPEED);
-        } else if (wheelCommand.direction == WHEEL_DIRECTION.Backward) {
-            this.leftWheel.backward(this.DEFAULT_SPEED);
-            this.rightWheel.backward(this.DEFAULT_SPEED);
-        } else if (wheelCommand.direction == WHEEL_DIRECTION.Right) {
-            //this.leftWheel.forward(this.DEFAULT_SPEED);
-            this.rightWheel.backward(this.DEFAULT_SPEED);
-        } else if (wheelCommand.direction == WHEEL_DIRECTION.Left) {
-            this.leftWheel.backward(this.DEFAULT_SPEED);
-            this.rightWheel.forward(this.DEFAULT_SPEED);
+        } else if (wheelSetCommand.direction == WHEEL_SET_DIRECTION.Forward) {
+            this.leftWheel.forward(speed);
+            this.rightWheel.forward(speed);
+        } else if (wheelSetCommand.direction == WHEEL_SET_DIRECTION.Backward) {
+            this.leftWheel.backward(speed);
+            this.rightWheel.backward(speed);
+        } else if (wheelSetCommand.direction == WHEEL_SET_DIRECTION.Right) {
+            this.leftWheel.forward(speed);
+            this.rightWheel.backward(speed);
+        } else if (wheelSetCommand.direction == WHEEL_SET_DIRECTION.Left) {
+            this.leftWheel.backward(speed);
+            this.rightWheel.forward(speed);
         } else {
-            throw new Error("Unknown wheelCommand: " + JSON.stringify(wheelCommand));
+            throw new Error("Unknown wheelCommand: " + JSON.stringify(wheelSetCommand));
         }
 
     }

@@ -6,19 +6,18 @@ app.webSocketServerComponent.start();
 
 var gyroscopeAutoInterval: number = Number(nconf.get("startup:gyroscopeAutoInterval"));
 if (Number.isSafeInteger(gyroscopeAutoInterval)) {
-    //app.commandComponent.emitMessage(new common.GyroscopeAutoIntervalCommand(gyroscopeAutoInterval));
+    app.commandComponent.emitMessage(new common.GyroscopeAutoIntervalCommand(gyroscopeAutoInterval));
 }
 
 var distanceAutoInterval: number = Number(nconf.get("startup:distanceAutoInterval"));
 if (Number.isSafeInteger(distanceAutoInterval)) {
-    //app.commandComponent.emitMessage(new common.DistanceAutoIntervalCommand(distanceAutoInterval));
+    app.commandComponent.emitMessage(new common.DistanceAutoIntervalCommand(distanceAutoInterval));
 }
 
 
-/*
-var forward = new common.WheelCommand(common.WHEEL_DIRECTION.Forward);
-var backward = new common.WheelCommand(common.WHEEL_DIRECTION.Backward);
-var stop = new common.WheelCommand(common.WHEEL_DIRECTION.Stop);
+var forward = new common.WheelSetCommand(common.WHEEL_SET_DIRECTION.Forward);
+var backward = new common.WheelSetCommand(common.WHEEL_SET_DIRECTION.Backward);
+var stop = new common.WheelSetCommand(common.WHEEL_SET_DIRECTION.Stop);
 
 setTimeout(() => {
     app.commandComponent.emitMessage(forward);
@@ -30,4 +29,3 @@ setTimeout(() => {
     },2000)
 
 }, 2000);
-*/

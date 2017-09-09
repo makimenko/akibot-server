@@ -64,9 +64,9 @@ export class OrientationComponent {
         } else {
             // TODO: Calculate direction: Modular comparison, find shorter direction
             if (this.actualAngle.getDegrees() < this.targetAngle.getDegrees()) {
-                this.commandComponent.emitMessage(new common.WheelCommand(common.WHEEL_DIRECTION.Left));
+                this.commandComponent.emitMessage(new common.WheelSetCommand(common.WHEEL_SET_DIRECTION.Left));
             } else {
-                this.commandComponent.emitMessage(new common.WheelCommand(common.WHEEL_DIRECTION.Right));
+                this.commandComponent.emitMessage(new common.WheelSetCommand(common.WHEEL_SET_DIRECTION.Right));
             }
         }
     }
@@ -89,7 +89,7 @@ export class OrientationComponent {
         clearTimeout(this.timeoutID);
         this.unsubscribeGyroscope();
         this.commandComponent.emitMessage(new common.GyroscopeAutoIntervalCommand(0));
-        this.commandComponent.emitMessage(new common.WheelCommand(common.WHEEL_DIRECTION.Stop));
+        this.commandComponent.emitMessage(new common.WheelSetCommand(common.WHEEL_SET_DIRECTION.Stop));
 
         // Clear variables:
         this.state = ORIENTATION_STATE.Idle;
