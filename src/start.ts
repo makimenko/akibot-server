@@ -15,7 +15,7 @@ if (Number.isSafeInteger(distanceAutoInterval)) {
 }
 
 
-
+/*
 var forward = new common.WheelCommand(common.WHEEL_DIRECTION.Forward);
 var backward = new common.WheelCommand(common.WHEEL_DIRECTION.Backward);
 var stop = new common.WheelCommand(common.WHEEL_DIRECTION.Stop);
@@ -29,4 +29,5 @@ setTimeout(() => {
         }, 2000)
     },2000)
 
-}, 2000)
+}, 2000);
+*/
