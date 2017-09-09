@@ -24,5 +24,13 @@
   },
   "robot": {
     "modelFile": "./assets/model/AkiBot.dae"
+  },
+  "wheel": {
+    "right": {
+      "pinEN": 26,
+      "pinFirstA": 3,
+      "pinSecondA": 2
+    },
+    "left": {}
   }
 }
