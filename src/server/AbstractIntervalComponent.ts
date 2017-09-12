@@ -24,6 +24,9 @@ export abstract class AbstractIntervalComponent<T extends Element, C extends Aut
         }
         this.logger.debug("onAutoIntervalCommand: autoInterval=" + autoIntervalCommand.interval + "ms");
         if (autoIntervalCommand.interval > 0) {
+            if (this.intervalID != undefined) {
+                clearInterval(this.intervalID);
+            }
             this.intervalID = setInterval(() => { this.retrieveAndEmitValue() }, autoIntervalCommand.interval);
             this.retrieveAndEmitValue();
         } else {
