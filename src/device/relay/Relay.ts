@@ -12,7 +12,7 @@ export class Relay {
     }
 
     public enableGyroscope() {
-        //this.expander.pinMode(1, 1);
+        this.expander.pinMode(1, 1);
         this.expander.digitalWrite(1, 1);
     }
     
