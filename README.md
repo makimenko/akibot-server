@@ -33,7 +33,7 @@ npm run serve
 
 ## Sample UI
 https://github.com/makimenko/akibot-ui
-![UI Example](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/UI_Sample1.png "UI Example")
+![Demo](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Demo.gif "Demo")
 
 ## Concept
 ![World Nodes](https://raw.githubusercontent.com/makimenko/akibot-doc/master/img/Nodes.png "World Nodes")
