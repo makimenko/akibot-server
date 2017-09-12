@@ -4,6 +4,7 @@ import * as nconf from "nconf";
 
 app.webSocketServerComponent.start();
 
+app.relay.enableGyroscope();
 var gyroscopeAutoInterval: number = Number(nconf.get("startup:gyroscopeAutoInterval"));
 if (Number.isSafeInteger(gyroscopeAutoInterval)) {
     app.commandComponent.emitMessage(new common.GyroscopeAutoIntervalCommand(gyroscopeAutoInterval));

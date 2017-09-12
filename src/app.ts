@@ -1,11 +1,12 @@
 import { CommandComponent, OrientationComponent, GyroscopeComponent, WheelSetComponent, WebSocketServerComponent, WorldComponent, DistanceComponent } from "./server";
-import { Gyroscope, DefaultGyroscope, DefaultCallableDistanceSensor } from "./device";
+import { Gyroscope, DefaultGyroscope, DefaultCallableDistanceSensor, Relay } from "./device";
 import * as common from "akibot-common/dist";
 import * as nconf from "nconf";
 
 // Reads configuration from the JSON file
 nconf.file("akibot-server-config.json");
 // TODO: Dump config info to console
+
 
 // Create Components:
 export var commandComponent: CommandComponent = new CommandComponent();
@@ -19,3 +20,5 @@ var distanceCenterTriggerPin: number = Number(nconf.get("distance:center:trigger
 var distanceCenterEchoPin: number = Number(nconf.get("distance:center:echoPin"));
 var distanceCenter = new DefaultCallableDistanceSensor(distanceCenterTriggerPin, distanceCenterEchoPin);
 export var distanceCenterComponent = new DistanceComponent(commandComponent, distanceCenter, new common.DistanceAutoIntervalCommand(0));
+export var relay = new Relay();
+

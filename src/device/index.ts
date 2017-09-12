@@ -7,3 +7,5 @@ export * from "./gyroscope/DefaultGyroscope";
 
 export * from "./wheel/Wheel";
 export * from "./wheel/DefaultWheel";
+
+export * from "./relay/Relay";
