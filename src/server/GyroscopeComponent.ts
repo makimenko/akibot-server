@@ -40,18 +40,7 @@ export class GyroscopeComponent extends AbstractIntervalComponent<common.Vector3
         } else {
             this.logger.warn("Skip gyroscope calibration (anouther command is running)");
         }
-        var gyroscopeCalibration: GyroscopeCalibration = new GyroscopeCalibration(this.gyroscope);
 
-        gyroscopeCalibration
-            .calibrate(gyroscopeCalibrationRequest.maxTimeMs, gyroscopeCalibrationRequest.intervalMs)
-            .then((result: common.Vector3D) => {
-                this.logger.trace("Calibration finished, sending result");
-                var response = new common.GyroscopeCalibrationResponse(result);
-                this.commandComponent.emitMessage(response);
-            })
-            .catch((reason: any) => {
-                this.logger.error(reason);
-            })
     }
 
     public createValueResponse(value: common.Vector3D): common.GyroscopeValueResponse {
